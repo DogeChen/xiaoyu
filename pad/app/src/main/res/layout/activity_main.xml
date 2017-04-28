@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context="com.ainemo.pad.MainActivity"
+  tools:layout_editor_absoluteY="25dp"
+  tools:layout_editor_absoluteX="0dp">
+
+  <TextView
+    android:id="@+id/home_name"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="李大凯，欢迎回来！"
+    android:textSize="30px"
+    android:layout_marginLeft="68px"
+    android:layout_marginTop="72px"
+
+
+    />
+  <TextView
+    android:paddingTop="46px"
+    android:id="@+id/home_number"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="小鱼号： 245635"
+    android:textSize="24px"
+    android:layout_marginLeft="68px"
+    android:layout_marginTop="72px"
+    />
+  <Button
+    android:layout_marginLeft="1152px"
+    android:layout_marginTop="30px"
+    android:background="@drawable/btn_return"
+    android:id="@+id/return_btn"
+    android:layout_width="88px"
+    android:layout_height="88px"
+    />
+  <ImageView
+    android:src="@drawable/home_call"
+    android:id="@+id/home_call_btn"
+    android:layout_width="124px"
+    android:layout_height="124px"
+    android:layout_marginLeft="120px"
+    android:layout_marginTop="276px"
+     />
+  <ImageView
+    android:src="@drawable/home_par"
+    android:id="@+id/home_par_btn"
+    android:layout_width="124px"
+    android:layout_height="124px"
+    android:layout_marginLeft="516px"
+    android:layout_marginTop="276px"
+    />
+  <ImageView
+    android:src="@drawable/home_record"
+    android:id="@+id/home_record_btn"
+    android:layout_width="124px"
+    android:layout_height="124px"
+    android:layout_marginLeft="912px"
+    android:layout_marginTop="276px"
+   />
+</RelativeLayout>
