@@ -1,171 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/item"
   android:orientation="vertical"
   android:layout_width="365px"
-  android:layout_height="595px">
+  android:layout_height="595px"
+  android:background="@color/transparent">
   <RelativeLayout
     android:layout_width="365px"
     android:layout_height="595px"
-    android:background="@drawable/bg"
-    >
+    android:background="@drawable/bg">
     <TextView
       android:id="@+id/textString_case"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_alignParentLeft="false"
-      android:textColor="@color/white"
-      android:text="病例信息"
-      android:textSize="30px"
-      android:layout_marginLeft="22px"
       android:layout_marginTop="21px"
-      />
+      android:layout_marginLeft="22px"
+      android:layout_alignParentLeft="false"
+      android:text="病例信息"
+      android:textColor="@color/white"
+      android:textSize="30px" />
     <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginTop="60px"
+      android:layout_marginLeft="22px"
       android:text="PERSONAL INFORMATION"
       android:textColor="@color/whiteGray"
-      android:layout_marginLeft="22px"
-      android:layout_marginTop="60px"
       android:textSize="18px" />
     <de.hdodenhof.circleimageview.CircleImageView
       android:layout_width="164px"
       android:layout_height="164px"
-      android:src="@color/colorPrimary"
-      android:layout_marginLeft="93px"
       android:layout_marginTop="113px"
-      />
+      android:layout_marginLeft="93px"
+      android:src="@color/colorPrimary" />
 
 
-    <!--<com.rengwuxian.materialedittext.MaterialEditText-->
-      <!--android:id="@+id/patient_name"-->
-      <!--android:layout_width="wrap_content"-->
-      <!--android:layout_height="wrap_content"-->
-      <!--app:met_iconLeft="@drawable/icon_mofang"-->
-      <!--app:paddingStart="16px"-->
-      <!--android:text="王小明"-->
-      <!--android:textSize="30px"-->
-      <!--android:textColor="@color/brownLight"-->
-      <!--android:layout_marginLeft="22px"-->
-      <!--android:layout_marginTop="306px"-->
-      <!--app:met_iconPadding="16px"-->
-      <!--/>-->
     <ImageView
-      android:src="@drawable/icon_mofang"
       android:layout_width="34px"
       android:layout_height="34px"
-      android:layout_marginLeft="22px"
       android:layout_marginTop="306px"
-      />
+      android:layout_marginLeft="22px"
+      android:src="@drawable/icon_mofang" />
     <TextView
       android:id="@+id/patient_name"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
 
-      android:text="王小明"
-      android:textSize="30px"
-      android:paddingLeft="50px"
-      android:textColor="@color/brownLight"
+      android:layout_marginTop="306px"
       android:layout_marginLeft="22px"
-      android:layout_marginTop="306px"/>
+      android:paddingLeft="50px"
+      android:text="王小明"
+      android:textColor="@color/brownLight"
+      android:textSize="30px" />
+    <!--</LinearLayout>-->
 
     <ImageView
-      android:src="@drawable/icon_mofang"
       android:layout_width="34px"
       android:layout_height="34px"
-      android:layout_marginLeft="198px"
       android:layout_marginTop="306px"
-      />
+      android:layout_marginLeft="198px"
+      android:src="@drawable/icon_mofang" />
     <TextView
       android:id="@+id/patient_gender"
-      android:textSize="30px"
-      android:textColor="@color/brownLight"
-      android:text="男"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:paddingLeft="50px"
+      android:layout_marginTop="306px"
       android:layout_marginLeft="198px"
-      android:layout_marginTop="306px"/>
-    
-    <!--<com.rengwuxian.materialedittext.MaterialEditText-->
-      <!--android:id="@+id/patient_age"-->
-      <!--android:layout_width="wrap_content"-->
-      <!--android:layout_height="wrap_content"-->
-      <!--app:met_iconLeft="@drawable/icon_mofang"-->
-      <!--android:text="48岁"-->
-      <!--android:textSize="30px"-->
-      <!--android:textColor="@color/brownLight"-->
-      <!--android:layout_marginLeft="22px"-->
-      <!--android:layout_marginTop="350px"-->
-      <!--app:met_iconPadding="16px"-->
-      <!--/>-->
+      android:paddingLeft="50px"
+      android:text="男"
+      android:textColor="@color/brownLight"
+      android:textSize="30px" />
+
     <ImageView
-      android:src="@drawable/icon_mofang"
       android:layout_width="34px"
       android:layout_height="34px"
-      android:layout_marginLeft="22px"
       android:layout_marginTop="350px"
-      />
+      android:layout_marginLeft="22px"
+      android:src="@drawable/icon_mofang" />
     <TextView
       android:id="@+id/patient_age"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="48岁"
-      android:textSize="30px"
-      android:textColor="@color/brownLight"
-      android:paddingLeft="50px"
+      android:layout_marginTop="350px"
       android:layout_marginLeft="22px"
-      android:layout_marginTop="350px"/>
-    
-    <!--<com.rengwuxian.materialedittext.MaterialEditText-->
-      <!--android:id="@+id/doctor_name"-->
-      <!--android:layout_width="wrap_content"-->
-      <!--android:layout_height="wrap_content"-->
-      <!--app:met_iconLeft="@drawable/icon_mofang"-->
-      <!--android:text="刘兰"-->
-      <!--android:textSize="30px"-->
-      <!--android:textColor="@color/brownLight"-->
-      <!--android:layout_marginLeft="22px"-->
-      <!--android:layout_marginTop="394px"-->
-      <!--app:met_iconPadding="16px"-->
-      <!--/>-->
+      android:paddingLeft="50px"
+      android:text="48岁"
+      android:textColor="@color/brownLight"
+      android:textSize="30px" />
+
+
     <ImageView
-      android:src="@drawable/icon_mofang"
       android:layout_width="34px"
       android:layout_height="34px"
-      android:layout_marginLeft="22px"
       android:layout_marginTop="394px"
-      />
+      android:layout_marginLeft="22px"
+      android:src="@drawable/icon_mofang" />
     <TextView
       android:id="@+id/doctor_name"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="刘兰"
-      android:textSize="30px"
-      android:paddingLeft="50px"
-      android:textColor="@color/brownLight"
+      android:layout_marginTop="394px"
       android:layout_marginLeft="22px"
-      android:layout_marginTop="394px" />
+      android:paddingLeft="50px"
+      android:text="刘兰"
+      android:textColor="@color/brownLight"
+      android:textSize="30px" />
 
     <LinearLayout
       android:layout_width="294px"
       android:layout_height="108px"
-      android:layout_marginLeft="22px"
       android:layout_marginTop="436px"
+      android:layout_marginLeft="22px"
       android:background="@drawable/round_background"
-      android:orientation="vertical"
-      >
+      android:orientation="vertical">
       <TextView
-        android:textSize="18px"
-        android:text="病情概述："
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        />
+        android:layout_marginTop="10px"
+        android:layout_marginLeft="22px"
+        android:text="病情概述："
+        android:textSize="18px" />
       <TextView
-
+        android:id="@+id/illness_description"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="22px"
+        android:textSize="18px" />
     </LinearLayout>
   </RelativeLayout>
 

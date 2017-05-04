@@ -6,7 +6,9 @@
   android:layout_height="match_parent"
   tools:context="com.ainemo.pad.MainActivity"
   tools:layout_editor_absoluteY="25dp"
-  tools:layout_editor_absoluteX="0dp">
+  tools:layout_editor_absoluteX="0dp"
+  android:background="@drawable/background"
+  >
 
   <TextView
     android:id="@+id/home_name"
@@ -16,7 +18,6 @@
     android:textSize="30px"
     android:layout_marginLeft="68px"
     android:layout_marginTop="72px"
-
 
     />
   <TextView
