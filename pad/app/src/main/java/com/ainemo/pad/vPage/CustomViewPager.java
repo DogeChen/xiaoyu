@@ -64,7 +64,6 @@ public class CustomViewPager extends ViewPager {
                 cardShadowTransformer.attachViewPager(this, (CardAdapter) getAdapter());
             }
             cardShadowTransformer.setZoomIn(zoomIn);
-
         }
     }
 

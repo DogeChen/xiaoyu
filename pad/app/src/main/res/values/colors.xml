@@ -20,7 +20,7 @@
   <color name="segment">#dadade</color>
   <color name="transparent">#00000000</color>
 
-  <color name="test">#3dd3fc</color>
+  <color name="test">#a7ca5b</color>
 
   <color name="my_background">#24d0fd</color>
   <color name="whiteTransparent">#ffffffff</color>
@@ -32,4 +32,5 @@
   <color name="orange">#f9c562</color>
   <color name="orangeDeeper">#f1bf5f</color>
   <color name="bulePink">#77d5dc</color>
+  <color name="pinkWhite">#f0e2d1</color>
 </resources>

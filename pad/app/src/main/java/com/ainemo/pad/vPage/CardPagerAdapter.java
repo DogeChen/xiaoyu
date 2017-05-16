@@ -6,19 +6,36 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import com.ainemo.pad.R;
 import java.util.ArrayList;
 import java.util.List;
 
 
+//public class CardPagerAdapter extends RecyclerView.Adapter<CasePagerAdapter.ViewHolder>, PagerAdapter implements CardAdapter {
 public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
 
     private List<CardView> mViews;
-    private List<String> mData;
+    private List<CaseInfor> mData;
     private Context mContext;
 
     private int MaxElevationFactor = 9;
 
+//    static class ViewHolder extends RecyclerView.ViewHolder{
+//        private String id;
+//        private TextView name;
+//        private TextView creationDate;
+//        private TextView patientId;
+//        private TextView doctorId;
+//        private TextView illproblem;
+//        private TextView illresult;
+//        private TextView temperature;
+//        private TextView blood_pressure;
+//        public ViewHolder(View view){
+//            super(view);
+//
+//        }
+//    }
     @Override
     public int getMaxElevationFactor() {
         return MaxElevationFactor;
@@ -32,14 +49,13 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
     public CardPagerAdapter(Context context) {
         mData = new ArrayList<>();
         mViews = new ArrayList<>();
-
         this.mContext = context;
     }
 
-    public void addImgUrlList(List<String> imgUrlList) {
-        mData.addAll(imgUrlList);
+    public void addCaseList(List<CaseInfor> caseList) {
+        mData.addAll(caseList);
 
-        for (int i = 0; i < imgUrlList.size(); i++) {
+        for (int i = 0; i < caseList.size(); i++) {
             mViews.add(null);
         }
     }
@@ -61,7 +77,7 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
-        View view = LayoutInflater.from(container.getContext()).inflate(R.layout.case_item, container, false);
+        View view = LayoutInflater.from(container.getContext()).inflate(R.layout.item_case, container, false);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,10 +101,17 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
         mViews.set(position, null);
     }
 
-    private void bind(String imgUrl, View view) {
-//        ImageView iv = (ImageView) view.findViewById(R.id.item_iv);
-//        Glide.with(mContext).load(imgUrl).into(iv);
-
+    private void bind(CaseInfor aCase, View view) {
+        TextView name=(TextView)view.findViewById(R.id.patient_name);
+        TextView gender=(TextView)view.findViewById(R.id.patient_gender);
+        TextView age=(TextView)view.findViewById(R.id.patient_age);
+        TextView doctorName=(TextView)view.findViewById(R.id.doctor_name);
+        TextView illnessDescription=(TextView)view.findViewById(R.id.illness_description);
+        name.setText(aCase.getName());
+        gender.setText("");
+        age.setText("");
+        doctorName.setText(aCase.getDoctorId());
+        illnessDescription.setText(aCase.getIllproblem());
     }
 
     private OnCardItemClickListener cardItemClickListener;

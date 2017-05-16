@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.ainemo.pad.Contact.ContactActivity;
 import com.ainemo.pad.SomeUtils.Utils;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener {
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
   public void onClick(View view){
     switch(view.getId()){
       case R.id.home_call_btn:
-
+        startActivity(new Intent(MainActivity.this,ContactActivity.class));
         break;
       case R.id.home_par_btn:
         startActivity(new Intent(MainActivity.this,CaseListActivity.class));

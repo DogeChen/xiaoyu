@@ -11,14 +11,16 @@
     android:id="@+id/return_btn"
     android:layout_width="88px"
     android:layout_height="88px"
+    android:clickable="true"
     />
   <com.ainemo.pad.vPage.CustomViewPager
+    android:layout_marginTop="128px"
     android:id="@+id/view_page"
     android:layout_width="match_parent"
     android:layout_height="595px"
     android:overScrollMode="never"
     android:layout_centerHorizontal="true"
     android:layout_alignParentBottom="true"
+    android:background="@color/transparent"
     />
-
 </RelativeLayout>

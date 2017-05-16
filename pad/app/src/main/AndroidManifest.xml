@@ -2,7 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.ainemo.pad">
 
+  <uses-sdk
+    android:minSdkVersion="17"
+    android:targetSdkVersion="24"
+    android:maxSdkVersion="25"
+    />
   <application
+    android:name=".MyApplication"
     android:allowBackup="true"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/app_name"
@@ -21,7 +27,12 @@
     </activity>
     <activity android:name=".CaseListActivity" android:screenOrientation="landscape"/>
     <activity android:name=".JujiaActivity" android:screenOrientation="landscape"/>
+    <activity android:name=".CaseDetailActivity" android:screenOrientation="landscape"/>
+    <activity android:name=".DoctorActivity" android:screenOrientation="landscape"/>
 
+    <activity android:name=".Contact.ContactActivity" android:screenOrientation="landscape"/>
+
+    <activity android:name=".Contact.New_Contactor" android:screenOrientation="landscape"/>
   </application>
 
 </manifest>

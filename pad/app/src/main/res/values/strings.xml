@@ -1,3 +1,4 @@
 <resources>
   <string name="app_name">pad</string>
+  <string name="search">请输入要搜索的小鱼号、手机号或者姓名</string>
 </resources>

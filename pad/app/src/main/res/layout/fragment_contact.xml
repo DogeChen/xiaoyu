@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:paddingLeft="116px"
+  android:paddingEnd="116px"
+  android:focusable="true"
+  android:focusableInTouchMode="true"
+  >
+  <RelativeLayout
+    android:layout_marginTop="7px"
+    android:layout_width="920px"
+    android:layout_height="98px"
+    >
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="1px"
+      android:background="#bca699"
+      />
+    <ImageView
+      android:id="@+id/search"
+      android:layout_centerVertical="true"
+      android:src="@drawable/icon_search"
+      android:layout_width="47px"
+      android:layout_height="48px" />
+    <com.ainemo.pad.Contact.ClearEditText
+      android:id="@+id/filter_edit"
+      android:layout_width="850px"
+      android:layout_height="98px"
+      android:layout_marginLeft="70px"
+      android:imeOptions="flagNoExtractUi"
+      android:gravity="center"
+      android:hint="@string/search"
+      android:textColor="#bca699"
+      android:singleLine="true"
+      android:textSize="36px"
+      android:background="@null"
+      />
+    <View
+      android:layout_alignParentBottom="true"
+      android:layout_width="match_parent"
+      android:layout_height="1px"
+      android:background="#bca699"
+      />
+  </RelativeLayout>
+  <com.thinkcool.circletextimageview.CircleTextImageView
+    android:layout_width="100px"
+    android:layout_height="100px"
+    android:layout_marginTop="3px"
+    android:layout_marginLeft="983px"
+    android:id="@+id/add"
+    android:src="@drawable/btn_add"
+    app:citv_text_text="添加"
+    app:citv_text_size="30px"
+    app:citv_text_color="#ffffff"
+    />
+  <FrameLayout
+    android:layout_marginTop="100px"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <android.support.v7.widget.RecyclerView
+      android:id="@+id/sortlist"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:background="@color/transparent"
+      android:listSelector="@drawable/comm_btn_selector"
+      android:layout_gravity="center" />
+
+    <TextView
+      android:id="@+id/dialog"
+      android:layout_width="80.0dip"
+      android:layout_height="80.0dip"
+      android:layout_gravity="center"
+      android:background="@drawable/number_base"
+      android:gravity="center"
+      android:textColor="#ffffffff"
+      android:textSize="30.0dip"
+      android:visibility="invisible" />
+  </FrameLayout>
+
+  <com.ainemo.pad.Contact.sortlist.SideBar
+    android:id="@+id/sidrbar"
+    android:scrollbarSize="16px"
+    android:layout_width="30.0px"
+    android:layout_height="match_parent"
+    android:layout_alignParentEnd="true"/>
+</RelativeLayout>

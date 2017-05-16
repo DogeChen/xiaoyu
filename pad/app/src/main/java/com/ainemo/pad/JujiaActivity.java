@@ -153,7 +153,7 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener{
                 // chart.setDrawBesselPoint(true);
                 chart.setSmoothness(0.33f);
             }
-        }, 200);
+        },100);
     }
 
     private void initEvent() {

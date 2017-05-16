@@ -5,13 +5,13 @@
   android:layout_height="match_parent"
   android:background="@drawable/background">
   <include
-    layout="@layout/case_item"
+    layout="@layout/item_case"
     android:layout_width="365px"
     android:layout_height="595px"
 
     android:layout_alignTop="@+id/relativeLayout"
     android:layout_alignParentStart="true"
-    android:layout_marginStart="30dp" />
+    android:layout_marginStart="100px" />
   <Button
     android:layout_marginLeft="1152px"
     android:layout_marginTop="30px"
@@ -21,8 +21,8 @@
     android:layout_height="88px"
     />
   <RelativeLayout
-    android:layout_marginLeft="450px"
-    android:layout_marginTop="30px"
+    android:layout_marginLeft="550px"
+    android:layout_marginTop="130px"
     android:layout_width="600px"
     android:layout_height="290px"
     android:background="@drawable/detail_bg"
@@ -60,8 +60,8 @@
   </RelativeLayout>
 
   <RelativeLayout
-    android:layout_marginLeft="450px"
-    android:layout_marginTop="350px"
+    android:layout_marginLeft="550px"
+    android:layout_marginTop="450px"
     android:layout_width="600px"
     android:layout_height="290px"
     android:background="@drawable/detail_bg"

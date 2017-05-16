@@ -8,9 +8,11 @@
     <item name="colorAccent">@color/colorAccent</item>
   </style>
 
-  <style name="Theme.ToolBar.Contact" parent="Theme.AppCompat.Light.NoActionBar">
-    <item name="android:actionMenuTextColor">#ffffff</item>
-    <item name="android:textSize">18sp</item>
+  <style name="Theme.Call.Table" parent="Base.TextAppearance.AppCompat.Button">
+    <item name="android:background">@color/transparent</item>
+    <item name="android:textColor">#d7e6bb</item>
+    <item name="android:textSize">24px</item>
   </style>
+
 
 </resources>

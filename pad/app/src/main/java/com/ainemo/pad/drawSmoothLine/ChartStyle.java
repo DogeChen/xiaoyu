@@ -98,10 +98,10 @@ public class ChartStyle {
   public ChartStyle() {
     verticalLineColor = Color.WHITE;
     gridColor = Color.LTGRAY;
-    horizontalTitleTextSize = 50;
+    horizontalTitleTextSize = 16;
     horizontalTitleTextColor = Color.GRAY;
-    horizontalLabelTextSize = 50;
-    horizontalLabelTextColor = 0xFFD2F4FD;
+    horizontalLabelTextSize = 16;
+    horizontalLabelTextColor = Color.WHITE;
     verticalLabelTextSize = 20;
     verticalLabelTextPadding = 50;
     verticalLabelTextColor = Color.GRAY;
@@ -113,10 +113,10 @@ public class ChartStyle {
     backgroundDownPartColor = 0xFF4CAB7C;
     maxTemColor = 0xFFFFFFFF;
     minTemColor = 0xa8dcba;
-    raiseTemColor = 0xFFFFFFFF;
-    maxTemTextSize = 18;
+    raiseTemColor = 0xFFa8dcba;
+    maxTemTextSize = 36;
     minTemTextSize = 24;
-    raiseTemTextSize = 75;
+    raiseTemTextSize = 24;
   }
 
   public float getVerticalLabelTextSize() {

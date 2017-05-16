@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical" android:layout_width="1050px"
+  android:layout_height="98px"
+
+  android:background="@color/pinkWhite">
+  <View
+    android:layout_width="wrap_content"
+    android:layout_height="1px"
+    android:background="#FFCFB9AA"
+    />
+  <LinearLayout
+    android:layout_width="1050px"
+    android:layout_height="98px"
+    android:orientation="horizontal"
+    >
+
+    <de.hdodenhof.circleimageview.CircleImageView
+      android:id="@+id/head"
+      android:layout_gravity="center_vertical"
+      android:layout_marginTop="13px"
+      android:layout_marginBottom="13px"
+      android:layout_width="72px"
+      android:layout_height="72px" />
+    <LinearLayout
+      android:layout_marginLeft="18px"
+      android:layout_width="960px"
+      android:layout_height="98px"
+      android:orientation="vertical"
+      >
+
+      <TextView
+        android:text="王医生"
+        android:id="@+id/name"
+        android:textColor="#7d5951"
+        android:textSize="30px"
+        android:layout_marginTop="21px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+      <TextView
+        android:text="130-0000-0000"
+        android:id="@+id/telephone"
+        android:textColor="#bca699"
+        android:textSize="24px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    </LinearLayout>
+
+  </LinearLayout>
+
+  <View
+    android:layout_width="wrap_content"
+    android:layout_height="1px"
+    android:background="#FFCFB9AA"
+    />
+</LinearLayout>

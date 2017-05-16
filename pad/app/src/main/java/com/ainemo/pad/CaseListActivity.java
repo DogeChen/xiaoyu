@@ -1,12 +1,14 @@
 package com.ainemo.pad;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import com.ainemo.pad.vPage.CardPagerAdapter;
+import com.ainemo.pad.vPage.CaseInfor;
 import com.ainemo.pad.vPage.CustomViewPager;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +17,10 @@ import java.util.List;
  * Created by 小武哥 on 2017/4/27.
  */
 
-public class CaseListActivity extends AppCompatActivity {
-
-  private List<String> imgList;
+public class CaseListActivity extends AppCompatActivity implements CardPagerAdapter.OnCardItemClickListener,View.OnClickListener{
+  private List<CaseInfor> caseList;
   private Button back;
-
+  private static final String TAG = "CaseListActivity";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -28,19 +29,14 @@ public class CaseListActivity extends AppCompatActivity {
 
     int mWidth = getWindowManager().getDefaultDisplay().getWidth();
     int mHeight=getWindowManager().getDefaultDisplay().getHeight();
-    float heightRatio = (float)mWidth/(float)mHeight;  //高是宽的 1.630,根据图片比例
+    float heightRatio = (float)mWidth/(float)mHeight;  //根据图片比例
 
-    initImgList();
+    initCaseList();
 
     CardPagerAdapter cardAdapter = new CardPagerAdapter(getApplicationContext());
-    cardAdapter.addImgUrlList(imgList);
+    cardAdapter.addCaseList(caseList);
     back=(Button)findViewById(R.id.return_btn);
-    back.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        finish();
-      }
-    });
+    back.setOnClickListener(this);
 
     //设置阴影大小，即vPage  左右两个图片相距边框  maxFactor + 0.3*CornerRadius   *2
     //设置阴影大小，即vPage 上下图片相距边框  maxFactor*1.5f + 0.3*CornerRadius
@@ -55,28 +51,27 @@ public class CaseListActivity extends AppCompatActivity {
     float heightMore = (1.5f * maxFactor + dp2px(3)) - (maxFactor + dp2px(3)) * heightRatio;
 //    int mHeightPadding = (int) (mHeight - heightMore);
 
-    int mHeightPadding=mHeight/5;
+    int mHeightPadding=mHeight/10;
     CustomViewPager viewPager = (CustomViewPager) findViewById(R.id.view_page);
 
     viewPager.setLayoutParams(
         new RelativeLayout.LayoutParams((int) (mWidth), mHeight));
-    viewPager.setPadding(mWidthPading, mHeightPadding, mWidthPading, mHeightPadding);
-    viewPager.setPageMargin(mWidth/10);
+    viewPager.setPadding(mWidthPading,mHeightPadding, mWidthPading,0);
+//    viewPager.setPageMargin(mWidth/10);
     viewPager.setClipToPadding(false);
     viewPager.setAdapter(cardAdapter);
     viewPager.showTransformer(0.1f);
-
+    cardAdapter.setOnCardItemClickListener(this);
   }
 
 
-  public void initImgList() {
-    imgList = new ArrayList<>();
-    for (int i = 0; i < 100; i++) {
-      imgList.add("str1");
-      imgList.add("str2");
-      imgList.add("str3");
-      imgList.add("str4");
-    }
+  public void initCaseList() {
+    caseList = new ArrayList<>();
+    caseList.add(new CaseInfor("1","张小花","","","","","头痛","无大碍",""));
+
+    caseList.add(new CaseInfor("2","王大白","","","","","头痛","无大碍",""));
+
+    caseList.add(new CaseInfor("3","王小明","","","","","头痛","无大碍",""));
   }
 
   /**
@@ -87,4 +82,22 @@ public class CaseListActivity extends AppCompatActivity {
     return (int) (dpValue * scale + 0.5f);
   }
 
+
+  @Override
+  public void onClick(int position) {
+    Log.d(TAG, "onClick: viewPage");
+    if(position>=0&&position<=caseList.size()){
+      Intent intent=new Intent(CaseListActivity.this,CaseDetailActivity.class);
+      CaseInfor caseInfor=caseList.get(position);
+      intent.putExtra("caseInfor",caseInfor);
+      startActivity(intent);
+    }
+  }
+
+  @Override
+  public void onClick(View view) {
+    if(view.getId()==R.id.return_btn){
+      finish();
+    }
+  }
 }
