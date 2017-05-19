@@ -13,7 +13,7 @@
     android:layout_height="88px"
     android:clickable="true"
     />
-  <com.ainemo.pad.vPage.CustomViewPager
+  <com.ainemo.pad.Case.vPage.CustomViewPager
     android:layout_marginTop="128px"
     android:id="@+id/view_page"
     android:layout_width="match_parent"

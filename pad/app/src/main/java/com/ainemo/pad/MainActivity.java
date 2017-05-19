@@ -1,17 +1,23 @@
 package com.ainemo.pad;
 
+import ainemo.api.openapi.NemoCallback;
+import ainemo.api.openapi.NemoOpenAPI;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.ainemo.pad.Case.CaseListActivity;
 import com.ainemo.pad.Contact.ContactActivity;
+import com.ainemo.pad.Jujia.JujiaActivity;
 import com.ainemo.pad.SomeUtils.Utils;
 
-public class MainActivity extends AppCompatActivity implements OnClickListener {
+public class MainActivity extends AppCompatActivity implements OnClickListener,NemoCallback {
 
   private TextView name;
   private TextView number;
@@ -20,12 +26,21 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
   private ImageView patient;
   private ImageView para;
   private long exitTime = 0;
+  private String NemoSn;
 
+  private static final String TAG = "MainActivity";
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     initView();
+    NemoOpenAPI.getInstance().registerCallback(this);
+
+    NemoSn = getIntent().getStringExtra("nemoNumber");
+
+    Log.i(TAG, "onCreate: NemoSn="+NemoSn+" getNemoSn()="+ NemoOpenAPI.getInstance().getNemoSn());
+    //获取小鱼序列号的代码
+
   }
 
   private void initView() {
@@ -67,5 +82,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     } else {
       finish();
     }
+  }
+
+  @Override
+  public void onNemoCallback(Message message) {
+
   }
 }

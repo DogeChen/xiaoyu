@@ -1,4 +1,10 @@
 <resources>
   <string name="app_name">pad</string>
   <string name="search">请输入要搜索的小鱼号、手机号或者姓名</string>
+  <string name="menu_call">呼叫</string>
+  <string name="menu_change">修改</string>
+  <string name="menu_delete">删除</string>
+  <string name="xiaoyuNum">小鱼号：</string>
+  <string name="phoneNum">手机号：</string>
+  <string name="remark">备注:</string>
 </resources>

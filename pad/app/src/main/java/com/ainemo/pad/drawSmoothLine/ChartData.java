@@ -74,9 +74,9 @@ public class ChartData {
     private void resetXLabels() {
         xLabels.clear();
         for (Point point : seriesList.get(xLabelUsageSeries).getPoints()) {
-            if (labelTransform.labelDrawing(point.valueX))
-                xLabels.add(new Label(point.valueX, labelTransform
-                        .horizontalTransform(point.valueX)));
+            if (labelTransform.labelDrawing((int)point.valueX))
+                xLabels.add(new Label((int)point.valueX, labelTransform
+                    .horizontalTransform((int)point.valueX)));
         }
     }
     /** 重新生成Y坐标轴文本 */
@@ -86,9 +86,9 @@ public class ChartData {
         for (Series series : seriesList) {
             for (Point point : series.getPoints()) {
                 if (point.valueY > maxValueY){
-                    maxValueY = point.valueY;}
+                    maxValueY = (int)point.valueY+1;}
                 if (point.valueY < minValueY){
-                    minValueY = point.valueY;}
+                    minValueY = (int)point.valueY-1;}
             }
         }
         float step = (maxValueY - minValueY) / (float)(yLabelCount - 1);
@@ -100,7 +100,7 @@ public class ChartData {
         for (int i = 0; i <=yLabelCount; i++) {
             value=(int)(minValueY+step*i+1);
             yLabels.add(0,
-                    new Label(value, labelTransform.verticalTransform(value)));
+                new Label(value, labelTransform.verticalTransform(value)));
         }
 //        maxValueY=value;
 //        Log.d("zqt", "step="+step);

@@ -16,6 +16,7 @@
     app:tabMode="fixed"
     app:tabIndicatorHeight="0dp"
     app:tabTextColor="#000000"
+    app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
     android:background="@drawable/btn_nav_nor"
     app:tabSelectedTextColor="#ffffff">
   </android.support.design.widget.TabLayout>

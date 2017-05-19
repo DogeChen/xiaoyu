@@ -33,4 +33,7 @@
   <color name="orangeDeeper">#f1bf5f</color>
   <color name="bulePink">#77d5dc</color>
   <color name="pinkWhite">#f0e2d1</color>
+  
+  <color name="red255">#ffed9479</color>
+  <color name="red128">#7fed9479</color>
 </resources>

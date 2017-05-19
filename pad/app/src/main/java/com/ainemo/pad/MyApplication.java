@@ -1,7 +1,9 @@
 package com.ainemo.pad;
 
+import ainemo.api.openapi.NemoOpenAPI;
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 import org.litepal.LitePal;
 
 /**
@@ -10,18 +12,15 @@ import org.litepal.LitePal;
 
 public class MyApplication extends Application {
   private static Context context;
+  private static final String TAG = "MyApplication";
   @Override
   public void onCreate() {
     super.onCreate();
     context = getApplicationContext();
     LitePal.initialize(context);
 
-//        Settings settings = new Settings("a94a8fe5ccb19ba61c4c0873d391e987982fbbd3", false, false);   // production 环境
-//          NemoSDK.getInstance().init(getApplicationContext(), settings);
-//        String exited=new String("B7XFT0B5M3PFO8TMPDQRQLZECHT0LJZPTK15YTUD/BO=");
-//        Settings settings = new Settings(exited); //如果是私有云Settings settings = new Settings(String extid, String privateCloudAddress)
-//        NemoSDK nemoSDK=NemoSDK.getInstance();
-//        nemoSDK.init(this,settings);
+    NemoOpenAPI.init(this);
+    Log.d(TAG, "onCreate: NemoOpenAPI");
   }
 
 

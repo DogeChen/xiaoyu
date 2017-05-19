@@ -8,9 +8,18 @@ public class SortModel {
 
 
 
+    private int id;
     private String name;   //显示的数�?
     private String sortLetters;  //显示数据拼音的首字母
     private String number;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public void setNumber(String number) {
         this.number = number;

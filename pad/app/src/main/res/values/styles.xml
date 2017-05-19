@@ -14,5 +14,9 @@
     <item name="android:textSize">24px</item>
   </style>
 
+  <style name="MyTabLayoutTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+    <item name="android:textSize">30px</item>
+  </style>
+
 
 </resources>

@@ -4,7 +4,9 @@
   android:layout_height="wrap_content"
   android:background="@color/transparent"
   android:gravity="center_vertical"
-  android:orientation="vertical">
+  android:orientation="vertical"
+  android:id="@+id/contact_item"
+  >
 
   <TextView
     android:id="@+id/catalog"
@@ -22,6 +24,7 @@
     android:layout_width="match_parent"
     android:layout_height="98px"
     android:background="#7ff0e2d1"
+    android:gravity="start"
     >
     <de.hdodenhof.circleimageview.CircleImageView
       android:id="@+id/icon"
@@ -41,13 +44,22 @@
       android:textSize="30px" />
 
     <TextView
-      android:id="@+id/number_list"
+      android:id="@+id/number_xiaoyu"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginBottom="17px"
       android:layout_marginLeft="18px"
       android:layout_below="@+id/title"
-      android:layout_toRightOf="@+id/icon"
+      android:layout_toRightOf="@id/icon"
+      android:paddingRight="40px"
+      android:layout_alignParentBottom="true"
+      android:textColor="#bca699"
+      android:textSize="24px" />
+    <TextView
+      android:id="@+id/number_phone"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/title"
+      android:layout_toRightOf="@id/number_xiaoyu"
       android:layout_alignParentBottom="true"
       android:textColor="#bca699"
       android:textSize="24px" />

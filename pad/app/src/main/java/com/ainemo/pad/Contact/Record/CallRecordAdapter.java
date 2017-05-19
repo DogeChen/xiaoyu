@@ -4,8 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,10 +17,41 @@ import java.util.List;
  * Created by 小武哥 on 2017/4/29.
  */
 
-public class CallRecordAdapter extends RecyclerView.Adapter<CallRecordAdapter.ViewHolder> {
+public class CallRecordAdapter extends RecyclerView.Adapter<CallRecordAdapter.ViewHolder>
+   {
 
   private List<CallRecord> callRecordList;
   private Context context;
+
+  private static final String TAG = "CallRecordAdapter";
+//  @Override
+//  public boolean onMenuItemClick(MenuItem item) {
+//    switch (item.getItemId()){
+//      case R.id.menu_call:
+//        Log.d(TAG, "onMenuItemClick: call");
+//        break;
+//      case R.id.menu_delete:
+//        Log.d(TAG, "onMenuItemClick: delete");
+//        break;
+//      case R.id.menu_change:
+//
+//        Log.d(TAG, "onMenuItemClick: cahnge");
+//        break;
+//      default:break;
+//    }
+//    return false;
+//  }
+
+//  @Override
+//  public void onClick(View view) {
+//    //创建弹出菜单
+//    PopupMenu popupMenu=new PopupMenu(context,view);
+//    MenuInflater inflater=popupMenu.getMenuInflater();
+//    inflater.inflate(R.menu.contact,popupMenu.getMenu());
+//    popupMenu.setOnMenuItemClickListener(this);
+//    popupMenu.show();
+//  }
+
 
   static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -121,17 +150,8 @@ public class CallRecordAdapter extends RecyclerView.Adapter<CallRecordAdapter.Vi
     View view = LayoutInflater.from(parent.getContext())
         .inflate(R.layout.item_call_record, parent, false);
     ViewHolder holder = new ViewHolder(view);
-    view.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View view) {
-      }
-    });
-    view.setOnLongClickListener(new OnLongClickListener() {
-      @Override
-      public boolean onLongClick(View view) {
-        return false;
-      }
-    });
+//    view.setOnClickListener(this);
+
     return holder;
   }
 }

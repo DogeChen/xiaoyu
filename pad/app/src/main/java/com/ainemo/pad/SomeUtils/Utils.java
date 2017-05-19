@@ -1,5 +1,6 @@
 package com.ainemo.pad.SomeUtils;
 
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.Notification;
@@ -27,84 +28,72 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 /**
  * Created by victor on 17-4-29.
  */
 
 public class Utils {
-
-  private static final String TAG = "Utils";
-  private static Toast mToast;
-
-  public static void showLongToast(Context context, String msg) {
-    if (null == mToast) {
-      mToast = Toast.makeText(context, msg, Toast.LENGTH_LONG);
-    } else {
-      mToast.setText(msg);
-      mToast.setDuration(Toast.LENGTH_LONG);
-    }
-    mToast.show();
-  }
-
-  public static void showShortToast(Context context, String msg) {
-    if (null == mToast) {
-      mToast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
-    } else {
-      mToast.setText(msg);
-      mToast.setDuration(Toast.LENGTH_SHORT);
-    }
-    mToast.show();
-  }
-
-  public static void finishActivity(Activity activity) {
-    activity.finish();
-    activity.overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-  }
-
-  public static void startActivity(Activity activity, Class<?> cls) {
-    Intent intent = new Intent();
-    intent.setClass(activity, cls);
-    activity.startActivity(intent);
-    activity.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-  }
-
-  public static boolean isNetWorkAvailabe(Context context) {
-    if (context.checkCallingOrSelfPermission(Manifest.permission.INTERNET)
-        != PackageManager.PERMISSION_GRANTED) {
-      return false;
-    } else {
-      ConnectivityManager connectivityManager = (ConnectivityManager) context
-          .getSystemService(Context.CONNECTIVITY_SERVICE);
-      if (connectivityManager == null) {
-        showShortToast(context, "不能得到系统网络服务");
-      } else {
-        NetworkInfo[] infos = connectivityManager.getAllNetworkInfo();
-        if (infos != null) {
-          for (int i = 0; i < infos.length; i++) {
-            if (infos[i].isAvailable()) {
-              return true;
-            }
-          }
+    private static Toast mToast=null;
+    public static void showLongToast(Context context, String msg) {
+        if(mToast!=null){
+            mToast.makeText(context,msg,Toast.LENGTH_LONG);
+        }else {
+            mToast=Toast.makeText(context,msg,Toast.LENGTH_LONG);
         }
-      }
+        mToast.show();
     }
-    showShortToast(context, "网络不可用");
-    return false;
-  }
 
-  @SuppressWarnings("deprecation")
-  public static void sendText(Context context, String msg, String title, String content,
-      Intent intent) {
-    NotificationManager manager = (NotificationManager) context
-        .getSystemService(Context.NOTIFICATION_SERVICE);
-    Notification notification = new Notification(R.mipmap.ic_launcher, msg,
-        System.currentTimeMillis());
-    notification.flags = Notification.FLAG_AUTO_CANCEL;
+    public static void showShortToast(Context context, String msg) {
+        if(mToast!=null){
+            mToast.makeText(context,msg,Toast.LENGTH_SHORT);
+        }else {
+            mToast=Toast.makeText(context,msg,Toast.LENGTH_SHORT);
+        }
+        mToast.show();
+    }
+
+    public static void finishActivity(Activity activity) {
+        activity.finish();
+        activity.overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+    }
+
+    public static void startActivity(Activity activity, Class<?> cls) {
+        Intent intent = new Intent();
+        intent.setClass(activity, cls);
+        activity.startActivity(intent);
+        activity.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+    }
+
+    public static boolean isNetWorkAvailabe(Context context) {
+        if (context.checkCallingOrSelfPermission(Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
+            return false;
+        } else {
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (connectivityManager == null) {
+                showShortToast(context, "不能得到系统网络服务");
+            } else {
+                NetworkInfo[] infos = connectivityManager.getAllNetworkInfo();
+                if (infos != null) {
+                    for (int i = 0; i < infos.length; i++) {
+                        if (infos[i].getState() == NetworkInfo.State.CONNECTED) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        showShortToast(context, "网络不可用");
+        return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    public static void sendText(Context context, String msg, String title, String content, Intent intent) {
+        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification notification = new Notification(R.mipmap.ic_launcher, msg, System.currentTimeMillis());
+        notification.flags = Notification.FLAG_AUTO_CANCEL;
 //        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-    manager.notify(0, notification);
-  }
+        manager.notify(0, notification);
+    }
 
     /**
      * 移除SharedPreference
@@ -230,7 +219,7 @@ public class Utils {
 
     //将字符串转成日期格式
     public static Date stringToDate(String str) {
-        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
         try {
             // Fri Feb 24 00:00:00 CST 2012
@@ -242,28 +231,27 @@ public class Utils {
     }
 
     public static String dateToString(Date date){
-      DateFormat format=new SimpleDateFormat("yyyy/MM/dd");
-      String string=null;
-      try{
-        string =format.format(date);
-      }catch (Exception e){
-        e.printStackTrace();
-        Log.d(TAG, "dateToString: dateToString failed");
-      }
-      return string;
+        DateFormat format=new SimpleDateFormat("yyyy/MM/dd");
+        String string=null;
+        try{
+            string =format.format(date);
+        }catch (Exception e){
+            e.printStackTrace();
+//            Log.d(TAG, "dateToString: dateToString failed");
+        }
+        return string;
     }
     public static Date stringToDateWithChinese(String str){
-      DateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
-      Date date = null;
-      try {
-        // Fri Feb 24 00:00:00 CST 2012
-        date = format.parse(str);
-      } catch (ParseException e) {
-        e.printStackTrace();
-      }
-      return date;
+        DateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
+        Date date = null;
+        try {
+            // Fri Feb 24 00:00:00 CST 2012
+            date = format.parse(str);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
-
 
     /**
      * 验证邮箱
@@ -308,4 +296,8 @@ public class Utils {
             return true;
         }
     }
+
+
+
+
 }

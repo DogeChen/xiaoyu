@@ -31,13 +31,14 @@
       android:layout_height="98px"
       android:layout_marginLeft="70px"
       android:imeOptions="flagNoExtractUi"
-      android:gravity="center"
+      android:gravity="center_vertical"
       android:hint="@string/search"
       android:textColor="#bca699"
       android:singleLine="true"
       android:textSize="36px"
       android:background="@null"
       />
+
     <View
       android:layout_alignParentBottom="true"
       android:layout_width="match_parent"
@@ -49,25 +50,18 @@
     android:layout_width="100px"
     android:layout_height="100px"
     android:layout_marginTop="3px"
-    android:layout_marginLeft="983px"
+    android:layout_marginLeft="915px"
     android:id="@+id/add"
     android:src="@drawable/btn_add"
     app:citv_text_text="添加"
     app:citv_text_size="30px"
     app:citv_text_color="#ffffff"
     />
+
   <FrameLayout
     android:layout_marginTop="100px"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-
-    <android.support.v7.widget.RecyclerView
-      android:id="@+id/sortlist"
-      android:layout_width="fill_parent"
-      android:layout_height="fill_parent"
-      android:background="@color/transparent"
-      android:listSelector="@drawable/comm_btn_selector"
-      android:layout_gravity="center" />
 
     <TextView
       android:id="@+id/dialog"
@@ -79,6 +73,13 @@
       android:textColor="#ffffffff"
       android:textSize="30.0dip"
       android:visibility="invisible" />
+    <android.support.v7.widget.RecyclerView
+      android:id="@+id/sortlist"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:layout_gravity="center"
+      android:background="@color/transparent"
+      android:listSelector="@drawable/comm_btn_selector" />
   </FrameLayout>
 
   <com.ainemo.pad.Contact.sortlist.SideBar

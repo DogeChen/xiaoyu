@@ -2,14 +2,12 @@ package com.ainemo.pad.Contact;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.ainemo.pad.Contact.sortlist.SortModel;
-import com.ainemo.pad.DataBase.ContactDBhelper;
 import com.ainemo.pad.R;
 import com.ainemo.pad.SomeUtils.Utils;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -23,18 +21,29 @@ import java.util.List;
 public class Contact_Adapter extends RecyclerView.Adapter<Contact_Adapter.MyViewHoler> {
     private Context context;
     private List<SortModel> list = new ArrayList<>();
-    private ContactDBhelper contactDBhelper;
+//    private ContactDBhelper contactDBhelper;
     private static final String TAG = "Contact_Adapter";
+    private int touchedId;
+    private MyClickLister myClickLister;
+    public  interface MyClickLister{
+         void onItemClick(View view);
+    }
     public void updateListView(List<SortModel> list){
         this.list = list;
         notifyDataSetChanged();
     }
 
+//    @Override
+//    public void onClick(View view) {
+//        myClickLister.onClick(view);
+//    }
+
     public static class MyViewHoler extends RecyclerView.ViewHolder {
         private TextView tvLetter;
         private TextView tvTitle;
         private CircleImageView icon;
-        private TextView number_text;
+        private TextView xiaoyuNum;
+        private TextView phoneNum;
         private View itemView;
 
         public MyViewHoler(View itemView) {
@@ -42,7 +51,8 @@ public class Contact_Adapter extends RecyclerView.Adapter<Contact_Adapter.MyView
             this.tvLetter =(TextView) itemView.findViewById(R.id.catalog);
             this.tvTitle = (TextView) itemView.findViewById(R.id.title);
             this.icon = (CircleImageView) itemView.findViewById(R.id.icon);
-            this.number_text = (TextView) itemView.findViewById(R.id.number_list);
+            this.xiaoyuNum = (TextView) itemView.findViewById(R.id.number_xiaoyu);
+            this.phoneNum=(TextView) itemView.findViewById(R.id.number_phone);
             this.itemView=itemView;
         }
 
@@ -55,10 +65,11 @@ public class Contact_Adapter extends RecyclerView.Adapter<Contact_Adapter.MyView
 
 
 
-    public Contact_Adapter(Context context, List<SortModel> list) {
+    public Contact_Adapter(Context context, List<SortModel> list,MyClickLister myClickLister) {
         this.context = context;
         this.list = list;
-        this.contactDBhelper = new ContactDBhelper(context);
+        this.myClickLister=myClickLister;
+//        this.contactDBhelper = new ContactDBhelper(context);
     }
 
     @Override
@@ -67,15 +78,30 @@ public class Contact_Adapter extends RecyclerView.Adapter<Contact_Adapter.MyView
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.item_phone_constacts, parent, false);
         final MyViewHoler viewHoler = new MyViewHoler(view);
+//        viewHoler.itemView.setOnClickListener(this);
+//      try {
+//        viewHoler.itemView.setTag(list.get((int) viewHoler.getAdapterPosition()).getId());
+//      }catch (Exception e){
+//        e.printStackTrace();
+//      }
         viewHoler.itemView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 int position =viewHoler.getAdapterPosition();
                 SortModel item=list.get(position);
-                Log.d(TAG, "onClick: id="+position);
+                viewHoler.itemView.setTag(item.getId());
+//                Log.d(TAG, "onClick: id="+position);
                 Utils.showShortToast(context,"id="+position);
+                myClickLister.onItemClick(view);
+//                //创建弹出菜单
+//                PopupMenu popupMenu=new PopupMenu(context,view);
+//                MenuInflater inflater=popupMenu.getMenuInflater();
+//                inflater.inflate(R.menu.contact,popupMenu.getMenu());
+//                popupMenu.setOnMenuItemClickListener(this);
+//                popupMenu.show();
             }
         });
+//        viewHoler.itemView.setOnClickListener(this);
         return viewHoler;
     }
 
@@ -95,8 +121,8 @@ public class Contact_Adapter extends RecyclerView.Adapter<Contact_Adapter.MyView
         holder.tvTitle.setText(this.list.get(position).getName());
 //        holder.icon.setText(this.list.get(position).getName());
 //        holder.icon.setIconText(context,this.list.get(position).getName());
-        holder.number_text.setText(this.list.get(position).getNumber());
-
+        holder.xiaoyuNum.setText(this.list.get(position).getNumber());
+        holder.phoneNum.setText("");
     }
 
     /**
@@ -117,8 +143,23 @@ public class Contact_Adapter extends RecyclerView.Adapter<Contact_Adapter.MyView
                 return i;
             }
         }
-
         return -1;
     }
 
+
+
+//    public void onClickItem(View view) {
+//
+////        int position =viewHoler.getAdapterPosition();
+////        SortModel item=list.get(position);
+////        touchedId=item.getId();
+////        Log.d(TAG, "onClick: id="+position);
+////        Utils.showShortToast(context,"id="+position);
+//        //创建弹出菜单
+//        PopupMenu popupMenu=new PopupMenu(context,view);
+//        MenuInflater inflater=popupMenu.getMenuInflater();
+//        inflater.inflate(R.menu.contact,popupMenu.getMenu());
+//        popupMenu.setOnMenuItemClickListener(this);
+//        popupMenu.show();
+//    }
 }

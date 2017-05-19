@@ -1,10 +1,13 @@
 package com.ainemo.pad.Datas;
 
+import java.io.Serializable;
+import org.litepal.crud.DataSupport;
+
 /**
  * Created by victor on 17-4-30.
  */
 
-public class CaseInfor {
+public class CaseInfor  extends DataSupport implements Serializable {
 
     /**
      * id:病例id
