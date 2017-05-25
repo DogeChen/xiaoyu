@@ -2,12 +2,13 @@ package com.ainemo.pad.Contact;
 
 import ainemo.api.openapi.MakeCallResult;
 import ainemo.api.openapi.Msg;
-import ainemo.api.openapi.NemoCallback;
 import ainemo.api.openapi.NemoConst;
 import ainemo.api.openapi.NemoOpenAPI;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,13 +22,16 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.ainemo.pad.Contact.Record.CallRecord;
 import com.ainemo.pad.Contact.Record.CallRecordAdapter;
+import com.ainemo.pad.Contact.Record.CallRecordAdapter.RecordClickLister;
 import com.ainemo.pad.R;
 import com.ainemo.pad.SomeUtils.Utils;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -44,53 +48,77 @@ import org.litepal.crud.DataSupport;
  * Created by victor on 2017/4/24.
  */
 
-public class FragmentCall extends Fragment implements NemoCallback {
+public class FragmentCall extends Fragment implements RecordClickLister,OnClickListener{
 
   private Activity activity;
   private View layout;
   private Button[] circleTextImageViews = new Button[13];
   private TextView telephoneNum;
+  private TextView myNemoNum;
   private CircleImageView backspace_number;
   private RecyclerView recyclerView;
   private CallRecordAdapter adapter;
   private List<CallRecord> list = new ArrayList<>();
   private LinearLayout call;
-
+  private RecordClickLister recordClickLister;
   private RecyclerView.LayoutManager layoutManager;
   private static final String TAG = "FragmentCall";
-
+  private PopupWindow mPopupWindow;
+  private int touchedId;
 
   Handler handler = new Handler() {
     @Override
     public void handleMessage(Message msg) {
-      if (msg.what == Msg.OPENAPI_MAKE_CALL_RESULT) {
-        MakeCallResult result=msg.getData().getParcelable(NemoConst.KEY_MAKE_CALL_RESULT);
-        Log.w(TAG, "handleMessage: result is"+result );
-        Toast.makeText(getContext(),result.toString(),Toast.LENGTH_LONG).show();
-      } else if (msg.what >= 0 && msg.what <= 9) {
-        telephoneNum.append("" + msg.what);
-        circleTextImageViews[msg.what].setBackgroundColor(getResources().getColor(R.color.white));
-        backspace_number.setVisibility(View.VISIBLE);
-      } else if (msg.what == 10) {
-        telephoneNum.append("*");
-        circleTextImageViews[msg.what].setBackgroundColor(getResources().getColor(R.color.white));
-        backspace_number.setVisibility(View.VISIBLE);
-      } else if (msg.what == 11) {
-        telephoneNum.append("#");
-        circleTextImageViews[msg.what].setBackgroundColor(getResources().getColor(R.color.white));
-        backspace_number.setVisibility(View.VISIBLE);
-      }  else if (msg.what >=12 && msg.what < 24) {
-        circleTextImageViews[msg.what - 12]
-            .setBackgroundColor(getResources().getColor(R.color.transparent));
-      }else if(msg.what==24){
-        call.setBackgroundColor(getResources().getColor(R.color.transparent));
-      }
-      else if (msg.what == 0x123) {
-        adapter = new CallRecordAdapter(activity, list);
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-      } else if (msg.what == 0x124) {
-        Utils.showShortToast(activity, "没有数据");
+      switch (msg.what) {
+        case Msg.OPENAPI_MAKE_CALL_RESULT:
+          MakeCallResult result = msg.getData().getParcelable(NemoConst.KEY_MAKE_CALL_RESULT);
+          Log.w(TAG, "handleMessage: result is" + result);
+          Toast.makeText(getContext(), result.toString(), Toast.LENGTH_LONG).show();
+
+          Date date=new Date();
+          Date date1=new Date();
+          date.setTime(result.getStartTime());
+          date1.setTime(result.getDuration());
+          int callStatus;
+          if(result.isCallOutSuccess()==true){
+            callStatus=CallRecord.CALL_OUT;
+          }else{
+            callStatus=CallRecord.CALL_REJECT;
+          }
+          CallRecord callRecord = new CallRecord(result.getCallerName(),
+              result.getCallerNemoNumber(), null, callStatus,date,date1, null);
+          callRecord.save();
+          myNemoNum.setText(result.getCalleeNemoNumber());
+          adapter.notifyDataSetChanged();
+          break;
+        case 0x123:
+//          adapter = new CallRecordAdapter(activity, list,recordClickLister);
+//          recyclerView.setAdapter(adapter);
+          adapter.notifyDataSetChanged();
+          break;
+        default:
+          if (msg.what >= 0 && msg.what <= 9) {
+            telephoneNum.append("" + msg.what);
+            circleTextImageViews[msg.what]
+                .setBackgroundColor(getResources().getColor(R.color.white));
+            backspace_number.setVisibility(View.VISIBLE);
+          } else if (msg.what == 10) {
+            telephoneNum.append("*");
+            circleTextImageViews[msg.what]
+                .setBackgroundColor(getResources().getColor(R.color.white));
+            backspace_number.setVisibility(View.VISIBLE);
+          } else if (msg.what == 11) {
+            telephoneNum.append("#");
+            circleTextImageViews[msg.what]
+                .setBackgroundColor(getResources().getColor(R.color.white));
+            backspace_number.setVisibility(View.VISIBLE);
+          } else if (msg.what >= 12 && msg.what < 24) {
+            circleTextImageViews[msg.what - 12]
+                .setBackgroundColor(getResources().getColor(R.color.transparent));
+          } else if (msg.what == 24) {
+            call.setBackgroundColor(getResources().getColor(R.color.transparent));
+          }
+          break;
       }
     }
   };
@@ -105,9 +133,8 @@ public class FragmentCall extends Fragment implements NemoCallback {
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     activity = getActivity();
+    recordClickLister=this;
     new FragmentCall.FindRecordsTask().execute(1);
-
-    NemoOpenAPI.getInstance().registerCallback(this);
 
   }
 
@@ -132,9 +159,9 @@ public class FragmentCall extends Fragment implements NemoCallback {
     recyclerView = (RecyclerView) layout.findViewById(R.id.record_list);
     layoutManager = new LinearLayoutManager(activity);
     recyclerView.setLayoutManager(layoutManager);
-    adapter=new CallRecordAdapter(getContext(),list);
+    adapter = new CallRecordAdapter(getContext(), list,this);
     recyclerView.setAdapter(adapter);
-
+    myNemoNum=(TextView)layout.findViewById(R.id.nemo_num);
     circleTextImageViews[0] = (Button) layout.findViewById(R.id.number_call_0);
     circleTextImageViews[1] = (Button) layout.findViewById(R.id.number_call_1);
     circleTextImageViews[2] = (Button) layout.findViewById(R.id.number_call_2);
@@ -198,14 +225,21 @@ public class FragmentCall extends Fragment implements NemoCallback {
 //          @Override
 //          public void run() {
 //            handler.sendEmptyMessage(24);
-            //权限检查
-            checkPermission();
-            //呼叫用户，以及没有密码的会议
-//            NemoOpenAPI.getInstance().makeCall(telephoneNum.getText().toString(), "123456");
+        //权限检查
+        checkPermission();
+//        Date date=new Date(System.currentTimeMillis());
 
-        NemoOpenAPI.getInstance().playVoice("开始呼叫");
-        NemoOpenAPI.getInstance().makeCall("915927698835", "123456");
+//        CallRecord callRecord=new CallRecord("张三","15912345678","123456",CallRecord.CALL_IN, date,new Date(System.currentTimeMillis()),"");
+//        callRecord.save();
+//
+//        adapter = new CallRecordAdapter(activity, list);
+//        recyclerView.setAdapter(adapter);
+//        adapter.notifyDataSetChanged();
+
+//        NemoOpenAPI.getInstance().playVoice("开始呼叫");
+        NemoOpenAPI.getInstance().makeCall(telephoneNum.getText().toString(), null,null);
 //          }
+
 //        }, 150);
       }
     });
@@ -231,18 +265,82 @@ public class FragmentCall extends Fragment implements NemoCallback {
   }
 
   @Override
-  public void onNemoCallback(Message message) {
+  public void onItemClick(View view) {
+    touchedId = (int) view.getTag();
+    Log.d(TAG, "onItemClick: touchedId ="+touchedId);
+    //创建弹出菜单
+//        PopupMenu popupMenu=new PopupMenu(getContext(),view);
+//        MenuInflater inflater=popupMenu.getMenuInflater();
+//        inflater.inflate(R.menu.contact,popupMenu.getMenu());
+//        popupMenu.setOnMenuItemClickListener(this);
+//        popupMenu.setGravity(center);
+//        popupMenu.show();
+    try {
+      View mPopupWindowView = activity.getLayoutInflater()
+          .inflate(R.layout.menu_record, null);
+      mPopupWindow = new PopupWindow(mPopupWindowView, 288, 215, true);
+      mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+      mPopupWindow.setOutsideTouchable(true);
+      mPopupWindow.showAsDropDown(view, view.getWidth() / 2, -view.getHeight() / 2);
+      TextView textViewCall = (TextView) mPopupWindowView.findViewById(R.id.menu_call);
+      TextView textViewDelete = (TextView) mPopupWindowView.findViewById(R.id.menu_delete);
+//      TextView textViewChange = (TextView) mPopupWindowView.findViewById(R.id.menu_change);
+      textViewCall.setOnClickListener(this);
+      textViewDelete.setOnClickListener(this);
+//      textViewChange.setOnClickListener(this);
 
-    Log.d(TAG, "onNemoCallback: Callback");
-    handler.sendMessage(Message.obtain(message));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Override
+  public void onClick(View view) {
+    switch (view.getId()) {
+      case R.id.menu_call:
+        mPopupWindow.dismiss();
+        CallRecord callRecord=DataSupport.find(CallRecord.class,touchedId);
+        if(callRecord.getXiaoyuId()!=null){
+          NemoOpenAPI.getInstance().makeCall(callRecord.getXiaoyuId().toString(),null,null);
+          Log.d(TAG, "onClick: call xiaoyu "+callRecord.getXiaoyuId().toString().toString());
+        }else if(callRecord.getTelephoneNum()!=null){
+          NemoOpenAPI.getInstance().makeCall(callRecord.getTelephoneNum().toString(),null,null);
+          Log.d(TAG, "onClick: call phone "+callRecord.getTelephoneNum().toString());
+        }
+        Log.d(TAG, "onMenuItemClick: call");
+        break;
+      case R.id.menu_delete:
+        mPopupWindow.dismiss();
+        int deleteCount=DataSupport.delete(CallRecord.class,touchedId);
+        Log.d(TAG, "deleteCount = "+deleteCount);
+        if(deleteCount==0){
+          Utils.showShortToast(activity,"删除失败");
+        }
+        new FragmentCall.FindRecordsTask().execute(0);
+        Log.d(TAG, "onMenuItemClick: delete");
+        break;
+//      case R.id.menu_change:
+//        Utils.showShortToast(getContext(), String.valueOf(touchedId));
+//        Log.d(TAG, "onMenuItemClick: change is touched,id is " + touchedId);
+//        mPopupWindow.dismiss();
+//        Intent intent=new Intent(activity, ChangeContactActivity.class);
+//        intent.putExtra("id", touchedId);
+//        Log.d(TAG, " Change id ="+touchedId);
+//        startActivity(intent);
+//        break;
+      default:
+        break;
+    }
   }
 
   public class FindRecordsTask extends AsyncTask<Integer, Integer, Integer> {
 
     @Override
     protected Integer doInBackground(Integer... params) {
+
       if (DataSupport.isExist(CallRecord.class)) {
-        list = DataSupport.findAll(CallRecord.class);
+        list.clear();
+        list.addAll(DataSupport.findAll(CallRecord.class));
       } else {
         return 0;
       }
@@ -260,7 +358,6 @@ public class FragmentCall extends Fragment implements NemoCallback {
               return 0;
             }
           }
-
         });
 
       }
@@ -272,7 +369,6 @@ public class FragmentCall extends Fragment implements NemoCallback {
       super.onPostExecute(integer);
       if (integer == 1) {
         handler.sendEmptyMessage(0x123);
-
       } else if (integer == 0) {
         handler.sendEmptyMessage(0x124);
       }

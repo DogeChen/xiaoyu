@@ -18,5 +18,8 @@
     <item name="android:textSize">30px</item>
   </style>
 
+  <style name="MyCardView" parent="CardView">
+    <item name="android:paddingTop">0px</item>
+  </style>
 
 </resources>

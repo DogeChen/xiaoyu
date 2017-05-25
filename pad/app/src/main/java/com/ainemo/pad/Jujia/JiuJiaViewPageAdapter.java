@@ -17,7 +17,8 @@ public class JiuJiaViewPageAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new TemperatureFragment();
+            Fragment fragment=new TemperatureFragment();
+            return fragment;
         } else if (position == 1) {
             return new TemperatureFragment();
         }

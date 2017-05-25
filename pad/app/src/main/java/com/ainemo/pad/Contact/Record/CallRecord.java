@@ -12,6 +12,9 @@ public class CallRecord  extends DataSupport{
   public static final int CALL_OUT=1;
   public static final int CALL_REJECT=2;
 
+
+
+  private int id;
   private String name;
   private String telephoneNum;
   private String xiaoyuId;
@@ -88,5 +91,13 @@ public class CallRecord  extends DataSupport{
 
   public void setImageUrl(String imageUrl) {
     this.imageUrl = imageUrl;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
   }
 }

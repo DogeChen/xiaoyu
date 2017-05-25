@@ -19,7 +19,7 @@
     <TextView
       android:layout_marginLeft="26px"
       android:layout_marginTop="330px"
-      android:id="@+id/today"
+      android:id="@+id/day"
       android:textSize="30px"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content" />
@@ -46,11 +46,14 @@
         android:textSize="18px"
         android:layout_gravity="center_horizontal" />
       <TextView
+        android:id="@+id/maxTem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:textColor="@color/grayBrown"
-        android:textSize="36px" />
+        android:textSize="36px"
+        android:hint="--℃"
+        />
 
     </LinearLayout>
     <LinearLayout
@@ -72,11 +75,13 @@
         android:textColor="@color/grayBrown"
         android:textSize="18px" />
       <TextView
+        android:id="@+id/minTem"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/grayBrown"
-        android:textSize="36px" />
+        android:textSize="36px"
+        android:hint="--℃"/>
     </LinearLayout>
 
   </RelativeLayout>

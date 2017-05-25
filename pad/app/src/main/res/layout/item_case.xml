@@ -3,11 +3,15 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/item"
   android:orientation="vertical"
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
+  android:layout_width="365px"
+  android:layout_height="595px"
+  android:scaleType="fitXY"
   android:background="@color/transparent"
-  app:cardPreventCornerOverlap="false"
+  app:cardPreventCornerOverlap="true"
+  app:cardUseCompatPadding="true"
+  style="@style/MyCardView"
   >
+
   <RelativeLayout
     android:layout_width="365px"
     android:layout_height="595px"
@@ -33,6 +37,7 @@
       android:textColor="@color/whiteGray"
       android:textSize="18px" />
     <de.hdodenhof.circleimageview.CircleImageView
+      android:id="@+id/head"
       android:layout_width="164px"
       android:layout_height="164px"
       android:layout_marginTop="113px"
@@ -44,7 +49,7 @@
       android:layout_height="34px"
       android:layout_marginTop="306px"
       android:layout_marginLeft="22px"
-      android:src="@color/green" />
+      android:src="@drawable/person" />
     <TextView
       android:id="@+id/patient_name"
       android:layout_width="wrap_content"
@@ -63,7 +68,7 @@
       android:layout_height="34px"
       android:layout_marginTop="306px"
       android:layout_marginLeft="198px"
-      android:src="@color/green" />
+      android:src="@drawable/gender" />
     <TextView
       android:id="@+id/patient_gender"
       android:layout_width="wrap_content"
@@ -80,7 +85,7 @@
       android:layout_height="34px"
       android:layout_marginTop="350px"
       android:layout_marginLeft="22px"
-      android:src="@color/green" />
+      android:src="@drawable/age" />
     <TextView
       android:id="@+id/patient_age"
       android:layout_width="wrap_content"
@@ -98,7 +103,7 @@
       android:layout_height="34px"
       android:layout_marginTop="394px"
       android:layout_marginLeft="22px"
-      android:src="@color/green" />
+      android:src="@drawable/doctor" />
     <TextView
       android:id="@+id/doctor_name"
       android:layout_width="wrap_content"

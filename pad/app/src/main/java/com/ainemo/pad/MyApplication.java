@@ -13,6 +13,7 @@ import org.litepal.LitePal;
 public class MyApplication extends Application {
   private static Context context;
   private static final String TAG = "MyApplication";
+
   @Override
   public void onCreate() {
     super.onCreate();
@@ -22,7 +23,6 @@ public class MyApplication extends Application {
     NemoOpenAPI.init(this);
     Log.d(TAG, "onCreate: NemoOpenAPI");
   }
-
 
   public static Context getContext() {
     return context;

@@ -2,7 +2,6 @@ package com.ainemo.pad.drawSmoothLine;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
@@ -15,8 +14,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Scroller;
-import com.ainemo.pad.drawSmoothLine.BesselChart.ChartListener;
-import com.ainemo.pad.drawSmoothLine.ChartData.Label;
 import java.util.List;
 
 /**
@@ -66,7 +63,7 @@ class BesselChartView extends View {
   /**
    * 曲线图事件监听器
    */
-  private ChartListener chartListener;
+  private BesselChart.ChartListener chartListener;
 
   public BesselChartView(Context context, ChartData data, ChartStyle style,
       BesselCalculator calculator) {
@@ -122,7 +119,7 @@ class BesselChartView extends View {
     scroller.startScroll(0, 0, -calculator.xAxisWidth / 2, 0, duration);
   }
 
-  public void setChartListener(ChartListener chartListener) {
+  public void setChartListener(BesselChart.ChartListener chartListener) {
     this.chartListener = chartListener;
   }
 
@@ -156,7 +153,7 @@ class BesselChartView extends View {
 
 
   /**
-   * 绘制曲线图中的房源
+   * 绘制曲线图中的maker
    */
   private void drawMarker(Canvas canvas) {
     Marker marker = data.getMarker();
@@ -193,7 +190,7 @@ class BesselChartView extends View {
     paint.setStyle(Paint.Style.FILL);
     paint.setColor(style.getGridColor());
     paint.setAlpha(80);
-    List<Label> yLabels = data.getYLabels();
+    List<ChartData.Label> yLabels = data.getYLabels();
     // 先绘制两条水平线
 //    float coordinateY = yLabels.get(0).y;
 //    canvas.drawLine(0, coordinateY, calculator.xAxisWidth, coordinateY, paint);
@@ -204,7 +201,7 @@ class BesselChartView extends View {
     // 再绘制竖直线（标记最大值的竖直线）
     Paint paint1=new Paint();
     paint1.setDither(false);
-    paint1.setStrokeWidth(20);
+    paint1.setStrokeWidth(style.getLineWidth());
 
     paint1.setAlpha(255);
 
@@ -215,7 +212,7 @@ class BesselChartView extends View {
             0x00ffffff,
             TileMode.MIRROR);
         paint1.setShader(linearGradient);
-        canvas.drawRect(point.x-5, point.y, point.x+5, calculator.yAxisHeight, paint1);
+        canvas.drawRect(point.x-style.getLineWidth()/2, point.y, point.x+style.getLineWidth()/2, calculator.yAxisHeight, paint1);
       }
     }
   }
@@ -224,7 +221,7 @@ class BesselChartView extends View {
    * 绘制曲线和结点
    */
   private void drawCurveAndPoints(Canvas canvas) {
-    paint.setStrokeWidth(10);
+    paint.setStrokeWidth(style.getLineWidth());
     paint.setDither(false);
 
     for (Series series : data.getSeriesList()) {
@@ -243,37 +240,37 @@ class BesselChartView extends View {
       paint.setStyle(Paint.Style.STROKE);
       canvas.drawPath(curvePath, paint);// 绘制光滑曲线
       paint.setStyle(Paint.Style.FILL);
-      if (drawAllPoint) {
-        for (Point point :  series.getPoints()  ) {
-          if (point.willDrawing) {
-            paint.setAlpha(80);
-            canvas.drawCircle(point.x, point.y, 10, paint);
-            paint.setAlpha(180);
-            canvas.drawCircle(point.x, point.y, 25, paint);
-            paint.setAlpha(255);
-          }
-        }
-      }else {
+//      if (drawAllPoint) {
+//        for (Point point :  series.getPoints()  ) {
+//          if (point.willDrawing) {
+//            paint.setAlpha(80);
+//            canvas.drawCircle(point.x, point.y, 10, paint);
+//            paint.setAlpha(180);
+//            canvas.drawCircle(point.x, point.y, 25, paint);
+//            paint.setAlpha(255);
+//          }
+//        }
+//      }else{
         for (Point point : calculator.maxPoints ) {
           if (point.willDrawing) {
             paint.setAlpha(80);
-            canvas.drawCircle(point.x, point.y, 10, paint);
+            canvas.drawCircle(point.x, point.y, style.getLineWidth(), paint);
             paint.setAlpha(180);
-            canvas.drawCircle(point.x, point.y, 15, paint);
+            canvas.drawCircle(point.x, point.y, 2*style.getLineWidth(), paint);
             paint.setAlpha(255);
           }
         }
-      }// 绘制结点
-      if (drawBesselPoint) {
-        for (Point point : series.getPoints()) {
-          if (!series.getPoints().contains(point)) {
-            paint.setColor(Color.BLUE);
-            paint.setAlpha(255);
-            canvas.drawCircle(point.x, point.y, 10, paint);
-          }
-        }// 绘制贝塞尔控制结点
+//      }// 绘制结点
+//      if (drawBesselPoint) {
+//        for (Point point : series.getPoints()) {
+//          if (!series.getPoints().contains(point)) {
+//            paint.setColor(Color.BLUE);
+//            paint.setAlpha(255);
+//            canvas.drawCircle(point.x, point.y, 10, paint);
+//          }
+//        }// 绘制贝塞尔控制结点
       }
-    }
+//    }
   }
 
   /**
@@ -289,7 +286,7 @@ class BesselChartView extends View {
 //    float endCoordinateX = calculator.xAxisWidth;
 //    float coordinateY = getHeight() - calculator.xAxisHeight;
 //    canvas.drawLine(0, coordinateY, endCoordinateX, coordinateY, paint);
-    for (Label label : data.getXLabels()) {
+    for (ChartData.Label label : data.getXLabels()) {
       // 绘制橫坐标文本
       canvas.drawText(label.text, label.x, label.y,
           paint);

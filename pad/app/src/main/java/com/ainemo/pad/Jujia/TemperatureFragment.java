@@ -1,6 +1,5 @@
 package com.ainemo.pad.Jujia;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import com.ainemo.pad.Datas.HomeInfor;
 import com.ainemo.pad.R;
 import com.ainemo.pad.drawSmoothLine.BesselChart;
@@ -20,60 +20,55 @@ import com.ainemo.pad.drawSmoothLine.Point;
 import com.ainemo.pad.drawSmoothLine.Series;
 import com.github.mikephil.charting.charts.BarChart;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
  * Created by 小武哥 on 2017/5/19.
  */
 
-public class TemperatureFragment extends Fragment implements BesselChart.ChartListener{
+public class TemperatureFragment extends Fragment implements BesselChart.ChartListener {
+
   BesselChart chart;
 
 //    private Chart mChart;
 
+  private static final String TAG = "TemperatureFragment";
   private BarChart barChart;
   private Button back;
-  private List<Point> points=new ArrayList<>();
+  private List<Point> points = new ArrayList<>();
 
   private View layout;
-  private Activity activity;
+  private JujiaActivity activity;
+  private List<Float> temperature;
+  private TextView maxTem;
+  private TextView minTem;
+  public TextView day;
+  private String dayString;
+  Fragment fragment;
   private HomeInfor homeInfor;
-  Handler handler = new Handler(){
+  Handler handler = new Handler() {
     @Override
     public void handleMessage(Message msg) {
-      if (msg.what == 0x1234) {
-        List<Series> seriess = new ArrayList<Series>();
-        for(int i=0;i<8;i++){
-          points.add(new Point((float)i, homeInfor.getTemperatures().get(i),true));
-        }
-        seriess.add(new Series("温度", Color.WHITE,points));
-        chart.getData().setLabelTransform(new ChartData.LabelTransform() {
-          @Override
-          public String verticalTransform(int valueY) {
-            return String.format("%d", valueY);
-          }
-
-          @Override
-          public String horizontalTransform(int valueX) {
-            return String.format("%s", valueX );
-          }
-          @Override
-          public boolean labelDrawing(int valueX) {
-            return true;
-          }
-        });
+      switch (msg.what){
+        case 0x1234:
+          dayString=msg.getData().getString("day");
+          day.setText(dayString);
+          Log.d(TAG, "handleMessage: fragment handler"+handler);
         initData();
+          break;
 
-        chart.getData().setSeriesList(seriess);
-        chart.refresh(true);
       }
     }
   };
+
   @Nullable
   @Override
-  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+      Bundle savedInstanceState) {
     if (layout == null) {
-      layout = activity.getLayoutInflater().inflate(R.layout.activity_jujia2, null);
+      layout = activity.getLayoutInflater().inflate(R.layout.fragment_temperature, null);
     } else {
       ViewGroup parent = (ViewGroup) layout.getParent();
       if (parent != null) {
@@ -85,17 +80,83 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
     return layout;
   }
 
-
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    activity = getActivity();
+    activity = (JujiaActivity) getActivity();
+    fragment=this;
+    Log.d(TAG, "onCreate fragment= "+fragment);
+
   }
 
-  private void initData(){
+  private void initData() {
+    List<Series> seriess = new ArrayList<Series>();
+    homeInfor=activity.getHomeInfo();
+    if(homeInfor==null){
+      for(int i=0;i<8;i++){
+        temperature=new ArrayList<>();
+        temperature.add((float)0);
+      }
+    }else{
+      if(dayString!=null&&dayString.equals("今天")){
+        temperature=homeInfor.getTemperatures();
+        Log.d(TAG, "initData: Today temperature"+temperature);
+        Log.d(TAG, "initData: today fragment= "+fragment);
+      }else if(dayString!=null&&dayString.equals("昨天")){
+        temperature=homeInfor.getTemperatures();
+        Log.d(TAG, "initData: Yesterday temperature"+temperature);
+        Log.d(TAG, "initData: yesterday fragment= "+fragment);
+      }
+    }
+//    try {
+      for (int i = 0; i < 8; i++) {
+        points.add(new Point((float) i, temperature.get(i), true));
+      }
+      List<Float> sort=new ArrayList<>();
+          sort.addAll(temperature);
+          Collections.sort(sort, new Comparator<Float>() {
+        @Override
+        public int compare(Float aFloat, Float t1) {
+          if (aFloat<t1){
+            return -1;
+          }else if(aFloat>t1){
+            return 1;
+          }else {
+            return 0;
+          }
+        }
+      });
+      maxTem.setText(String.valueOf(sort.get(sort.size()-1).intValue())+"℃");
+      minTem.setText(String.valueOf(sort.get(0).intValue())+"℃");
+
+//    } catch (Exception e) {
+//      e.printStackTrace();
+//    }
+    seriess.add(new Series("温度", Color.WHITE, points));
+    chart.getData().setLabelTransform(new ChartData.LabelTransform() {
+      @Override
+      public String verticalTransform(int valueY) {
+        return String.format("%d", valueY);
+      }
+
+      @Override
+      public String horizontalTransform(int valueX) {
+        return String.format("%s", valueX);
+      }
+
+      @Override
+      public boolean labelDrawing(int valueX) {
+        return true;
+      }
+    });
+
+    chart.getData().setSeriesList(seriess);
+    chart.refresh(true);
   }
 
-  private void initView(){
+  private void initView() {
+    maxTem=(TextView)layout.findViewById(R.id.maxTem);
+    minTem=(TextView)layout.findViewById(R.id.minTem);
     chart = (BesselChart) layout.findViewById(R.id.shidu_line_chart);
 
     barChart = (BarChart) layout.findViewById(R.id.bar_shidu_chart);
@@ -105,30 +166,12 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
     chart.setChartListener(this);
 
     chart.setSmoothness(0.33f);
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                new GetHomeInforTask().execute();
-//            }
-//        }, 500);
+    day=(TextView)layout.findViewById(R.id.day);
   }
 
   private void initEvent() {
 
   }
-
-  /**
-   * Point 点的值（x,y）  x为横轴的值，y为纵轴的值，willingDrawing 为使用此点
-   *
-   * @param willDrawing true(draw) false(don't draw)
-   */
-
-  private void getSeriesList(boolean willDrawing) {
-    if (willDrawing) {
-    }
-  }
-
-
 
   @Override
   public void onMove() {

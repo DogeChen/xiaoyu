@@ -4,16 +4,39 @@
   android:orientation="vertical"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
-  
-  <TextView
+
+  <LinearLayout
     android:layout_marginTop="10px"
-    android:hint="我的小鱼号：213764     剩余通话时长：100分钟"
-    android:textColor="#7d5951"
-    android:textSize="24px"
-    android:layout_centerHorizontal="true"
-    android:id="@+id/info"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:textColor="#7d5951"
+
+    android:layout_centerHorizontal="true"
+    >
+    <TextView
+      android:textSize="24px"
+      android:text="我的小鱼号："
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content" />
+    <TextView
+      android:textSize="24px"
+      android:id="@+id/nemo_num"
+      android:layout_width="100px"
+      android:layout_height="wrap_content" />
+    <TextView
+      android:textSize="24px"
+      android:text="剩余通话时间"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content" />
+    <TextView
+      android:textSize="24px"
+      android:id="@+id/lastTime"
+      android:layout_width="100px"
+      android:layout_height="wrap_content" />
+  </LinearLayout>
+
 
   <android.support.v7.widget.RecyclerView
     android:id="@+id/record_list"
@@ -23,26 +46,22 @@
     android:layout_height="558px">
 
   </android.support.v7.widget.RecyclerView>
-  <android.support.v7.widget.CardView
-    android:layout_width="422px"
-    android:layout_height="558px"
-    android:layout_marginTop="62px"
-    android:layout_marginLeft="742px"
-    app:cardCornerRadius="20px"
-    android:background="@color/transparent"
-    app:cardPreventCornerOverlap="false"
-    >
+
     <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_width="422px"
+      android:layout_height="558px"
+      android:layout_marginTop="62px"
+      android:layout_marginLeft="742px"
       android:orientation="vertical"
       android:weightSum="6"
-      android:background="#a7ca5b"
+      android:background="@drawable/call_background"
       >
+
       <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:background="@drawable/call_background_top"
         >
         <TextView
           android:layout_centerInParent="true"
@@ -57,7 +76,7 @@
           android:id="@+id/backspace_number_image"
           android:layout_width="25px"
           android:layout_height="25px"
-          android:src="@drawable/backspace_number"
+          android:src="@drawable/dial_panel_backspace"
           android:layout_alignParentRight="true"
           android:layout_centerVertical="true"
           android:visibility="gone"
@@ -196,18 +215,17 @@
         android:layout_weight="1"
         android:orientation="vertical"
         android:gravity="center"
+        android:background="@drawable/call_background_bottom"
         >
         <ImageView
           android:layout_gravity="center"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:src="@drawable/icon_callout"
+          android:src="@drawable/dial_panel_dial_out_ent"
           />
       </LinearLayout>
 
-
     </LinearLayout>
 
-  </android.support.v7.widget.CardView>
 
 </RelativeLayout>

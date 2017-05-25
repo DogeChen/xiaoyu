@@ -1,7 +1,7 @@
 package com.ainemo.pad.Contact;
 
+import ainemo.api.openapi.NemoOpenAPI;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -44,7 +44,7 @@ import org.litepal.crud.DataSupport;
 public class FragmentContactList extends Fragment implements MyClickLister, OnClickListener
    {
 
-  private Activity activity;
+  private ContactActivity activity;
   private RecyclerView recyclerView;
   private View view;
   private ContactActivity parentactivity;
@@ -64,6 +64,8 @@ public class FragmentContactList extends Fragment implements MyClickLister, OnCl
   //    private ContactDBhelper contactDBhelper;
   private CircleTextImageView add_new;
   private int touchedId;
+//     Handler callHandler;
+
   private PopupWindow mPopupWindow;
   private static final String TAG = "FragmentContactList";
   Handler handler = new Handler() {
@@ -114,15 +116,17 @@ public class FragmentContactList extends Fragment implements MyClickLister, OnCl
   @Override
   public void onResume() {
     super.onResume();
+    Log.d(TAG, "onResume: true");
     new ConstactAsyncTask().execute(0);
   }
 
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    activity = getActivity();
+    activity =(ContactActivity) getActivity();
     characterParser = CharacterParser.getInstance();
     pinyinComparator = new PinyinComparator();
+//    callHandler=activity.handler;
     new ConstactAsyncTask().execute(0);
   }
 
@@ -198,7 +202,6 @@ public class FragmentContactList extends Fragment implements MyClickLister, OnCl
       }
     });
 
-
   }
 
   @Override
@@ -226,7 +229,6 @@ public class FragmentContactList extends Fragment implements MyClickLister, OnCl
       textViewCall.setOnClickListener(this);
       textViewDelete.setOnClickListener(this);
       textViewChange.setOnClickListener(this);
-
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -237,18 +239,34 @@ public class FragmentContactList extends Fragment implements MyClickLister, OnCl
     switch (view.getId()) {
       case R.id.menu_call:
         mPopupWindow.dismiss();
-        Log.d(TAG, "onMenuItemClick: call");
+        Log.d(TAG, "onMenuItemClick: call id="+touchedId);
+        ContactListData contactListData=DataSupport.find(ContactListData.class,touchedId);
+        if(contactListData.getXiaoyuNumber()!=null){
+          NemoOpenAPI.getInstance().makeCall(contactListData.getXiaoyuNumber().toString(),null,null);
+          Log.d(TAG, "onClick: call xiaoyu "+contactListData.getXiaoyuNumber().toString());
+        }else if(contactListData.getPhoneNumber()!=null){
+          NemoOpenAPI.getInstance().makeCall(contactListData.getPhoneNumber().toString(),null,null);
+          Log.d(TAG, "onClick: call phone "+contactListData.getPhoneNumber().toString());
+        }
         break;
       case R.id.menu_delete:
         mPopupWindow.dismiss();
+        int deleteCount=DataSupport.delete(ContactListData.class,touchedId);
+        Log.d(TAG, "deleteCount = "+deleteCount);
+        if(deleteCount==0){
+          Utils.showShortToast(activity,"删除失败");
+        }
+        new ConstactAsyncTask().execute(0);
         Log.d(TAG, "onMenuItemClick: delete");
         break;
       case R.id.menu_change:
         Utils.showShortToast(getContext(), String.valueOf(touchedId));
         Log.d(TAG, "onMenuItemClick: change is touched,id is " + touchedId);
         mPopupWindow.dismiss();
-        startActivity(new Intent(activity, ChangeContactActivity.class).putExtra("ID", touchedId)
-            );
+        Intent intent=new Intent(activity, ChangeContactActivity.class);
+        intent.putExtra("id", touchedId);
+        Log.d(TAG, " Change id ="+touchedId);
+        startActivity(intent);
         break;
       default:
         break;
@@ -281,7 +299,9 @@ public class FragmentContactList extends Fragment implements MyClickLister, OnCl
         Collections.sort(SourceDateList, pinyinComparator);
         handler.sendEmptyMessage(0x123);
       } else {
+        SourceDateList=new ArrayList<>();
         handler.sendEmptyMessage(0x124);
+        Log.d(TAG, "doInBackground: DataBase don't exsit");
       }
       return 1;
     }

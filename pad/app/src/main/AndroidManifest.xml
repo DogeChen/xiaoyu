@@ -7,6 +7,8 @@
     android:targetSdkVersion="24"
     android:maxSdkVersion="25"
     />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+  <uses-permission android:name="android.permission.INTERNET"/>
   <application
     android:name="com.ainemo.pad.MyApplication"
     android:allowBackup="true"
@@ -19,7 +21,7 @@
 
     <meta-data
       android:name="NEMO_OPENAPI_APPID"
-      android:value="BNNFKUVNNNVNT" />
+      android:value="G8KI2L2KZ4CNRV5LEO5JDG==" />
 
     <activity android:name="com.ainemo.pad.MainActivity" android:screenOrientation="landscape">
       <intent-filter>

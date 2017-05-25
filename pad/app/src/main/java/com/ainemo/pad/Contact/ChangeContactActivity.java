@@ -1,7 +1,6 @@
 package com.ainemo.pad.Contact;
 
 import android.content.ContentValues;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -42,7 +41,7 @@ public class ChangeContactActivity extends AppCompatActivity implements OnClickL
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_contact_detail);
-    id = getIntent().getIntExtra("ID", -1);
+    id = getIntent().getIntExtra("id", -1);
     Log.d(TAG, "onCreate: id "+id);
     initView();
     initData();
@@ -67,14 +66,16 @@ public class ChangeContactActivity extends AppCompatActivity implements OnClickL
       ContactListData data = DataSupport.find(ContactListData.class, id);
       name.setText(data.getName());
       name.setSelection(name.getText().length());
+      Log.d(TAG, "initData: name.length= "+name.length()+" name.getText().length="+name.getText().length());
       address.setText(data.getAddress());
-      address.setSelection(address.getText().length());
+      address.setSelection(address.length());
       remark.setText(data.getRemark());
-      if (data.getImage_url() != null && !data.getImage_url().equals("")) {
-        headImage.setImageURI(Uri.parse(data.getImage_url()));
-      }else{
-        headImage.setImageResource(R.mipmap.ic_launcher);
-      }
+      remark.setSelection(remark.length());
+//      if (data.getImage_url() != null && !data.getImage_url().equals("")) {
+//        headImage.setImageURI(Uri.parse(data.getImage_url()));
+//      }else{
+//        headImage.setImageResource(R.mipmap.ic_launcher);
+//      }
 //      String num=data.getNumber();
 //      String xiaoyu=null;
 //      String telephone=null;
@@ -89,9 +90,9 @@ public class ChangeContactActivity extends AppCompatActivity implements OnClickL
 //        telephone=null;
 //      }
       xiaoyuNum.setText(data.getXiaoyuNumber());
-      xiaoyuNum.setSelection(xiaoyuNum.getText().length());
+      xiaoyuNum.setSelection(xiaoyuNum.length());
       phoneNum.setText(data.getPhoneNumber());
-      phoneNum.setText(phoneNum.getText().length());
+      phoneNum.setSelection(phoneNum.length());
     }
   }
 
@@ -109,7 +110,6 @@ public class ChangeContactActivity extends AppCompatActivity implements OnClickL
           DataSupport.update(ContactListData.class,values,id);
         }else{
           ContactListData contactSave=new ContactListData();
-          contactSave.setId(id);
           contactSave.setAddress(address.getText().toString());
           contactSave.setName(name.getText().toString());
           contactSave.setRemark(remark.getText().toString());
@@ -127,7 +127,6 @@ public class ChangeContactActivity extends AppCompatActivity implements OnClickL
       case R.id.cancel:
         break;
     }
-
     finish();
   }
 

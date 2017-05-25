@@ -93,7 +93,12 @@ public class ChartStyle {
 
 
   private int raiseTemTextSize;
+  private int lineWidth;
 
+
+  public int getLineWidth() {
+    return lineWidth;
+  }
 
   public ChartStyle() {
     verticalLineColor = Color.WHITE;
@@ -117,6 +122,8 @@ public class ChartStyle {
     maxTemTextSize = 36;
     minTemTextSize = 24;
     raiseTemTextSize = 24;
+    lineWidth=6;
+
   }
 
   public float getVerticalLabelTextSize() {

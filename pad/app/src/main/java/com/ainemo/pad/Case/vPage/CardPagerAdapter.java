@@ -3,12 +3,16 @@ package com.ainemo.pad.Case.vPage;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.ainemo.pad.Datas.CaseInfor;
 import com.ainemo.pad.R;
+import com.ainemo.pad.SomeUtils.GlobalData;
+import com.ainemo.pad.SomeUtils.MyBitmapUtils;
+import de.hdodenhof.circleimageview.CircleImageView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +23,9 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
     private List<CardView> mViews;
     private List<CaseInfor> mData;
     private Context mContext;
+
+    private MyBitmapUtils bitmapUtils = new MyBitmapUtils();
+    private static final String TAG = "CardPagerAdapter";
 
     private int MaxElevationFactor = 9;
 
@@ -78,7 +85,8 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
-        View view = LayoutInflater.from(container.getContext()).inflate(R.layout.item_case, container, false);
+        View view = LayoutInflater.from(container.getContext()).inflate(R.layout.item_case, container,false);
+
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,16 +111,23 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
     }
 
     private void bind(CaseInfor aCase, View view) {
+        CircleImageView imageView=(CircleImageView)view.findViewById(R.id.head);
         TextView name=(TextView)view.findViewById(R.id.patient_name);
         TextView gender=(TextView)view.findViewById(R.id.patient_gender);
         TextView age=(TextView)view.findViewById(R.id.patient_age);
         TextView doctorName=(TextView)view.findViewById(R.id.doctor_name);
         TextView illnessDescription=(TextView)view.findViewById(R.id.illness_description);
-        name.setText(aCase.getName());
-        gender.setText("");
-        age.setText("");
-        doctorName.setText(aCase.getDoctorId());
-        illnessDescription.setText(aCase.getIllproblem());
+        try {
+            bitmapUtils.disPlay(imageView, GlobalData.GET_PATIENT_IMAGE +aCase.getImage());
+            Log.d(TAG, "bind: aCase.getImage = "+aCase.getImage());
+            name.setText(aCase.getName());
+            gender.setText(aCase.getSex());
+            age.setText(aCase.getAge());
+            doctorName.setText(aCase.getDoctorName());
+            illnessDescription.setText(aCase.getIllproblem());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private OnCardItemClickListener cardItemClickListener;

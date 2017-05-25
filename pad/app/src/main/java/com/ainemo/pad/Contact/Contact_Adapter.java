@@ -23,7 +23,7 @@ public class Contact_Adapter extends RecyclerView.Adapter<Contact_Adapter.MyView
     private List<SortModel> list = new ArrayList<>();
 //    private ContactDBhelper contactDBhelper;
     private static final String TAG = "Contact_Adapter";
-    private int touchedId;
+
     private MyClickLister myClickLister;
     public  interface MyClickLister{
          void onItemClick(View view);
@@ -69,7 +69,7 @@ public class Contact_Adapter extends RecyclerView.Adapter<Contact_Adapter.MyView
         this.context = context;
         this.list = list;
         this.myClickLister=myClickLister;
-//        this.contactDBhelper = new ContactDBhelper(context);
+
     }
 
     @Override
@@ -77,19 +77,19 @@ public class Contact_Adapter extends RecyclerView.Adapter<Contact_Adapter.MyView
         final Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.item_phone_constacts, parent, false);
-        final MyViewHoler viewHoler = new MyViewHoler(view);
+        final MyViewHoler viewHolder = new MyViewHoler(view);
 //        viewHoler.itemView.setOnClickListener(this);
 //      try {
 //        viewHoler.itemView.setTag(list.get((int) viewHoler.getAdapterPosition()).getId());
 //      }catch (Exception e){
 //        e.printStackTrace();
 //      }
-        viewHoler.itemView.setOnClickListener(new OnClickListener() {
+        viewHolder.itemView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                int position =viewHoler.getAdapterPosition();
+                int position =viewHolder.getAdapterPosition();
                 SortModel item=list.get(position);
-                viewHoler.itemView.setTag(item.getId());
+                viewHolder.itemView.setTag(item.getId());
 //                Log.d(TAG, "onClick: id="+position);
                 Utils.showShortToast(context,"id="+position);
                 myClickLister.onItemClick(view);
@@ -102,7 +102,7 @@ public class Contact_Adapter extends RecyclerView.Adapter<Contact_Adapter.MyView
             }
         });
 //        viewHoler.itemView.setOnClickListener(this);
-        return viewHoler;
+        return viewHolder;
     }
 
     @Override

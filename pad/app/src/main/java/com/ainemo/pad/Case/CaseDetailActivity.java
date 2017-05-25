@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.ainemo.pad.Datas.CaseInfor;
 import com.ainemo.pad.R;
+import com.ainemo.pad.SomeUtils.GlobalData;
+import com.ainemo.pad.SomeUtils.MyBitmapUtils;
+import de.hdodenhof.circleimageview.CircleImageView;
 import org.litepal.crud.DataSupport;
 
 /**
@@ -26,6 +29,8 @@ public class CaseDetailActivity extends AppCompatActivity {
   private TextView detailsOfIllness;
   private Button back;
 
+  private MyBitmapUtils bitmapUtils=new MyBitmapUtils();
+  private CircleImageView imageView;
   private CaseInfor caseInfor;
   private int id;
 
@@ -35,16 +40,22 @@ public class CaseDetailActivity extends AppCompatActivity {
     setContentView(R.layout.activity_case_detail);
     Intent intent = getIntent();
     initView();
+
     id = intent.getIntExtra("caseInforId",1);
     caseInfor= DataSupport.find(CaseInfor.class,id);
+
     name.setText(caseInfor.getName());
-    gender.setText("");
-    age.setText("");
-    doctorName.setText(caseInfor.getDoctorId());
+    gender.setText(caseInfor.getSex());
+    age.setText(caseInfor.getAge());
+    doctorName.setText(caseInfor.getDoctorName());
     illnessDescription.setText(caseInfor.getIllproblem());
     diagnosisResult.setText(caseInfor.getIllresult());
     detailsOfIllness.setText(caseInfor.getIllproblem());
-    back=(Button)findViewById(R.id.return_btn);
+    try {
+      bitmapUtils.disPlay(imageView, GlobalData.GET_PATIENT_IMAGE + caseInfor.getImage());
+    }catch(Exception e){
+      e.printStackTrace();
+    }
     back.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -61,6 +72,7 @@ public class CaseDetailActivity extends AppCompatActivity {
     illnessDescription=(TextView)findViewById(R.id.illness_description);
     diagnosisResult=(TextView)findViewById(R.id.diagnosis_result);
     detailsOfIllness=(TextView)findViewById(R.id.detail_of_illness);
-
+    imageView=(CircleImageView)findViewById(R.id.head);
+    back=(Button)findViewById(R.id.return_btn);
   }
 }

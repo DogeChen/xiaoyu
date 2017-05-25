@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical" android:layout_width="288px"
+  android:layout_height="143px"
+  android:background="@drawable/menu_background"
+  android:gravity="center"
+  >
+
+  <TextView
+    android:background="@drawable/menu_item"
+    android:gravity="center"
+    android:text="@string/menu_call"
+    android:id="@+id/menu_call"
+    android:layout_width="288px"
+    android:layout_height="71px" />
+  <View
+    android:background="#ffffff"
+    android:layout_width="288px"
+    android:layout_height="1px"/>
+  <TextView
+    android:background="@drawable/menu_item"
+    android:gravity="center"
+    android:text="@string/menu_delete"
+    android:id="@+id/menu_delete"
+    android:layout_width="288px"
+    android:layout_height="71px" />
+</LinearLayout>

@@ -33,7 +33,7 @@ tools:context="com.ainemo.pad.Jujia.JujiaActivity"
     android:layout_marginTop="155px"
     android:layout_width="409px"
     android:layout_height="539px"
-    android:id="@+id/jiujia_view_pager"
+    android:id="@+id/jujia_view_pager"
     android:scrollbars="none" />
 
 
@@ -79,12 +79,12 @@ tools:context="com.ainemo.pad.Jujia.JujiaActivity"
     </RelativeLayout>
 
     <TextView
-
+      android:id="@+id/humidity"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginLeft="323px"
       android:layout_marginTop="49px"
-      android:text="49%"
+      android:hint="--%"
       android:textColor="#ffffff"
       android:textSize="60px" />
     <LinearLayout
@@ -123,7 +123,7 @@ tools:context="com.ainemo.pad.Jujia.JujiaActivity"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="center_horizontal"
-          android:text="20%"
+          android:text="--%"
           android:textColor="@color/grayBrown"
           android:textSize="30px" />
 

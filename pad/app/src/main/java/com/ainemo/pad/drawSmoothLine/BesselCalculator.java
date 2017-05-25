@@ -3,7 +3,6 @@ package com.ainemo.pad.drawSmoothLine;
 
 import android.graphics.Paint;
 import android.graphics.Rect;
-import com.ainemo.pad.drawSmoothLine.ChartData.Label;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -161,13 +160,13 @@ class BesselCalculator {
    */
   private void computeVerticalAxisInfo() {
     paint.setTextSize(style.getVerticalLabelTextSize());
-    List<Label> yLabels = data.getYLabels();
+    List<ChartData.Label> yLabels = data.getYLabels();
     int yLabelCount = data.getYLabels().size();
     String maxText = getMaxText(yLabels);
     paint.getTextBounds(maxText, 0, maxText.length(), verticalTextRect);
     float x = verticalTextRect.width() * (0.5f + style.getVerticalLabelTextPaddingRate());
     for (int i = 0; i < yLabelCount; i++) {
-      Label label = yLabels.get(i);
+      ChartData.Label label = yLabels.get(i);
       label.x = x;
       label.y = 2 * (verticalTextRect.height() * (i + 1)
           + style.getVerticalLabelTextPadding() * (i + 0.5f));
@@ -183,14 +182,14 @@ class BesselCalculator {
   private void computeVerticalAxisInfoWithHeight() {
     yAxisHeight = (height - xAxisHeight);
     paint.setTextSize(style.getVerticalLabelTextSize());
-    List<Label> yLabels = data.getYLabels();
+    List<ChartData.Label> yLabels = data.getYLabels();
     int yLabelCount = data.getYLabels().size();
     String maxText = getMaxText(yLabels);
     paint.getTextBounds(maxText, 0, maxText.length(), verticalTextRect);
     float x = verticalTextRect.width() * (0.5f + style.getVerticalLabelTextPaddingRate());
 
     for (int i = 0; i < yLabelCount; i++) {
-      Label label = yLabels.get(i);
+      ChartData.Label label = yLabels.get(i);
       label.x = x;
       label.y = yAxisHeight / yLabelCount * (i + 1);
       label.drawingY = label.y + verticalTextRect.height() / 2 - 3;
@@ -210,7 +209,7 @@ class BesselCalculator {
     xAxisWidth = (width - yAxisWidth);
 //      xAxisWidth=width;
     paint.setTextSize(style.getHorizontalLabelTextSize());
-    List<Label> xLabels = data.getXLabels();
+    List<ChartData.Label> xLabels = data.getXLabels();
     String measureText = "张";
     paint.getTextBounds(measureText, 0, measureText.length(),
         horizontalTextRect);
@@ -218,7 +217,7 @@ class BesselCalculator {
     height = (int) (yAxisHeight + xAxisHeight);// 图形的高度计算完毕
     float labelWidth = xAxisWidth / xLabels.size();
     for (int i = 0; i < xLabels.size(); i++) {
-      Label label = xLabels.get(i);
+      ChartData.Label label = xLabels.get(i);
       label.x = labelWidth * (i + 0.5f);
       label.y = height - horizontalTextRect.height() * 0.5f;
     }
@@ -228,18 +227,19 @@ class BesselCalculator {
     xAxisWidth = (width - yAxisWidth);
 //      xAxisWidth=width;
     paint.setTextSize(style.getHorizontalLabelTextSize());
-    List<Label> xLabels = data.getXLabels();
+    List<ChartData.Label> xLabels = data.getXLabels();
     String measureText = "张";
     paint.getTextBounds(measureText, 0, measureText.length(),
         horizontalTextRect);
     xAxisHeight = horizontalTextRect.height() * 2;
     float labelWidth = xAxisWidth / xLabels.size();
     for (int i = 0; i < xLabels.size(); i++) {
-      Label label = xLabels.get(i);
+      ChartData.Label label = xLabels.get(i);
       label.x = labelWidth * (i + 0.5f);
       label.y = height - horizontalTextRect.height() * 0.5f;
     }
   }
+
 
   /**
    * 计算标题的坐标信息
@@ -275,7 +275,7 @@ class BesselCalculator {
    * 计算序列的坐标信息
    */
   private void computeSeriesCoordinate() {
-    List<Label> yLabels = data.getYLabels();
+    List<ChartData.Label> yLabels = data.getYLabels();
     float minCoordinateY = yLabels.get(0).y;
     float maxCoordinateY = yLabels.get(yLabels.size() - 1).y;
     int length = 0;
@@ -293,7 +293,7 @@ class BesselCalculator {
         point.x = pointWidth * (i + 0.5f);
         float ratio = (point.valueY - data.getMinValueY()) / (float) (data.getMaxValueY() - data
             .getMinValueY());
-        point.y = maxCoordinateY - (maxCoordinateY-minCoordinateY) * ratio;
+        point.y = maxCoordinateY - (maxCoordinateY - minCoordinateY) * ratio;
         Marker marker = data.getMarker();
         if (marker != null && marker.getPoint().valueX == point.valueX) {
           Point markerPoint = marker.getPoint();
@@ -309,9 +309,9 @@ class BesselCalculator {
   /**
    * 获取label中最长的文本
    */
-  private String getMaxText(List<Label> labels) {
+  private String getMaxText(List<ChartData.Label> labels) {
     String maxText = "";
-    for (Label label : labels) {
+    for (ChartData.Label label : labels) {
       if (label.text.length() > maxText.length()) {
         maxText = label.text;
       }
@@ -345,10 +345,10 @@ class BesselCalculator {
         maxPoints.add(temp.get(i));
         i++;
       }
-      maxTemperature = String.valueOf(temp.get(0).valueY) + "℃";
-      minTemperature = String.valueOf(temp.get(temp.size() - 1).valueY) + "℃";
+      maxTemperature = String.format("%.1f",temp.get(0).valueY)+ "℃";
+      minTemperature =  String.format("%.1f",temp.get(temp.size() - 1).valueY) + "℃";
       raiseTemperature =
-          String.valueOf(temp.get(0).valueY - temp.get(temp.size() - 1).valueY) + "℃";
+          String.format("%.1f",temp.get(0).valueY - temp.get(temp.size() - 1).valueY) + "℃";
       for (Point point : series.getPoints()) {
         int index = series.getPoints().indexOf(point);
         if (gridPoints[index] == null || gridPoints[index].valueY < point.valueY) {
@@ -366,9 +366,9 @@ class BesselCalculator {
       List<Point> besselPoints = series.getBesselPoints();
       List<Point> points = new ArrayList<Point>();
       for (Point point : series.getPoints()) {
-//        if (point.valueY > 0) {
+        if (point.valueY > 0) {
           points.add(point);
-//        }
+        }
       }
       int count = points.size();
       if (count < 2) {

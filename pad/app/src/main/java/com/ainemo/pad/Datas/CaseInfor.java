@@ -36,6 +36,9 @@ public class CaseInfor  extends DataSupport implements Serializable {
      */
     private int id;
     private String name;
+    private String sex;
+    private String age;
+    private String image;
     private String creationDate;
     private String patientId;
     private String doctorId;
@@ -44,7 +47,29 @@ public class CaseInfor  extends DataSupport implements Serializable {
     private String temperature;
     private String blood_pressure;
     private String doctorName;
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
 
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public String getImage() {
+        return image;
+    }
 
     public int getId() {
         return id;

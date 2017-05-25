@@ -7,19 +7,19 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
+import com.ainemo.pad.Case.vPage.CardPagerAdapter;
+import com.ainemo.pad.Case.vPage.CustomViewPager;
 import com.ainemo.pad.Datas.CaseInfor;
 import com.ainemo.pad.R;
 import com.ainemo.pad.SomeUtils.GlobalData;
 import com.ainemo.pad.SomeUtils.Utils;
-import com.ainemo.pad.Case.vPage.CardPagerAdapter;
-import com.ainemo.pad.Case.vPage.CustomViewPager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import java.util.ArrayList;
 import java.util.List;
 import org.litepal.crud.DataSupport;
 
@@ -36,6 +36,7 @@ public class CaseListActivity extends AppCompatActivity implements CardPagerAdap
   private String patientId;
   private ProgressDialog progressDialog;
   private CustomViewPager viewPager;
+  private CardView item;
 
   private Handler handler = new Handler(){
     @Override
@@ -56,7 +57,7 @@ public class CaseListActivity extends AppCompatActivity implements CardPagerAdap
       Utils.finishActivity(CaseListActivity.this);
     } else {
       Log.e("patientid", patientId);
-//            DisplayUtils.init(this);//获取屏幕宽度高度信息
+
       initView();
       initEvent();
       new CaseListTask().execute(patientId);
@@ -67,8 +68,6 @@ public class CaseListActivity extends AppCompatActivity implements CardPagerAdap
   public void initView(){
     int mWidth = getWindowManager().getDefaultDisplay().getWidth();
     int mHeight=getWindowManager().getDefaultDisplay().getHeight();
-    float heightRatio = (float)mWidth/(float)mHeight;  //根据图片比例
-
 
     back=(Button)findViewById(R.id.return_btn);
 
@@ -76,26 +75,25 @@ public class CaseListActivity extends AppCompatActivity implements CardPagerAdap
     //设置阴影大小，即vPage  左右两个图片相距边框  maxFactor + 0.3*CornerRadius   *2
     //设置阴影大小，即vPage 上下图片相距边框  maxFactor*1.5f + 0.3*CornerRadius
     int maxFactor = mWidth / 25;
-    adapter.setMaxElevationFactor(maxFactor);
+
 
     int mWidthPading =(int )( mWidth / 3);
 
-    //因为我们adapter里的cardView CornerRadius已经写死为10dp，所以0.3*CornerRadius=3
-    //设置Elevation之后，控件宽度要减去 (maxFactor + dp2px(3)) * heightRatio
-    //heightMore 设置Elevation之后，控件高度 比  控件宽度* heightRatio  多出的部分
-    float heightMore = (1.5f * maxFactor + dp2px(3)) - (maxFactor + dp2px(3)) * heightRatio;
-//    int mHeightPadding = (int) (mHeight - heightMore);
-
-    int mHeightPadding=mHeight/10;
     viewPager = (CustomViewPager) findViewById(R.id.view_page);
 
+    adapter = new CardPagerAdapter(getApplicationContext());
+    adapter.setMaxElevationFactor(maxFactor);
+
     viewPager.setLayoutParams(
-        new RelativeLayout.LayoutParams((int) (mWidth), mHeight));
-    viewPager.setPadding(mWidthPading,mHeightPadding, mWidthPading,0);
-//    viewPager.setPageMargin(mWidth/10);
+        new LinearLayout.LayoutParams((int) (mWidth), mHeight));
+
+//    viewPager.setLayoutParams(new LinearLayout.LayoutParams((int) (mWidth), 595));
+    viewPager.setPadding(mWidthPading,0, mWidthPading,0);
+
+    viewPager.setPageMargin(0);
     viewPager.setClipToPadding(false);
 
-    viewPager.showTransformer(0.1f);
+
     net_work_available = Utils.isNetWorkAvailabe(CaseListActivity.this);
     progressDialog = new ProgressDialog(this);
     progressDialog.show();
@@ -105,10 +103,6 @@ public class CaseListActivity extends AppCompatActivity implements CardPagerAdap
     back.setOnClickListener(this);
 
     adapter.setOnCardItemClickListener(this);
-  }
-  public void initCaseList() {
-    caseList = new ArrayList<>();
-
   }
 
   /**
@@ -145,10 +139,11 @@ public class CaseListActivity extends AppCompatActivity implements CardPagerAdap
     protected void onPostExecute(String s) {
       super.onPostExecute(s);
       if (s != null && has_data) {
-        initCaseList();
-        adapter = new CardPagerAdapter(getApplicationContext());
+//        initCaseList();
+
         adapter.addCaseList(caseList);
         viewPager.setAdapter(adapter);
+        viewPager.showTransformer(0.1f);
         adapter.notifyDataSetChanged();
         for (CaseInfor caseInfor : caseList) {
           Log.e("id ", "hello " + caseInfor.getId());
@@ -165,16 +160,23 @@ public class CaseListActivity extends AppCompatActivity implements CardPagerAdap
       if (net_work_available) {
         caseList = gson.fromJson(Utils.sendRequest(GlobalData.GET_PATIENT_CASE + patientId), new TypeToken<List<CaseInfor>>() {
         }.getType());
+//        caseList=new ArrayList<>();
 //        CaseInfor caseInfor = new CaseInfor();
 //        caseInfor.setName("流云");
 //        caseInfor.setCreationDate("20170518");
 //        caseInfor.setDoctorName("孙里");
 //        caseInfor.setIllproblem("咳嗽");
 //        caseList.add(caseInfor);
+//        caseList.add(caseInfor);
+//
+//        caseList.add(caseInfor);
+//        caseList.add(caseInfor);
+//        caseList.add(caseInfor);
+
         DataSupport.deleteAll(CaseInfor.class);
-        for (CaseInfor caseInfor : caseList) {
-          if (!caseInfor.isSaved()) {
-            caseInfor.save();
+        for (CaseInfor caseInfor1 : caseList) {
+          if (!caseInfor1.isSaved()) {
+            caseInfor1.save();
           }
         }
         has_data = true;

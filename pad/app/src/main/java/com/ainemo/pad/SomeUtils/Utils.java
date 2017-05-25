@@ -36,6 +36,7 @@ public class Utils {
     private static Toast mToast=null;
     public static void showLongToast(Context context, String msg) {
         if(mToast!=null){
+            mToast.setText(msg);
             mToast.makeText(context,msg,Toast.LENGTH_LONG);
         }else {
             mToast=Toast.makeText(context,msg,Toast.LENGTH_LONG);
@@ -45,6 +46,7 @@ public class Utils {
 
     public static void showShortToast(Context context, String msg) {
         if(mToast!=null){
+            mToast.setText(msg);
             mToast.makeText(context,msg,Toast.LENGTH_SHORT);
         }else {
             mToast=Toast.makeText(context,msg,Toast.LENGTH_SHORT);
@@ -95,6 +97,40 @@ public class Utils {
         manager.notify(0, notification);
     }
 
+    public static class Counter implements Runnable {
+        private int time = 0;
+        private Activity activity;
+        private String message;
+        public Counter(Activity activity,String message) {
+            this.activity = activity;
+            this.message = message;
+        }
+
+        public Counter(int time, Activity activity, String message) {
+            this.time = time;
+            this.activity = activity;
+            this.message = message;
+        }
+
+        public Counter(int start) {
+            this.time = start;
+        }
+
+        @Override
+        public void run() {
+            try {
+                Thread.sleep(1000);
+                time++;
+                if (time > 10) {
+                    showShortToast(activity,message);
+                    activity.finish();
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
     /**
      * 移除SharedPreference
      *

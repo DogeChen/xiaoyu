@@ -35,6 +35,7 @@
       android:layout_height="84px"
       android:background="@null"
       android:textColor="#7d5951"
+      android:singleLine="true"
       android:textSize="36px" />
     <View
       android:layout_width="686px"
@@ -66,6 +67,7 @@
       android:textSize="24px"
       android:textColor="#7d5951"
 
+      android:singleLine="true"
       android:background="@null"
       android:imeOptions="actionDone|flagNoExtractUi"
       />
@@ -110,6 +112,7 @@
         android:textSize="24px"
         android:textColor="#7d5951"
 
+        android:singleLine="true"
         android:background="@null"
         android:imeOptions="actionDone|flagNoExtractUi"
         />
@@ -157,6 +160,7 @@
         android:textSize="24px"
         android:textColor="#7d5951"
 
+        android:singleLine="true"
         android:background="@null"
         android:imeOptions="actionDone|flagNoExtractUi"
         />
@@ -210,7 +214,7 @@
     android:id="@+id/finish"
     android:layout_width="216px"
     android:layout_height="72px"
-    android:background="@drawable/btn_finish"/>
+    android:background="@drawable/btn_finish_selector"/>
 
   <Button
     android:layout_marginTop="671px"
@@ -221,5 +225,5 @@
     android:id="@+id/cancel"
     android:layout_width="216px"
     android:layout_height="72px"
-    android:background="@drawable/btn_finish"/>
+    android:background="@drawable/btn_finish_selector"/>
 </RelativeLayout>

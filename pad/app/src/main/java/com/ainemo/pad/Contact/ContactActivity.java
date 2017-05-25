@@ -1,9 +1,14 @@
 package com.ainemo.pad.Contact;
 
+import ainemo.api.openapi.NemoCallback;
+import ainemo.api.openapi.NemoOpenAPI;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -14,13 +19,16 @@ import com.ainemo.pad.R;
  */
 
 
-public class ContactActivity extends FragmentActivity {
+public class ContactActivity extends FragmentActivity implements NemoCallback {
 
     private ViewPager viewPager;
     private ViewPageAdapter viewPageAdapter;
     private TabLayout tabLayout;
     private TabLayout.Tab one,two;
     private Button back;
+    Handler handler;
+    private FragmentCall fragmentCall;
+    private static final String TAG = "ContactActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +37,11 @@ public class ContactActivity extends FragmentActivity {
         setContentView(R.layout.activity_call);
 
         back=(Button)findViewById(R.id.return_btn);
+        NemoOpenAPI.getInstance().registerCallback(this);
+
         initTab();
         initEvent();
+
     }
 
     private void  initEvent(){
@@ -72,17 +83,24 @@ public class ContactActivity extends FragmentActivity {
     private void  initTab(){
         viewPager = (ViewPager) findViewById(R.id.contact_view_pager);
         viewPageAdapter = new ViewPageAdapter(getSupportFragmentManager());
+
         viewPager.setAdapter(viewPageAdapter);
         tabLayout = (TabLayout) findViewById(R.id.frag);
         tabLayout.setupWithViewPager(viewPager);
+        fragmentCall=(FragmentCall) viewPageAdapter.instantiateItem(viewPager,0);
+        handler=fragmentCall.handler;
         one = tabLayout.getTabAt(0);
         two = tabLayout.getTabAt(1);
         one.setText("呼叫");
         viewPager.setCurrentItem(0);
         two.setText("通讯录");
-
     }
 
 
+    @Override
+    public void onNemoCallback(Message message) {
 
+        Log.d(TAG, "onNemoCallback: Callback");
+        handler.sendMessage(Message.obtain(message));
+    }
 }
