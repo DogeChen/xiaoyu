@@ -22,6 +22,7 @@ import com.github.mikephil.charting.charts.BarChart;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,16 +39,17 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
   private BarChart barChart;
   private Button back;
   private List<Point> points = new ArrayList<>();
-
+  private Point currentTem;
   private View layout;
   private JujiaActivity activity;
   private List<Float> temperatureBefore;
   private List<Float> temperatures;
-  private List<Integer > xLabels=new ArrayList<>();
+  private List<Integer> xLabels=new ArrayList<>();
   private TextView maxTem;
   private TextView minTem;
   public TextView day;
   private String dayString;
+  private String currentTime;
   Fragment fragment;
   private HomeInfor homeInfor;
   Handler handler = new Handler() {
@@ -92,10 +94,50 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
   }
 
   private void handleTemperatures(){
+    temperatureBefore=new ArrayList<>();
+    Float tem=0.0f;
+    temperatureBefore.add(tem);
+    temperatureBefore.add(tem);
+    tem=2.2f;
+    temperatureBefore.add(tem);
+    temperatureBefore.add(tem);
+    tem=2.8f;
+    temperatureBefore.add(tem);
+    temperatureBefore.add(tem);
+    tem=3.9f;
+    temperatureBefore.add(tem);
+    tem=3.9f;
+    temperatureBefore.add(tem);
+    tem=1.0f;
+    temperatureBefore.add(tem);
+    tem=5.5f;
+    temperatureBefore.add(tem);
+    tem=3.9f;
+    temperatureBefore.add(tem);
+    tem=2.1f;
+    temperatureBefore.add(tem);
+    temperatureBefore.add(tem);
+    tem=3.9f;
+    temperatureBefore.add(tem);
+    tem=0.0f;
+    temperatureBefore.add(tem);
+    temperatureBefore.add(tem);
+    temperatureBefore.add(tem);
+    temperatureBefore.add(tem);
+    temperatureBefore.add(tem);
+    temperatureBefore.add(tem);
+    temperatureBefore.add(tem);
+    temperatureBefore.add(tem);
+    temperatureBefore.add(tem);
+    temperatureBefore.add(tem);
+
+    temperatures = new ArrayList<>();
+    xLabels=new ArrayList<>();
     for(int i=0;i<temperatureBefore.size();i++){
+
       if(0!=temperatureBefore.get(i).intValue()){
         temperatures.add(temperatureBefore.get(i));
-        xLabels=new ArrayList<>();
+
         xLabels.add(i);
       }
     }
@@ -119,12 +161,22 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
         Log.d(TAG, "initData: Yesterday temperatureBefore"+ temperatureBefore);
         Log.d(TAG, "initData: yesterday fragment= "+fragment);
       }
-      handleTemperatures();
+
     }
+    handleTemperatures();
     try {
       for (int i = 0; i < temperatures.size(); i++) {
         points.add(new Point((float) xLabels.get(i), temperatures.get(i), true));
       }
+      Date date=new Date(System.currentTimeMillis());
+      java.text.SimpleDateFormat format=new java.text.SimpleDateFormat("h:m");
+      currentTime=format.format(date);
+      int hour=date.getHours();
+      int minute=date.getMinutes();
+
+      currentTem=new Point((float)(hour-xLabels.get(0))+(float) minute/60.0f,Float.parseFloat(homeInfor.getTemperature()),true);
+      chart.getData().setCurrentTemperature(currentTem);
+      chart.getData().setCurrentTime(currentTime);
       List<Float> sort=new ArrayList<>();
           sort.addAll(temperatures);
           Collections.sort(sort, new Comparator<Float>() {

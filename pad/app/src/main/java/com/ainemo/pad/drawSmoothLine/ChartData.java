@@ -16,6 +16,27 @@ public class ChartData {
     private List<Label> xLabels;
     private List<Label> yLabels;
     private List<Title> titles;
+
+
+    public Point getCurrentTemperature() {
+        return currentTemperature;
+    }
+
+    public void setCurrentTemperature(Point currentTemperature) {
+        this.currentTemperature = currentTemperature;
+    }
+
+    private Point currentTemperature;
+    private String currentTime;
+
+    public String getCurrentTime() {
+        return currentTime;
+    }
+
+    public void setCurrentTime(String currentTime) {
+        this.currentTime = currentTime;
+    }
+
     private int maxValueY;
     private int minValueY;
     private int maxPointsCount;

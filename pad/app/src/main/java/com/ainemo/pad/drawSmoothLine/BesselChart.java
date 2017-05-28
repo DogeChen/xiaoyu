@@ -33,6 +33,7 @@ public class BesselChart extends LinearLayout {
     private ChartStyle style;
     /** 曲线图的数据 */
     private ChartData data;
+    private static final String TAG = "BesselChart";
 
     public BesselChart(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -164,9 +165,10 @@ public class BesselChart extends LinearLayout {
                     e.printStackTrace();
                 }
                 calculator.move(j);
-                run = !calculator.ensureTranslation();
+                this.run = !calculator.ensureTranslation();
                 besselChartView.postInvalidate();
             }
+            android.util.Log.d(TAG, "run: Animate over");
         }
     }
 

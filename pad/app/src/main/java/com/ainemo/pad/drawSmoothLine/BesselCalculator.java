@@ -67,6 +67,7 @@ class BesselCalculator {
   public String minTemperature;
   public String raiseTemperature;
   public Point currentPoint;
+  public String currentTime;
 
   /**
    * 画布X轴的平移，用于实现曲线图的滚动效果
@@ -157,13 +158,9 @@ class BesselCalculator {
     if (translateX >= 0) {
       translateX = 0;
       return true;
-    } else if (translateX < 0) {
-      if (yAxisWidth != 0 && (int) translateX <= (int) -(xAxisWidth - width)) {
+    } else if (translateX < 0&& (int) translateX <=(int) -(xAxisWidth - width)) {
         translateX = -(xAxisWidth - width);
         return true;
-      } else {
-        return false;
-      }
     } else {
       return false;
     }
@@ -362,6 +359,7 @@ class BesselCalculator {
       }
       maxTemperature = String.format("%.1f", temp.get(0).valueY) + "℃";
       minTemperature = String.format("%.1f", temp.get(temp.size() - 1).valueY) + "℃";
+      currentTime=data.getCurrentTime();
       raiseTemperature =
           String.format("%.1f", temp.get(0).valueY - temp.get(temp.size() - 1).valueY) + "℃";
       for (Point point : series.getPoints()) {
