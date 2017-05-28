@@ -44,10 +44,34 @@ public class CaseDetailActivity extends AppCompatActivity {
     id = intent.getIntExtra("caseInforId",1);
     caseInfor= DataSupport.find(CaseInfor.class,id);
 
+
+  }
+
+  public void initView(){
+    name=(TextView)findViewById(R.id.patient_name);
+    gender=(TextView)findViewById(R.id.patient_gender);
+    age=(TextView)findViewById(R.id.patient_age);
+    doctorName=(TextView)findViewById(R.id.doctor_name);
+    illnessDescription=(TextView)findViewById(R.id.illness_description);
+    diagnosisResult=(TextView)findViewById(R.id.diagnosis_result);
+    detailsOfIllness=(TextView)findViewById(R.id.detail_of_illness);
+    imageView=(CircleImageView)findViewById(R.id.head);
+    back=(Button)findViewById(R.id.return_btn);
+  }
+
+  public void initEvent(){
     name.setText(caseInfor.getName());
     gender.setText(caseInfor.getSex());
     age.setText(caseInfor.getAge());
     doctorName.setText(caseInfor.getDoctorName());
+    doctorName.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Intent intent=new Intent(CaseDetailActivity.this, DoctorActivity.class);
+        intent.putExtra("doctorId",caseInfor.getDoctorId());
+        startActivity(intent);
+      }
+    });
     illnessDescription.setText(caseInfor.getIllproblem());
     diagnosisResult.setText(caseInfor.getIllresult());
     detailsOfIllness.setText(caseInfor.getIllproblem());
@@ -62,17 +86,5 @@ public class CaseDetailActivity extends AppCompatActivity {
         finish();
       }
     });
-  }
-
-  public void initView(){
-    name=(TextView)findViewById(R.id.patient_name);
-    gender=(TextView)findViewById(R.id.patient_gender);
-    age=(TextView)findViewById(R.id.patient_age);
-    doctorName=(TextView)findViewById(R.id.doctor_name);
-    illnessDescription=(TextView)findViewById(R.id.illness_description);
-    diagnosisResult=(TextView)findViewById(R.id.diagnosis_result);
-    detailsOfIllness=(TextView)findViewById(R.id.detail_of_illness);
-    imageView=(CircleImageView)findViewById(R.id.head);
-    back=(Button)findViewById(R.id.return_btn);
   }
 }

@@ -96,6 +96,10 @@ public class ChartStyle {
   private int lineWidth;
 
 
+
+  private int xLabelsPageCount;
+
+
   public int getLineWidth() {
     return lineWidth;
   }
@@ -123,7 +127,7 @@ public class ChartStyle {
     minTemTextSize = 24;
     raiseTemTextSize = 24;
     lineWidth=6;
-
+    xLabelsPageCount=8;
   }
 
   public float getVerticalLabelTextSize() {
@@ -293,5 +297,12 @@ public class ChartStyle {
 
   public void setRaiseTemTextSize(int raiseTemTextSize) {
     this.raiseTemTextSize = raiseTemTextSize;
+  }
+  public int getxLabelsPageCount() {
+    return xLabelsPageCount;
+  }
+
+  public void setxLabelsPageCount(int xLabelsPageCount) {
+    this.xLabelsPageCount = xLabelsPageCount;
   }
 }

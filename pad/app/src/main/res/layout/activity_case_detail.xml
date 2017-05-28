@@ -21,8 +21,8 @@
     android:layout_height="88px"
     />
   <RelativeLayout
-    android:layout_marginLeft="550px"
-    android:layout_marginTop="130px"
+    android:layout_marginLeft="500px"
+    android:layout_marginTop="75px"
     android:layout_width="600px"
     android:layout_height="290px"
     android:background="@drawable/detail_bg"
@@ -60,12 +60,12 @@
   </RelativeLayout>
 
   <RelativeLayout
-    android:layout_marginLeft="550px"
-    android:layout_marginTop="450px"
+    android:layout_marginLeft="500px"
+    android:layout_marginTop="300px"
     android:layout_width="600px"
     android:layout_height="290px"
     android:background="@drawable/detail_bg"
-    android:layout_alignParentTop="true"
+    android:layout_alignTop="@+id/relativeLayout"
     android:layout_alignParentStart="true">
     <TextView
       android:layout_marginLeft="22px"

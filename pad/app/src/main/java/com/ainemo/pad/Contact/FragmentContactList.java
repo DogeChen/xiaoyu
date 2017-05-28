@@ -151,10 +151,13 @@ public class FragmentContactList extends Fragment implements MyClickLister, OnCl
       @Override
       public void onTouchingLetterChanged(String s) {
         // 该字母首次出现的位置
-
-        int position = adapter.getPositionForSection(s.charAt(0));
-        if (position != -1) {
-          sortView.scrollToPosition(position);
+        try {
+          int position = adapter.getPositionForSection(s.charAt(0));
+          if (position != -1) {
+            sortView.scrollToPosition(position);
+          }
+        }catch (Exception e){
+          e.printStackTrace();
         }
       }
     });
@@ -324,6 +327,8 @@ public class FragmentContactList extends Fragment implements MyClickLister, OnCl
    */
   private List<SortModel> filledData(Integer[] ids, String[] date, String[] numbers) {
     List<SortModel> mSortList = new ArrayList<SortModel>();
+
+
 
     for (int i = 0; i < date.length; i++) {
       SortModel sortModel = new SortModel();

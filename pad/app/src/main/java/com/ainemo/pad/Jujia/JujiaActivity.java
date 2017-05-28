@@ -37,7 +37,6 @@ import java.util.List;
 
 public class JujiaActivity extends AppCompatActivity implements ChartListener {
 
-
   private android.support.v4.view.ViewPager jiujiaviewpager;
   private JiuJiaViewPageAdapter viewPageAdapter;
 
@@ -191,6 +190,7 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
       String infor = Utils.sendRequest(
           GlobalData.GET_HOME_INFOR + Utils.getValue(JujiaActivity.this, GlobalData.PATIENT_ID));
       homeInfor = gson.fromJson(infor, HomeInfor.class);
+      Log.d(TAG, "doInBackground: homeInfo.temperatures "+homeInfor.getTemperatures());
       return null;
     }
 

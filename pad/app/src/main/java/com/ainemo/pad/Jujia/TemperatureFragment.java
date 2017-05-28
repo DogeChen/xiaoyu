@@ -41,7 +41,9 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
 
   private View layout;
   private JujiaActivity activity;
-  private List<Float> temperature;
+  private List<Float> temperatureBefore;
+  private List<Float> temperatures;
+  private List<Integer > xLabels=new ArrayList<>();
   private TextView maxTem;
   private TextView minTem;
   public TextView day;
@@ -89,31 +91,42 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
 
   }
 
+  private void handleTemperatures(){
+    for(int i=0;i<temperatureBefore.size();i++){
+      if(0!=temperatureBefore.get(i).intValue()){
+        temperatures.add(temperatureBefore.get(i));
+        xLabels=new ArrayList<>();
+        xLabels.add(i);
+      }
+    }
+  }
+
   private void initData() {
     List<Series> seriess = new ArrayList<Series>();
     homeInfor=activity.getHomeInfo();
     if(homeInfor==null){
       for(int i=0;i<8;i++){
-        temperature=new ArrayList<>();
-        temperature.add((float)0);
+        temperatureBefore =new ArrayList<>();
+        temperatureBefore.add((float)0);
       }
     }else{
       if(dayString!=null&&dayString.equals("今天")){
-        temperature=homeInfor.getTemperatures();
-        Log.d(TAG, "initData: Today temperature"+temperature);
+        temperatureBefore =homeInfor.getTemperatures();
+        Log.d(TAG, "initData: Today temperatureBefore"+ temperatureBefore);
         Log.d(TAG, "initData: today fragment= "+fragment);
       }else if(dayString!=null&&dayString.equals("昨天")){
-        temperature=homeInfor.getTemperatures();
-        Log.d(TAG, "initData: Yesterday temperature"+temperature);
+        temperatureBefore =homeInfor.getTemperatures();
+        Log.d(TAG, "initData: Yesterday temperatureBefore"+ temperatureBefore);
         Log.d(TAG, "initData: yesterday fragment= "+fragment);
       }
+      handleTemperatures();
     }
-//    try {
-      for (int i = 0; i < 8; i++) {
-        points.add(new Point((float) i, temperature.get(i), true));
+    try {
+      for (int i = 0; i < temperatures.size(); i++) {
+        points.add(new Point((float) xLabels.get(i), temperatures.get(i), true));
       }
       List<Float> sort=new ArrayList<>();
-          sort.addAll(temperature);
+          sort.addAll(temperatures);
           Collections.sort(sort, new Comparator<Float>() {
         @Override
         public int compare(Float aFloat, Float t1) {
@@ -129,9 +142,9 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
       maxTem.setText(String.valueOf(sort.get(sort.size()-1).intValue())+"℃");
       minTem.setText(String.valueOf(sort.get(0).intValue())+"℃");
 
-//    } catch (Exception e) {
-//      e.printStackTrace();
-//    }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     seriess.add(new Series("温度", Color.WHITE, points));
     chart.getData().setLabelTransform(new ChartData.LabelTransform() {
       @Override
@@ -162,7 +175,6 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
     barChart = (BarChart) layout.findViewById(R.id.bar_shidu_chart);
     back = (Button) layout.findViewById(R.id.return_btn);
     chart.setSmoothness(0.4f);
-    chart.setChartListener(this);
     chart.setChartListener(this);
 
     chart.setSmoothness(0.33f);

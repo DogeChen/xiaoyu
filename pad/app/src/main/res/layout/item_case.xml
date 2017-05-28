@@ -58,7 +58,7 @@
       android:layout_marginTop="306px"
       android:layout_marginLeft="22px"
       android:paddingLeft="50px"
-      android:text="王小明"
+      android:text=""
       android:textColor="@color/brownLight"
       android:textSize="30px" />
     <!--</LinearLayout>-->
@@ -76,7 +76,7 @@
       android:layout_marginTop="306px"
       android:layout_marginLeft="198px"
       android:paddingLeft="50px"
-      android:text="男"
+      android:text=""
       android:textColor="@color/brownLight"
       android:textSize="30px" />
 
@@ -93,7 +93,7 @@
       android:layout_marginTop="350px"
       android:layout_marginLeft="22px"
       android:paddingLeft="50px"
-      android:text="48岁"
+      android:text=""
       android:textColor="@color/brownLight"
       android:textSize="30px" />
 
@@ -111,7 +111,7 @@
       android:layout_marginTop="394px"
       android:layout_marginLeft="22px"
       android:paddingLeft="50px"
-      android:text="刘兰"
+      android:text=""
       android:textColor="@color/brownLight"
       android:textSize="30px" />
 

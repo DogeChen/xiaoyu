@@ -116,7 +116,7 @@ class BesselChartView extends View {
 
 
   public void animateScrollToEnd(int duration) {
-    scroller.startScroll(0, 0, -calculator.xAxisWidth / 2, 0, duration);
+    scroller.startScroll(0, 0, -calculator.xAxisWidth+calculator.width, 0, duration);
   }
 
   public void setChartListener(BesselChart.ChartListener chartListener) {
@@ -142,7 +142,7 @@ class BesselChartView extends View {
       return;
     }
     calculator.ensureTranslation();
-    //canvas.translate(calculator.getTranslateX(), 0);
+    canvas.translate(calculator.getTranslateX(), 0);//实现拖动
     drawBackGround(canvas);
     drawGrid(canvas);
     drawCurveAndPoints(canvas);
@@ -152,19 +152,19 @@ class BesselChartView extends View {
   }
 
 
-  /**
-   * 绘制曲线图中的maker
-   */
-  private void drawMarker(Canvas canvas) {
-    Marker marker = data.getMarker();
-    if (marker != null) {
-      paint.setAlpha(255);
-      canvas.drawBitmap(marker.getBitmap(), null, marker
-              .updateRect(marker.getPoint().x, marker.getPoint().y, marker.getWidth(),
-                  marker.getHeight()),
-          paint);
-    }
-  }
+//  /**
+//   * 绘制曲线图中的maker
+//   */
+//  private void drawMarker(Canvas canvas) {
+//    Marker marker = data.getMarker();
+//    if (marker != null) {
+//      paint.setAlpha(255);
+//      canvas.drawBitmap(marker.getBitmap(), null, marker
+//              .updateRect(marker.getPoint().x, marker.getPoint().y, marker.getWidth(),
+//                  marker.getHeight()),
+//          paint);
+//    }
+//  }
 
   /**
    *
@@ -178,9 +178,9 @@ class BesselChartView extends View {
 //    path.lineTo((float) (calculator.height/2.0),calculator.width);
 //    path.lineTo(0,calculator.width);
 //    path.close();
-    canvas.drawRect(0,0,calculator.width, ((float) calculator.height/2),paint);
+    canvas.drawRect(0,0,calculator.viewWidth, ((float) calculator.height/2),paint);
     paint.setColor(style.getBackgroundDownPartColor());
-    canvas.drawRect(0, ((float) calculator.height/2),calculator.width,calculator.height,paint);
+    canvas.drawRect(0, ((float) calculator.height/2),calculator.viewWidth,calculator.height,paint);
   }
   /**
    * 绘制网格线
@@ -251,15 +251,23 @@ class BesselChartView extends View {
 //          }
 //        }
 //      }else{
-        for (Point point : calculator.maxPoints ) {
-          if (point.willDrawing) {
-            paint.setAlpha(80);
-            canvas.drawCircle(point.x, point.y, style.getLineWidth(), paint);
-            paint.setAlpha(180);
-            canvas.drawCircle(point.x, point.y, 2*style.getLineWidth(), paint);
-            paint.setAlpha(255);
-          }
-        }
+//        for (Point point : calculator.maxPoints ) {
+//          if (point.willDrawing) {
+//            paint.setAlpha(80);
+//            canvas.drawCircle(point.x, point.y, style.getLineWidth(), paint);
+//            paint.setAlpha(180);
+//            canvas.drawCircle(point.x, point.y, 2*style.getLineWidth(), paint);
+//            paint.setAlpha(255);
+//          }
+//        }
+      Point point=calculator.maxPoints.get(0);
+      if (point.willDrawing) {
+        paint.setAlpha(80);
+        canvas.drawCircle(point.x, point.y, style.getLineWidth(), paint);
+        paint.setAlpha(180);
+        canvas.drawCircle(point.x, point.y, 2*style.getLineWidth(), paint);
+        paint.setAlpha(255);
+      }
 //      }// 绘制结点
 //      if (drawBesselPoint) {
 //        for (Point point : series.getPoints()) {

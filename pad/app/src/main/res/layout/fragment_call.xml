@@ -64,6 +64,7 @@
         android:background="@drawable/call_background_top"
         >
         <TextView
+          android:gravity="center"
           android:layout_centerInParent="true"
           android:id="@+id/call_number"
           android:layout_width="wrap_content"

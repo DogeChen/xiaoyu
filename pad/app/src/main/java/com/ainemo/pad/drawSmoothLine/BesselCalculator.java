@@ -31,6 +31,11 @@ class BesselCalculator {
    */
   public int width;
   /**
+   * view的宽度
+   */
+  public int viewWidth;
+
+  /**
    * 纵轴的宽度
    */
   public int yAxisWidth;
@@ -61,6 +66,7 @@ class BesselCalculator {
   public String maxTemperature;
   public String minTemperature;
   public String raiseTemperature;
+  public Point currentPoint;
 
   /**
    * 画布X轴的平移，用于实现曲线图的滚动效果
@@ -95,19 +101,25 @@ class BesselCalculator {
    *
    * @param width 曲线图区域的宽度
    */
-  public void compute(int width) {
-    this.width = width;
-    this.translateX = 0;
-    computeVerticalAxisInfo();// 计算纵轴参数
-    computeHorizontalAxisInfo();// 计算横轴参数
-    computeTitlesInfo();// 计算标题参数
-    computeSeriesCoordinate();// 计算纵轴参数
-    computeBesselPoints();// 计算贝塞尔结点
-    computeGridPoints();// 计算网格顶点
-  }
-
+//  public void compute(int width) {
+//    this.width = width;
+//    this.translateX = 0;
+//    computeVerticalAxisInfo();// 计算纵轴参数
+//    computeHorizontalAxisInfo();// 计算横轴参数
+//    computeTitlesInfo();// 计算标题参数
+//    computeSeriesCoordinate();// 计算纵轴参数
+//    computeBesselPoints();// 计算贝塞尔结点
+//    computeGridPoints();// 计算网格顶点
+//  }
   public void compute(int width, int height) {
+
     this.width = width;
+    try {
+      List<Point> points = data.getSeriesList().get(0).getPoints();
+      this.viewWidth = width * points.size() / style.getxLabelsPageCount();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     this.height = height;
     this.translateX = 0;
     computeHorizontalAxisInfoWithHeight();// 计算横轴参数
@@ -146,12 +158,15 @@ class BesselCalculator {
       translateX = 0;
       return true;
     } else if (translateX < 0) {
-      if (yAxisWidth != 0 && translateX < -xAxisWidth / 2) {
-        translateX = -xAxisWidth / 2;
+      if (yAxisWidth != 0 && (int) translateX <= (int) -(xAxisWidth - width)) {
+        translateX = -(xAxisWidth - width);
         return true;
+      } else {
+        return false;
       }
+    } else {
+      return false;
     }
-    return false;
   }
 
   /**
@@ -205,33 +220,33 @@ class BesselCalculator {
   /**
    * 计算横轴参数
    */
-  private void computeHorizontalAxisInfo() {
-    xAxisWidth = (width - yAxisWidth);
-//      xAxisWidth=width;
-    paint.setTextSize(style.getHorizontalLabelTextSize());
-    List<ChartData.Label> xLabels = data.getXLabels();
-    String measureText = "张";
-    paint.getTextBounds(measureText, 0, measureText.length(),
-        horizontalTextRect);
-    xAxisHeight = horizontalTextRect.height() * 2;
-    height = (int) (yAxisHeight + xAxisHeight);// 图形的高度计算完毕
-    float labelWidth = xAxisWidth / xLabels.size();
-    for (int i = 0; i < xLabels.size(); i++) {
-      ChartData.Label label = xLabels.get(i);
-      label.x = labelWidth * (i + 0.5f);
-      label.y = height - horizontalTextRect.height() * 0.5f;
-    }
-  }
-
+//  private void computeHorizontalAxisInfo() {
+//    xAxisWidth = (viewWidth - yAxisWidth);
+////      xAxisWidth=width;
+//    paint.setTextSize(style.getHorizontalLabelTextSize());
+//    List<ChartData.Label> xLabels = data.getXLabels();
+//    String measureText = "张";
+//    paint.getTextBounds(measureText, 0, measureText.length(),
+//        horizontalTextRect);
+//    xAxisHeight = horizontalTextRect.height() * 2;
+//    height = (int) (yAxisHeight + xAxisHeight);// 图形的高度计算完毕
+//    float labelWidth = xAxisWidth / xLabels.size();
+//    for (int i = 0; i < xLabels.size(); i++) {
+//      ChartData.Label label = xLabels.get(i);
+//      label.x = labelWidth * (i + 0.5f);
+//      label.y = height - horizontalTextRect.height() * 0.5f;
+//    }
+//  }
   private void computeHorizontalAxisInfoWithHeight() {
-    xAxisWidth = (width - yAxisWidth);
-//      xAxisWidth=width;
+    xAxisWidth = (viewWidth - yAxisWidth);
+
     paint.setTextSize(style.getHorizontalLabelTextSize());
     List<ChartData.Label> xLabels = data.getXLabels();
     String measureText = "张";
     paint.getTextBounds(measureText, 0, measureText.length(),
         horizontalTextRect);
     xAxisHeight = horizontalTextRect.height() * 2;
+//    float labelWidth = xAxisWidth / style.getxLabelsPageCount();
     float labelWidth = xAxisWidth / xLabels.size();
     for (int i = 0; i < xLabels.size(); i++) {
       ChartData.Label label = xLabels.get(i);
@@ -253,7 +268,7 @@ class BesselCalculator {
     List<Title> titles = data.getTitles();
     int count = titles.size();
     float stepX =
-        (width - style.getHorizontalTitlePaddingLeft() - style.getHorizontalTitlePaddingRight())
+        (viewWidth - style.getHorizontalTitlePaddingLeft() - style.getHorizontalTitlePaddingRight())
             / count;
     for (Title title : titles) {
       if (title instanceof Marker) {
@@ -345,10 +360,10 @@ class BesselCalculator {
         maxPoints.add(temp.get(i));
         i++;
       }
-      maxTemperature = String.format("%.1f",temp.get(0).valueY)+ "℃";
-      minTemperature =  String.format("%.1f",temp.get(temp.size() - 1).valueY) + "℃";
+      maxTemperature = String.format("%.1f", temp.get(0).valueY) + "℃";
+      minTemperature = String.format("%.1f", temp.get(temp.size() - 1).valueY) + "℃";
       raiseTemperature =
-          String.format("%.1f",temp.get(0).valueY - temp.get(temp.size() - 1).valueY) + "℃";
+          String.format("%.1f", temp.get(0).valueY - temp.get(temp.size() - 1).valueY) + "℃";
       for (Point point : series.getPoints()) {
         int index = series.getPoints().indexOf(point);
         if (gridPoints[index] == null || gridPoints[index].valueY < point.valueY) {
@@ -366,10 +381,10 @@ class BesselCalculator {
       List<Point> besselPoints = series.getBesselPoints();
       List<Point> points = new ArrayList<Point>();
       for (Point point : series.getPoints()) {
-        if (point.valueY > 0) {
-          points.add(point);
-        }
+//        if (point.valueY > 0) {
+        points.add(point);
       }
+//      }
       int count = points.size();
       if (count < 2) {
         continue;

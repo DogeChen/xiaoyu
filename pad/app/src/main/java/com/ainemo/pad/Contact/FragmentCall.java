@@ -278,7 +278,7 @@ public class FragmentCall extends Fragment implements RecordClickLister,OnClickL
     try {
       View mPopupWindowView = activity.getLayoutInflater()
           .inflate(R.layout.menu_record, null);
-      mPopupWindow = new PopupWindow(mPopupWindowView, 288, 215, true);
+      mPopupWindow = new PopupWindow(mPopupWindowView, 288, 143, true);
       mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
       mPopupWindow.setOutsideTouchable(true);
       mPopupWindow.showAsDropDown(view, view.getWidth() / 2, -view.getHeight() / 2);
