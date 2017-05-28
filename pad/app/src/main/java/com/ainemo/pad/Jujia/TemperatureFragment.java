@@ -14,10 +14,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.ainemo.pad.Datas.HomeInfor;
 import com.ainemo.pad.R;
-import com.ainemo.pad.drawSmoothLine.BesselChart;
-import com.ainemo.pad.drawSmoothLine.ChartData;
-import com.ainemo.pad.drawSmoothLine.Point;
-import com.ainemo.pad.drawSmoothLine.Series;
+import com.ainemo.pad.Jujia.drawSmoothLine.BesselChart;
+import com.ainemo.pad.Jujia.drawSmoothLine.ChartData;
+import com.ainemo.pad.Jujia.drawSmoothLine.Point;
+import com.ainemo.pad.Jujia.drawSmoothLine.Series;
 import com.github.mikephil.charting.charts.BarChart;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,7 +62,6 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
           Log.d(TAG, "handleMessage: fragment handler"+handler);
         initData();
           break;
-
       }
     }
   };
@@ -161,7 +160,6 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
         Log.d(TAG, "initData: Yesterday temperatureBefore"+ temperatureBefore);
         Log.d(TAG, "initData: yesterday fragment= "+fragment);
       }
-
     }
     handleTemperatures();
     try {
@@ -169,12 +167,25 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
         points.add(new Point((float) xLabels.get(i), temperatures.get(i), true));
       }
       Date date=new Date(System.currentTimeMillis());
-      java.text.SimpleDateFormat format=new java.text.SimpleDateFormat("h:m");
+      java.text.SimpleDateFormat format=new java.text.SimpleDateFormat("H:mm");
       currentTime=format.format(date);
       int hour=date.getHours();
       int minute=date.getMinutes();
+//      hour=12;
 
-      currentTem=new Point((float)(hour-xLabels.get(0))+(float) minute/60.0f,Float.parseFloat(homeInfor.getTemperature()),true);
+      try {
+//        currentTem = new Point((float) (hour - xLabels.get(0)) + (float) minute / 60.0f,
+//            Float.parseFloat(homeInfor.getTemperature()), true);
+        currentTem = new Point((float) (hour - xLabels.get(0)) + (float) minute / 60.0f,
+            2.1f, true);
+        if(hour>=xLabels.get(xLabels.size()-1)||hour<xLabels.get(0)){
+          currentTem.willDrawing=false;
+        }
+      }catch (Exception e){
+        currentTem=new Point(0f,0f,false);
+        e.printStackTrace();
+      }
+
       chart.getData().setCurrentTemperature(currentTem);
       chart.getData().setCurrentTime(currentTime);
       List<Float> sort=new ArrayList<>();

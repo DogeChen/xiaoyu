@@ -1,5 +1,5 @@
 
-package com.ainemo.pad.drawSmoothLine;
+package com.ainemo.pad.Jujia.drawSmoothLine;
 
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -298,7 +298,7 @@ class BesselCalculator {
     }
     for (Series series : data.getSeriesList()) {
       List<Point> points = series.getPoints();
-      float pointWidth = xAxisWidth / points.size();
+       float pointWidth= xAxisWidth / points.size();
       for (int i = 0; i < points.size(); i++) {
         Point point = points.get(i);
         // 计算数据点的坐标
@@ -314,6 +314,14 @@ class BesselCalculator {
               .getMinValueY());
           markerPoint.y = maxCoordinateY - (maxCoordinateY - minCoordinateY) * ratio;
         }
+      }
+      currentPoint=data.getCurrentTemperature();
+      if(currentPoint.willDrawing) {
+        currentPoint.x = pointWidth * (currentPoint.valueX + 0.5f);
+        float ratio =
+            (currentPoint.valueY - data.getMinValueY()) / (float) (data.getMaxValueY() - data
+                .getMinValueY());
+        currentPoint.y = maxCoordinateY - (maxCoordinateY - minCoordinateY) * ratio;
       }
     }
   }

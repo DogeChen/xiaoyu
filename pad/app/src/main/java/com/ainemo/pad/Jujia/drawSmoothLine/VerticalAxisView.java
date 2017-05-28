@@ -1,12 +1,12 @@
 
-package com.ainemo.pad.drawSmoothLine;
+package com.ainemo.pad.Jujia.drawSmoothLine;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.View;
 import android.view.ViewGroup;
-import com.ainemo.pad.drawSmoothLine.ChartData.Label;
+import com.ainemo.pad.Jujia.drawSmoothLine.ChartData.Label;
 import java.util.List;
 
 /**

@@ -1,5 +1,5 @@
 
-package com.ainemo.pad.drawSmoothLine;
+package com.ainemo.pad.Jujia.drawSmoothLine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +48,7 @@ public class ChartData {
     private int xLabelUsageSeries;
 
     ChartData() {
+        currentTemperature=new Point();
         xLabels = new ArrayList<Label>();
         yLabels = new ArrayList<Label>();
         titles=new ArrayList<Title>();

@@ -1,5 +1,5 @@
 
-package com.ainemo.pad.drawSmoothLine;
+package com.ainemo.pad.Jujia.drawSmoothLine;
 
 import java.util.ArrayList;
 import java.util.List;

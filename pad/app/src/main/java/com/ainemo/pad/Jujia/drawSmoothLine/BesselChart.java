@@ -1,5 +1,5 @@
 
-package com.ainemo.pad.drawSmoothLine;
+package com.ainemo.pad.Jujia.drawSmoothLine;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -128,7 +128,7 @@ public class BesselChart extends LinearLayout {
 //                 horizontalLegend.
 //                setLayoutParams(getLayoutParams());
                 invalidate();
-                besselChartView.animateScrollToEnd(500);
+                besselChartView.animateScrollToEnd(2000);
                  if (animate && !animateRunnable.run) {
                  // 同一个时间只能有一个动画在跑
                  animateRunnable.run = true;

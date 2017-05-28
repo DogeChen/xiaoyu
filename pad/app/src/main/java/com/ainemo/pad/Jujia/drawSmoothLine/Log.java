@@ -1,4 +1,4 @@
-package com.ainemo.pad.drawSmoothLine;
+package com.ainemo.pad.Jujia.drawSmoothLine;
 
 public class Log {
     private static boolean isDebug=true;

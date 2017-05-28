@@ -5,6 +5,7 @@ import ainemo.api.openapi.Msg;
 import ainemo.api.openapi.NemoConst;
 import ainemo.api.openapi.NemoOpenAPI;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,6 +23,7 @@ import com.ainemo.pad.Datas.UserInfor;
 import com.ainemo.pad.Jujia.JujiaActivity;
 import com.ainemo.pad.SomeUtils.GlobalData;
 import com.ainemo.pad.SomeUtils.Utils;
+import com.google.gson.Gson;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener{
 
@@ -44,16 +46,26 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
     initView();
 
     NemoSn = getIntent().getStringExtra("nemoNumber");
-
     Log.i(TAG, "onCreate: NemoSn="+NemoSn+" getNemoSn()="+ NemoOpenAPI.getInstance().getNemoSn());
     //获取小鱼序列号的代码
-    patientId="2";
-    Utils.putValue(this, GlobalData.PATIENT_ID,patientId);
+
+    NemoSn="214207";
+    Utils.putValue(this,GlobalData.XIAO_YU,NemoSn);
+    patientId=Utils.getValue(this,GlobalData.PATIENT_ID);
+
+    patientId="2";//待注释
+
+//    if(patientId==null){
+//      new GetPatientIdTask().execute();
+//    }
+
+    initView();
+    initEvent();
   }
 
   private void initView() {
     name = (TextView) findViewById(R.id.home_name);
-    number = (Button) findViewById(R.id.return_btn);
+    number = (TextView) findViewById(R.id.home_number);
     returnBtn = (Button) findViewById(R.id.return_btn);
     call = (ImageView) findViewById(R.id.home_call_btn);
     patient = (ImageView) findViewById(R.id.home_par_btn);
@@ -84,6 +96,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
     }
   }
 
+
+  private void initEvent(){
+    name.setText("刘云, 欢迎回来");
+    number.setText("小鱼号："+NemoSn);
+  }
   @Override
   public void onBackPressed(){
 
@@ -109,5 +126,39 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
       }
     }
   };
+
+  class GetPatientIdTask extends AsyncTask<Void, Void, Void> {
+
+    private Gson gson = new Gson();
+
+    @Override
+    protected Void doInBackground(Void... params) {
+      String infor = Utils.sendRequest(
+          GlobalData.GET_PATIENT_ID +NemoSn);
+      try{
+        if(infor.equals("not_exist")){
+          Utils.showShortToast(getApplicationContext(),"病人ID获取失败，请在手机端下载app注册,检查该小鱼号绑定了用户");
+        }else if(infor.equals("param_error")){
+          Utils.showShortToast(getApplicationContext(),"参数错误");
+        }else{
+          Utils.putValue(MainActivity.this,GlobalData.PATIENT_ID,infor);
+        }
+      }catch (Exception e){
+        Utils.showShortToast(getApplicationContext(),"访问数据错误");
+        e.printStackTrace();
+      }
+      return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+      super.onPostExecute(aVoid);
+    }
+
+    @Override
+    protected void onPreExecute() {
+      super.onPreExecute();
+    }
+  }
 
 }

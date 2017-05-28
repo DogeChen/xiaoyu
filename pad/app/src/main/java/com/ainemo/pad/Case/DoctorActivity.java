@@ -27,16 +27,16 @@ public class DoctorActivity extends AppCompatActivity {
 
   private String doctorId;
   private Button returnBtn;
-  private de.hdodenhof.circleimageview.CircleImageView persondetailimagedoctor;
-  private TextView persondetailnamedoctor;
+  private de.hdodenhof.circleimageview.CircleImageView ImageView;
+  private TextView doctorName;
   //  private TextView persondetailinfodoctor;
   private TextView gender;
   private TextView age;
-  private TextView persondetailjobdoctor;
-  private TextView doctorpartnamedoctor;
-  private TextView doctorparttimedoctor;
-  private TextView doctorpartgoodat;
-  private TextView doctorinfointrodetail;
+  private TextView jobTitle;
+  private TextView hospital;
+  private TextView email;
+  private TextView talent;
+  private TextView introduction;
   private ProgressDialog dialog;
   private DoctorInfor doctorInfor;
   private boolean net_work_available, has_data;
@@ -67,16 +67,16 @@ public class DoctorActivity extends AppCompatActivity {
     returnBtn = (Button) findViewById(R.id.return_btn);
     dialog = new ProgressDialog(this);
     dialog.show();
-    this.doctorinfointrodetail = (TextView) findViewById(R.id.introduction);
-    this.doctorpartgoodat = (TextView) findViewById(R.id.talent);
-    this.doctorparttimedoctor = (TextView) findViewById(R.id.email);
-    this.doctorpartnamedoctor = (TextView) findViewById(R.id.hospital);
-    this.persondetailjobdoctor = (TextView) findViewById(R.id.job_title);
+    this.introduction = (TextView) findViewById(R.id.introduction);
+    this.talent = (TextView) findViewById(R.id.talent);
+    this.email = (TextView) findViewById(R.id.email);
+    this.hospital = (TextView) findViewById(R.id.hospital);
+    this.jobTitle = (TextView) findViewById(R.id.job_title);
 //    this.persondetailinfodoctor = (TextView) findViewById(R.id.);
     this.age = (TextView) findViewById(R.id.doctor_age);
     this.gender = (TextView) findViewById(R.id.doctor_gender);
-    this.persondetailnamedoctor = (TextView) findViewById(R.id.doctor_name);
-    this.persondetailimagedoctor = (CircleImageView) findViewById(R.id.head);
+    this.doctorName = (TextView) findViewById(R.id.doctor_name);
+    this.ImageView = (CircleImageView) findViewById(R.id.head);
 
 //    make_call = (Button) findViewById(R.id.doctor_part_button_doctor);
     net_work_available = Utils.isNetWorkAvailabe(DoctorActivity.this);
@@ -135,18 +135,18 @@ public class DoctorActivity extends AppCompatActivity {
     protected void onPostExecute(Void aVoid) {
       super.onPostExecute(aVoid);
       if (has_data) {
-        persondetailnamedoctor.setText(doctorInfor.getName());
+        doctorName.setText(doctorInfor.getName());
 //        persondetailinfodoctor.setText(doctorInfor.getSex() + "   " + doctorInfor.getAge());
         age.setText(doctorInfor.getAge());
         gender.setText(doctorInfor.getSex());
-        persondetailjobdoctor.setText(doctorInfor.getJob_title());
-        doctorpartnamedoctor.setText(doctorInfor.getHospital());
-        doctorparttimedoctor.setText(doctorInfor.getMail());
-        doctorpartgoodat.setText(doctorInfor.getGood_at());
-        doctorinfointrodetail
-            .setText("职称: " + doctorInfor.getJob_title() + "\n其他: " + doctorInfor.getCases());
+        jobTitle.setText(doctorInfor.getJob_title());
+        hospital.setText(doctorInfor.getHospital());
+        email.setText(doctorInfor.getMail());
+        talent.setText(doctorInfor.getGood_at());
+        introduction
+            .setText("职称: " + doctorInfor.getJob_title() + "\n\n其他: " + doctorInfor.getCases());
         Log.e(TAG, "http://139.196.40.97/upload/doctorimage/" + doctorInfor.getImage());
-        bitmapUtils.disPlay(persondetailimagedoctor,
+        bitmapUtils.disPlay(ImageView,
             "http://139.196.40.97/upload/doctorimage/" + doctorInfor.getImage());
       }
 

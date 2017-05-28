@@ -39,12 +39,12 @@ public class CaseDetailActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_case_detail);
     Intent intent = getIntent();
-    initView();
 
+    initView();
     id = intent.getIntExtra("caseInforId",1);
     caseInfor= DataSupport.find(CaseInfor.class,id);
 
-
+    initEvent();
   }
 
   public void initView(){

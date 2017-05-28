@@ -10,7 +10,7 @@
     android:layout_width="409px"
     android:layout_height="539px"
     android:background="@color/white">
-    <com.ainemo.pad.drawSmoothLine.BesselChart
+    <com.ainemo.pad.Jujia.drawSmoothLine.BesselChart
       android:id="@+id/shidu_line_chart"
       android:layout_width="match_parent"
       android:layout_height="300px"

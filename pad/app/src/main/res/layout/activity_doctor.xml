@@ -178,40 +178,49 @@
       android:textColor="#d57457"
       >
       <LinearLayout
+        android:layout_marginTop="10px"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
+          android:textSize="24px"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="所在医院："/>
         <TextView
+          android:textSize="24px"
           android:id="@+id/hospital"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content" />
       </LinearLayout>
       <LinearLayout
+        android:layout_marginTop="10px"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
+          android:textSize="24px"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="联系邮件："/>
         <TextView
+          android:textSize="24px"
           android:id="@+id/email"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content" />
       </LinearLayout>
       <LinearLayout
+        android:layout_marginTop="10px"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
+          android:textSize="24px"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="擅长方向"/>
+          android:text="擅长方向:"/>
         <TextView
+          android:textSize="24px"
           android:id="@+id/talent"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content" />

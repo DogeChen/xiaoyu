@@ -50,7 +50,7 @@
     android:layout_width="100px"
     android:layout_height="100px"
     android:layout_marginTop="3px"
-    android:layout_marginLeft="915px"
+    android:layout_marginLeft="920px"
     android:id="@+id/add"
     android:src="@drawable/btn_add"
     app:citv_text_text="添加"
@@ -60,7 +60,7 @@
 
   <FrameLayout
     android:layout_marginTop="100px"
-    android:layout_width="match_parent"
+    android:layout_width="1030px"
     android:layout_height="match_parent" >
 
     <TextView

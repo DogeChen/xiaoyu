@@ -1,4 +1,4 @@
-package com.ainemo.pad.drawSmoothLine;
+package com.ainemo.pad.Jujia.drawSmoothLine;
 
 /**
  * 结点

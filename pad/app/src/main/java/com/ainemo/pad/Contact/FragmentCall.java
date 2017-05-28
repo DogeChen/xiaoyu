@@ -33,6 +33,7 @@ import com.ainemo.pad.Contact.Record.CallRecord;
 import com.ainemo.pad.Contact.Record.CallRecordAdapter;
 import com.ainemo.pad.Contact.Record.CallRecordAdapter.RecordClickLister;
 import com.ainemo.pad.R;
+import com.ainemo.pad.SomeUtils.GlobalData;
 import com.ainemo.pad.SomeUtils.Utils;
 import de.hdodenhof.circleimageview.CircleImageView;
 import java.util.ArrayList;
@@ -88,7 +89,7 @@ public class FragmentCall extends Fragment implements RecordClickLister,OnClickL
           CallRecord callRecord = new CallRecord(result.getCallerName(),
               result.getCallerNemoNumber(), null, callStatus,date,date1, null);
           callRecord.save();
-          myNemoNum.setText(result.getCalleeNemoNumber());
+//          myNemoNum.setText(result.getCalleeNemoNumber());
           adapter.notifyDataSetChanged();
           break;
         case 0x123:
@@ -135,7 +136,6 @@ public class FragmentCall extends Fragment implements RecordClickLister,OnClickL
     activity = getActivity();
     recordClickLister=this;
     new FragmentCall.FindRecordsTask().execute(1);
-
   }
 
   @Override
@@ -162,6 +162,7 @@ public class FragmentCall extends Fragment implements RecordClickLister,OnClickL
     adapter = new CallRecordAdapter(getContext(), list,this);
     recyclerView.setAdapter(adapter);
     myNemoNum=(TextView)layout.findViewById(R.id.nemo_num);
+    myNemoNum.setText(Utils.getValue(getContext(),GlobalData.XIAO_YU));
     circleTextImageViews[0] = (Button) layout.findViewById(R.id.number_call_0);
     circleTextImageViews[1] = (Button) layout.findViewById(R.id.number_call_1);
     circleTextImageViews[2] = (Button) layout.findViewById(R.id.number_call_2);

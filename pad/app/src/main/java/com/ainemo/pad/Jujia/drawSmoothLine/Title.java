@@ -1,4 +1,4 @@
-package com.ainemo.pad.drawSmoothLine;
+package com.ainemo.pad.Jujia.drawSmoothLine;
 
 import android.graphics.Paint;
 import android.graphics.Rect;
