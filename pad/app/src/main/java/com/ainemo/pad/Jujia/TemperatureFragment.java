@@ -60,7 +60,7 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
           dayString=msg.getData().getString("day");
           day.setText(dayString);
           Log.d(TAG, "handleMessage: fragment handler"+handler);
-        initData();
+          initData();
           break;
       }
     }
@@ -133,10 +133,8 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
     temperatures = new ArrayList<>();
     xLabels=new ArrayList<>();
     for(int i=0;i<temperatureBefore.size();i++){
-
       if(0!=temperatureBefore.get(i).intValue()){
         temperatures.add(temperatureBefore.get(i));
-
         xLabels.add(i);
       }
     }
@@ -144,11 +142,11 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
 
   private void initData() {
     List<Series> seriess = new ArrayList<Series>();
-    homeInfor=activity.getHomeInfo();
+    homeInfor=activity.getHomeInfo(dayString);
     if(homeInfor==null){
       for(int i=0;i<8;i++){
         temperatureBefore =new ArrayList<>();
-        temperatureBefore.add((float)0);
+        temperatureBefore.add((float)1);
       }
     }else{
       if(dayString!=null&&dayString.equals("今天")){

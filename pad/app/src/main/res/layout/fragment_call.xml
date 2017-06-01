@@ -27,7 +27,7 @@
       android:layout_height="wrap_content" />
     <TextView
       android:textSize="24px"
-      android:text="剩余通话时间"
+      android:text="剩余通话时间:100分钟"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content" />
     <TextView

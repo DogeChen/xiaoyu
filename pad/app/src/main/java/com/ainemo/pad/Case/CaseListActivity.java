@@ -85,14 +85,14 @@ public class CaseListActivity extends AppCompatActivity implements CardPagerAdap
     adapter.setMaxElevationFactor(maxFactor);
 
     viewPager.setLayoutParams(
-        new LinearLayout.LayoutParams((int) (mWidth), mHeight));
+        new LinearLayout.LayoutParams((int) (mWidth), mHeight-200));
 
 //    viewPager.setLayoutParams(new LinearLayout.LayoutParams((int) (mWidth), 595));
     viewPager.setPadding(mWidthPading,0, mWidthPading,0);
 
     viewPager.setPageMargin(0);
+    viewPager.setBottom(100);
     viewPager.setClipToPadding(false);
-
 
     net_work_available = Utils.isNetWorkAvailabe(CaseListActivity.this);
     progressDialog = new ProgressDialog(this);
@@ -101,7 +101,6 @@ public class CaseListActivity extends AppCompatActivity implements CardPagerAdap
 
   public void initEvent(){
     back.setOnClickListener(this);
-
     adapter.setOnCardItemClickListener(this);
   }
 

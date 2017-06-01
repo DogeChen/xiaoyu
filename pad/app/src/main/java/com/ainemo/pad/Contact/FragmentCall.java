@@ -89,6 +89,9 @@ public class FragmentCall extends Fragment implements RecordClickLister,OnClickL
           CallRecord callRecord = new CallRecord(result.getCallerName(),
               result.getCallerNemoNumber(), null, callStatus,date,date1, null);
           callRecord.save();
+          Utils.putValue(getContext(),GlobalData.user_name,result.getCalleeName());
+          Utils.putValue(getContext(),GlobalData.xiaoyu,result.getCalleeNemoNumber());
+
 //          myNemoNum.setText(result.getCalleeNemoNumber());
           adapter.notifyDataSetChanged();
           break;

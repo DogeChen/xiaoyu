@@ -5,6 +5,8 @@ package com.ainemo.pad.SomeUtils;
  */
 
 public interface GlobalData {
+  String user_name="user_name";
+  String xiaoyu="xiaoyu";
     String Login_status = "login_status";
     String Phone = "phone";
     String PATIENTFAMILY_ID = "patient_family_image";
@@ -12,6 +14,7 @@ public interface GlobalData {
     String NAME = "NAME";
     String User_ID = "User_ID";
     String USer_email = "email";
+    String DOOR_STATUS = "door_status";
     String PATIENT_ID = "patient_id";
     String XIAO_YU = "xiaoyu";
     String DoctorName = "doctor_name";
@@ -31,4 +34,5 @@ public interface GlobalData {
     String FORGET_PASSWOD = "http://139.196.40.97/OSAdmin-master/uploads/interface/send_password_mail.php?id=";
 
     String GET_PATIENT_ID="http://139.196.40.97/OSAdmin-master/uploads/interface/getPatientID.php?xiaoyuNum=";
+    String GET_ROOM_STATUS="http://139.196.40.97/OSAdmin-master/uploads/interface/doorinfo.php?patientId=";
 }

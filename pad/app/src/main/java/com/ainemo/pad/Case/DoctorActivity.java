@@ -131,6 +131,7 @@ public class DoctorActivity extends AppCompatActivity {
       return null;
     }
 
+
     @Override
     protected void onPostExecute(Void aVoid) {
       super.onPostExecute(aVoid);

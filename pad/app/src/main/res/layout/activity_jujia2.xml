@@ -182,7 +182,7 @@ tools:context="com.ainemo.pad.Jujia.JujiaActivity"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20px"
         android:layout_below="@+id/room_status_image_text"
-        android:text="关闭"
+        android:text="--"
         android:textColor="@color/brown2"
         android:textSize="30px" />
     </LinearLayout>

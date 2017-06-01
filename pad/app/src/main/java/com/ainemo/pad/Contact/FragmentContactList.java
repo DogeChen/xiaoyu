@@ -244,10 +244,10 @@ public class FragmentContactList extends Fragment implements MyClickLister, OnCl
         mPopupWindow.dismiss();
         Log.d(TAG, "onMenuItemClick: call id="+touchedId);
         ContactListData contactListData=DataSupport.find(ContactListData.class,touchedId);
-        if(contactListData.getXiaoyuNumber()!=null){
+        if(contactListData.getXiaoyuNumber()!=null&&!contactListData.getXiaoyuNumber().equals("")){
           NemoOpenAPI.getInstance().makeCall(contactListData.getXiaoyuNumber().toString(),null,null);
           Log.d(TAG, "onClick: call xiaoyu "+contactListData.getXiaoyuNumber().toString());
-        }else if(contactListData.getPhoneNumber()!=null){
+        }else if(contactListData.getPhoneNumber()!=null&&!contactListData.getPhoneNumber().equals("")){
           NemoOpenAPI.getInstance().makeCall(contactListData.getPhoneNumber().toString(),null,null);
           Log.d(TAG, "onClick: call phone "+contactListData.getPhoneNumber().toString());
         }

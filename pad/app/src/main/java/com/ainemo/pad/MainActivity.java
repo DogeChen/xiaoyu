@@ -49,12 +49,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
     Log.i(TAG, "onCreate: NemoSn="+NemoSn+" getNemoSn()="+ NemoOpenAPI.getInstance().getNemoSn());
     //获取小鱼序列号的代码
 
-    NemoSn="214207";
-    Utils.putValue(this,GlobalData.XIAO_YU,NemoSn);
+    NemoSn="217098";
+
     patientId=Utils.getValue(this,GlobalData.PATIENT_ID);
 
     patientId="2";//待注释
 
+    Utils.putValue(MainActivity.this,GlobalData.PATIENT_ID,patientId);
 //    if(patientId==null){
 //      new GetPatientIdTask().execute();
 //    }
@@ -93,13 +94,20 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
       case R.id.return_btn:
         onBackPressed();
         break;
+
     }
   }
 
 
   private void initEvent(){
-    name.setText("刘云, 欢迎回来");
-    number.setText("小鱼号："+NemoSn);
+//    name.setText("刘云, 欢迎回来");
+//    number.setText("小鱼号："+NemoSn);
+    try{
+      name.setText(Utils.getValue(this,GlobalData.user_name)+" 欢迎回来");
+      number.setText("小鱼号："+Utils.getValue(this,GlobalData.xiaoyu));
+    }catch (NullPointerException e){
+      e.printStackTrace();
+    }
   }
   @Override
   public void onBackPressed(){
