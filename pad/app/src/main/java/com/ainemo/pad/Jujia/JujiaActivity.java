@@ -43,6 +43,7 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
   private android.support.v4.view.ViewPager jiujiaviewpager;
   private JiuJiaViewPageAdapter viewPageAdapter;
 
+  private AppCompatActivity activity;
   private BarChart barChart;
   private Button back;
   private TextView minHumidity;
@@ -102,6 +103,12 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
     initView();
     initEvent();
     net_work = Utils.isNetWorkAvailabe(this);
+    activity= this;
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
   }
 
   private void initData() {
@@ -148,24 +155,24 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
     barChart.invalidate();
     if (homeInfor1 != null) {
       humidity.setText((int) homeInfor1.getHumidity() + "%");
-     try {
-       List<Float> sort = homeInfor1.getHumidityies();
-       Collections.sort(sort, new Comparator<Float>() {
-         @Override
-         public int compare(Float aFloat, Float t1) {
-           if (aFloat < t1) {
-             return -1;
-           } else if (aFloat > t1) {
-             return 1;
-           } else {
-             return 0;
-           }
-         }
-       });
-       minHumidity.setText(sort.get(0).intValue() + "%");
-     }catch (NullPointerException e){
-       e.printStackTrace();
-     }
+      try {
+        List<Float> sort = homeInfor1.getHumidityies();
+        Collections.sort(sort, new Comparator<Float>() {
+          @Override
+          public int compare(Float aFloat, Float t1) {
+            if (aFloat < t1) {
+              return -1;
+            } else if (aFloat > t1) {
+              return 1;
+            } else {
+              return 0;
+            }
+          }
+        });
+        minHumidity.setText(sort.get(0).intValue() + "%");
+      } catch (NullPointerException e) {
+        e.printStackTrace();
+      }
     }
   }
 
@@ -200,7 +207,7 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-      if (doorInfor.getStatus()==1){
+      if (doorInfor.getStatus() == 1) {
         door_status.setText("开启");
       } else {
         door_status.setText("关闭");
@@ -214,9 +221,9 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
         String door_infor = Utils.sendRequest(
             GlobalData.GET_ROOM_STATUS + Utils.getValue(JujiaActivity.this, GlobalData.PATIENT_ID));
         doorInfor = gson.fromJson(door_infor, DoorInfor.class);
-        try
-        {Utils.putIntValue(JujiaActivity.this, GlobalData.DOOR_STATUS, doorInfor.getStatus());}
-        catch (NullPointerException e){
+        try {
+          Utils.putIntValue(JujiaActivity.this, GlobalData.DOOR_STATUS, doorInfor.getStatus());
+        } catch (NullPointerException e) {
           e.printStackTrace();
         }
       } else {
@@ -241,21 +248,24 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
 
     @Override
     protected Void doInBackground(Void... params) {
-      Date date = new Date(System.currentTimeMillis());
-      SimpleDateFormat format = new SimpleDateFormat("yyyymmdd");
-      String dateString = format.format(date);
-      date.setDate(date.getDay() - 1);
-      String dateString2 = format.format(date);
 
-      String infor = Utils.sendRequest(
-          GlobalData.GET_HOME_INFOR + Utils.getValue(JujiaActivity.this, GlobalData.PATIENT_ID)
-              + "&date=" + dateString);
-      homeInfor1 = gson.fromJson(infor, HomeInfor.class);
-
-      String infor2 = Utils.sendRequest(
-          GlobalData.GET_HOME_INFOR + Utils.getValue(JujiaActivity.this, GlobalData.PATIENT_ID)
-              + "&date=" + dateString2);
-      homeInfor2 = gson.fromJson(infor2, HomeInfor.class);
+        Date date = new Date(System.currentTimeMillis());
+        SimpleDateFormat format = new SimpleDateFormat("yyyymmdd");
+        String dateString = format.format(date);
+        date.setDate(date.getDay() - 1);
+        String dateString2 = format.format(date);
+        try {
+          String infor = Utils.sendRequest(
+              GlobalData.GET_HOME_INFOR + Utils.getValue(JujiaActivity.this, GlobalData.PATIENT_ID)
+                  + "&date=" + dateString);
+          homeInfor1 = gson.fromJson(infor, HomeInfor.class);
+          String infor2 = Utils.sendRequest(
+              GlobalData.GET_HOME_INFOR + Utils.getValue(JujiaActivity.this, GlobalData.PATIENT_ID)
+                  + "&date=" + dateString2);
+          homeInfor2 = gson.fromJson(infor2, HomeInfor.class);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
 
 //      Log.d(TAG, "doInBackground: homeInfo.temperatures " + homeInfor1.getTemperatures());
       return null;

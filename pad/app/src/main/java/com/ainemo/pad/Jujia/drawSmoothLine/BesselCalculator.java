@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+
 class BesselCalculator {
 
   /**
@@ -63,11 +64,10 @@ class BesselCalculator {
    * 最高点
    */
   public List<Point> maxPoints = new ArrayList<>();
-  public String maxTemperature;
-  public String minTemperature;
-  public String raiseTemperature;
-  public Point currentPoint;
-  public String currentTime;
+//  public String maxTemperature;
+//  public String minTemperature;
+//  public String raiseTemperature;
+//  public Point currentPoint;
 
   /**
    * 画布X轴的平移，用于实现曲线图的滚动效果
@@ -102,25 +102,17 @@ class BesselCalculator {
    *
    * @param width 曲线图区域的宽度
    */
-//  public void compute(int width) {
-//    this.width = width;
-//    this.translateX = 0;
-//    computeVerticalAxisInfo();// 计算纵轴参数
-//    computeHorizontalAxisInfo();// 计算横轴参数
-//    computeTitlesInfo();// 计算标题参数
-//    computeSeriesCoordinate();// 计算纵轴参数
-//    computeBesselPoints();// 计算贝塞尔结点
-//    computeGridPoints();// 计算网格顶点
-//  }
+
   public void compute(int width, int height) {
 
     this.width = width;
-    try {
-      List<Point> points = data.getSeriesList().get(0).getPoints();
-      this.viewWidth = width * points.size() / style.getxLabelsPageCount();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+//    try {
+//      List<Point> points = data.getSeriesList().get(0).getPoints();
+//      this.viewWidth = width * points.size() / style.getxLabelsPageCount();
+//    } catch (Exception e) {
+//      e.printStackTrace();
+//    }
+    viewWidth=width;
     this.height = height;
     this.translateX = 0;
     computeHorizontalAxisInfoWithHeight();// 计算横轴参数
@@ -158,9 +150,13 @@ class BesselCalculator {
     if (translateX >= 0) {
       translateX = 0;
       return true;
-    } else if (translateX < 0&& (int) translateX <=(int) -(xAxisWidth - width)) {
+    } else if (translateX < 0) {
+      if (yAxisWidth != 0 && (int) translateX <= (int) -(xAxisWidth - width)) {
         translateX = -(xAxisWidth - width);
         return true;
+      } else {
+        return false;
+      }
     } else {
       return false;
     }
@@ -298,7 +294,7 @@ class BesselCalculator {
     }
     for (Series series : data.getSeriesList()) {
       List<Point> points = series.getPoints();
-       float pointWidth= xAxisWidth / points.size();
+      float pointWidth = xAxisWidth / points.size();
       for (int i = 0; i < points.size(); i++) {
         Point point = points.get(i);
         // 计算数据点的坐标
@@ -314,14 +310,6 @@ class BesselCalculator {
               .getMinValueY());
           markerPoint.y = maxCoordinateY - (maxCoordinateY - minCoordinateY) * ratio;
         }
-      }
-      currentPoint=data.getCurrentTemperature();
-      if(currentPoint.willDrawing) {
-        currentPoint.x = pointWidth * (currentPoint.valueX + 0.5f);
-        float ratio =
-            (currentPoint.valueY - data.getMinValueY()) / (float) (data.getMaxValueY() - data
-                .getMinValueY());
-        currentPoint.y = maxCoordinateY - (maxCoordinateY - minCoordinateY) * ratio;
       }
     }
   }
@@ -365,11 +353,10 @@ class BesselCalculator {
         maxPoints.add(temp.get(i));
         i++;
       }
-      maxTemperature = String.format("%.1f", temp.get(0).valueY) + "℃";
-      minTemperature = String.format("%.1f", temp.get(temp.size() - 1).valueY) + "℃";
-      currentTime=data.getCurrentTime();
-      raiseTemperature =
-          String.format("%.1f", temp.get(0).valueY - temp.get(temp.size() - 1).valueY) + "℃";
+//      maxTemperature = String.format("%.1f", temp.get(0).valueY) + "℃";
+//      minTemperature = String.format("%.1f", temp.get(temp.size() - 1).valueY) + "℃";
+//      raiseTemperature =
+//          String.format("%.1f", temp.get(0).valueY - temp.get(temp.size() - 1).valueY) + "℃";
       for (Point point : series.getPoints()) {
         int index = series.getPoints().indexOf(point);
         if (gridPoints[index] == null || gridPoints[index].valueY < point.valueY) {

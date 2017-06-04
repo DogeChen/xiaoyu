@@ -121,7 +121,7 @@ public class ChartStyle {
     backgroundUpPartColor = 0xFF55BC79;
     backgroundDownPartColor = 0xFF4CAB7C;
     maxTemColor = 0xFFFFFFFF;
-    minTemColor = 0xFFa8dcba;
+    minTemColor = 0xffa8dcba;
     raiseTemColor = 0xFFa8dcba;
     maxTemTextSize = 36;
     minTemTextSize = 24;

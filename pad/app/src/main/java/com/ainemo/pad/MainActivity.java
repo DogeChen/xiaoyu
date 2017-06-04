@@ -1,14 +1,9 @@
 package com.ainemo.pad;
 
-import ainemo.api.openapi.MakeCallResult;
-import ainemo.api.openapi.Msg;
-import ainemo.api.openapi.NemoConst;
 import ainemo.api.openapi.NemoOpenAPI;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -16,7 +11,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.ainemo.pad.Case.CaseListActivity;
 import com.ainemo.pad.Contact.ContactActivity;
 import com.ainemo.pad.Datas.UserInfor;
@@ -53,12 +47,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
 
     patientId=Utils.getValue(this,GlobalData.PATIENT_ID);
 
+    if(patientId==null||patientId.equals("")){
+      new GetPatientIdTask().execute();
+    }
     patientId="2";//待注释
 
-    Utils.putValue(MainActivity.this,GlobalData.PATIENT_ID,patientId);
-//    if(patientId==null){
-//      new GetPatientIdTask().execute();
-//    }
 
     initView();
     initEvent();
@@ -84,12 +77,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
         break;
       case R.id.home_par_btn:
 //        startActivity(new Intent(MainActivity.this,CaseListActivity.class).putExtra("id",patientId));
+        startActivity(new Intent(MainActivity.this,JujiaActivity.class));
+        break;
+      case R.id.home_record_btn:
+
         Intent intent=new Intent(MainActivity.this,CaseListActivity.class);
         intent.putExtra("id",patientId);
         startActivity(intent);
-        break;
-      case R.id.home_record_btn:
-        startActivity(new Intent(MainActivity.this,JujiaActivity.class));
         break;
       case R.id.return_btn:
         onBackPressed();
@@ -120,20 +114,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
     }
   }
 
-  private Handler mHandler = new Handler() {
-    @Override
-    public void handleMessage(Message msg) {
-      Log.d(TAG, "handleMessage: onNemoCallback msg"+msg);
-      switch (msg.what) {
-        case Msg.OPENAPI_MAKE_CALL_RESULT:
-          MakeCallResult result = msg.getData().getParcelable(NemoConst.KEY_MAKE_CALL_RESULT);
-          Toast.makeText(getApplicationContext(), result.toString(), Toast.LENGTH_LONG).show();
-          break;
-        default:
-          break;
-      }
-    }
-  };
 
   class GetPatientIdTask extends AsyncTask<Void, Void, Void> {
 
@@ -150,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
           Utils.showShortToast(getApplicationContext(),"参数错误");
         }else{
           Utils.putValue(MainActivity.this,GlobalData.PATIENT_ID,infor);
+          patientId=infor;
         }
       }catch (Exception e){
         Utils.showShortToast(getApplicationContext(),"访问数据错误");

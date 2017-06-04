@@ -14,6 +14,8 @@ import com.ainemo.pad.R;
  * @author tomkeyzhang（qitongzhang@anjuke.com）
  * @date :2014年5月4日
  */
+
+
 public class BesselChart extends LinearLayout {
     /** 贝塞尔曲线图 */
     private BesselChartView besselChartView;
@@ -33,7 +35,6 @@ public class BesselChart extends LinearLayout {
     private ChartStyle style;
     /** 曲线图的数据 */
     private ChartData data;
-    private static final String TAG = "BesselChart";
 
     public BesselChart(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -79,7 +80,7 @@ public class BesselChart extends LinearLayout {
 
     /**
      * 获取数据对象
-     * 
+     *
      * @return
      */
     public ChartData getData() {
@@ -88,7 +89,7 @@ public class BesselChart extends LinearLayout {
 
     /**
      * 获取样式对象
-     * 
+     *
      * @return
      */
     public ChartStyle getStyle() {
@@ -102,7 +103,7 @@ public class BesselChart extends LinearLayout {
 
     /**
      * 设置光滑因子
-     * 
+     *
      * @param smoothness
      */
     public void setSmoothness(float smoothness) {
@@ -114,7 +115,7 @@ public class BesselChart extends LinearLayout {
     }
     /***
      * 带动画刷新数据
-     * 
+     *
      * @param animate
      */
     public void refresh(final boolean animate) {
@@ -128,12 +129,12 @@ public class BesselChart extends LinearLayout {
 //                 horizontalLegend.
 //                setLayoutParams(getLayoutParams());
                 invalidate();
-                besselChartView.animateScrollToEnd(2000);
-                 if (animate && !animateRunnable.run) {
-                 // 同一个时间只能有一个动画在跑
-                 animateRunnable.run = true;
-                 new Thread(animateRunnable).start();
-                 }
+                besselChartView.animateScrollToEnd(500);
+                if (animate && !animateRunnable.run) {
+                    // 同一个时间只能有一个动画在跑
+                    animateRunnable.run = true;
+                    new Thread(animateRunnable).start();
+                }
             }
         });
     }
@@ -165,10 +166,9 @@ public class BesselChart extends LinearLayout {
                     e.printStackTrace();
                 }
                 calculator.move(j);
-                this.run = !calculator.ensureTranslation();
+                run = !calculator.ensureTranslation();
                 besselChartView.postInvalidate();
             }
-            android.util.Log.d(TAG, "run: Animate over");
         }
     }
 

@@ -13,16 +13,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import com.ainemo.pad.Datas.HomeInfor;
-import com.ainemo.pad.R;
 import com.ainemo.pad.Jujia.drawSmoothLine.BesselChart;
 import com.ainemo.pad.Jujia.drawSmoothLine.ChartData;
 import com.ainemo.pad.Jujia.drawSmoothLine.Point;
 import com.ainemo.pad.Jujia.drawSmoothLine.Series;
+import com.ainemo.pad.R;
 import com.github.mikephil.charting.charts.BarChart;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,27 +38,28 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
   private BarChart barChart;
   private Button back;
   private List<Point> points = new ArrayList<>();
-  private Point currentTem;
+  //  private Point currentTem;
   private View layout;
   private JujiaActivity activity;
-  private List<Float> temperatureBefore;
   private List<Float> temperatures;
-  private List<Integer> xLabels=new ArrayList<>();
+//  private List<Float> temperatures;
+  List<Series> seriess;
+  private List<Integer> xLabels = new ArrayList<>();
   private TextView maxTem;
   private TextView minTem;
   public TextView day;
   private String dayString;
-  private String currentTime;
+  //  private String currentTime;
   Fragment fragment;
   private HomeInfor homeInfor;
   Handler handler = new Handler() {
     @Override
     public void handleMessage(Message msg) {
-      switch (msg.what){
+      switch (msg.what) {
         case 0x1234:
-          dayString=msg.getData().getString("day");
+          dayString = msg.getData().getString("day");
           day.setText(dayString);
-          Log.d(TAG, "handleMessage: fragment handler"+handler);
+          Log.d(TAG, "handleMessage: fragment handler" + handler);
           initData();
           break;
       }
@@ -87,121 +87,107 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     activity = (JujiaActivity) getActivity();
-    fragment=this;
-    Log.d(TAG, "onCreate fragment= "+fragment);
-
-  }
-
-  private void handleTemperatures(){
-    temperatureBefore=new ArrayList<>();
-    Float tem=0.0f;
-    temperatureBefore.add(tem);
-    temperatureBefore.add(tem);
-    tem=2.2f;
-    temperatureBefore.add(tem);
-    temperatureBefore.add(tem);
-    tem=2.8f;
-    temperatureBefore.add(tem);
-    temperatureBefore.add(tem);
-    tem=3.9f;
-    temperatureBefore.add(tem);
-    tem=3.9f;
-    temperatureBefore.add(tem);
-    tem=1.0f;
-    temperatureBefore.add(tem);
-    tem=5.5f;
-    temperatureBefore.add(tem);
-    tem=3.9f;
-    temperatureBefore.add(tem);
-    tem=2.1f;
-    temperatureBefore.add(tem);
-    temperatureBefore.add(tem);
-    tem=3.9f;
-    temperatureBefore.add(tem);
-    tem=0.0f;
-    temperatureBefore.add(tem);
-    temperatureBefore.add(tem);
-    temperatureBefore.add(tem);
-    temperatureBefore.add(tem);
-    temperatureBefore.add(tem);
-    temperatureBefore.add(tem);
-    temperatureBefore.add(tem);
-    temperatureBefore.add(tem);
-    temperatureBefore.add(tem);
-    temperatureBefore.add(tem);
-
-    temperatures = new ArrayList<>();
-    xLabels=new ArrayList<>();
-    for(int i=0;i<temperatureBefore.size();i++){
-      if(0!=temperatureBefore.get(i).intValue()){
-        temperatures.add(temperatureBefore.get(i));
-        xLabels.add(i);
-      }
-    }
+    fragment = this;
+    Log.d(TAG, "onCreate fragment= " + fragment);
   }
 
   private void initData() {
     List<Series> seriess = new ArrayList<Series>();
-    homeInfor=activity.getHomeInfo(dayString);
-    if(homeInfor==null){
-      for(int i=0;i<8;i++){
-        temperatureBefore =new ArrayList<>();
-        temperatureBefore.add((float)1);
+    homeInfor = activity.getHomeInfo(dayString);
+    try {
+      if (dayString != null && dayString.equals("今天")) {
+        temperatures = homeInfor.getTemperatures();
+        Log.d(TAG, "initData: Today temperatures" + temperatures);
+        Log.d(TAG, "initData: today fragment= " + fragment);
+      } else if (dayString != null && dayString.equals("昨天")) {
+        temperatures = homeInfor.getTemperatures();
+        Log.d(TAG, "initData: Yesterday temperatures" + temperatures);
+        Log.d(TAG, "initData: yesterday fragment= " + fragment);
       }
-    }else{
-      if(dayString!=null&&dayString.equals("今天")){
-        temperatureBefore =homeInfor.getTemperatures();
-        Log.d(TAG, "initData: Today temperatureBefore"+ temperatureBefore);
-        Log.d(TAG, "initData: today fragment= "+fragment);
-      }else if(dayString!=null&&dayString.equals("昨天")){
-        temperatureBefore =homeInfor.getTemperatures();
-        Log.d(TAG, "initData: Yesterday temperatureBefore"+ temperatureBefore);
-        Log.d(TAG, "initData: yesterday fragment= "+fragment);
-      }
+    } catch (NullPointerException e) {
+      e.printStackTrace();
     }
-    handleTemperatures();
+//    handleTemperatures();
+//        temperatures = new ArrayList<>();
+//    Float tem = 0.0f;
+//    temperatures.add(tem);
+//    temperatures.add(tem);
+//    tem = 2.2f;
+//    temperatures.add(tem);
+//    temperatures.add(tem);
+//    tem = 2.8f;
+//    temperatures.add(tem);
+//    temperatures.add(tem);
+//    tem = 3.9f;
+//    temperatures.add(tem);
+//    tem = 3.9f;
+//    temperatures.add(tem);
+//    tem = 1.0f;
+//    temperatures.add(tem);
+//    tem = 5.5f;
+//    temperatures.add(tem);
+//    tem = 3.9f;
+//    temperatures.add(tem);
+//    tem = 2.1f;
+//    temperatures.add(tem);
+//    temperatures.add(tem);
+//    tem = 3.9f;
+//    temperatures.add(tem);
+//    tem = 0.0f;
+//    temperatures.add(tem);
+//    temperatures.add(tem);
+//    temperatures.add(tem);
+//    temperatures.add(tem);
+//    temperatures.add(tem);
+//    temperatures.add(tem);
+//    temperatures.add(tem);
+//    temperatures.add(tem);
+//    temperatures.add(tem);
+//    temperatures.add(tem);
     try {
       for (int i = 0; i < temperatures.size(); i++) {
-        points.add(new Point((float) xLabels.get(i), temperatures.get(i), true));
-      }
-      Date date=new Date(System.currentTimeMillis());
-      java.text.SimpleDateFormat format=new java.text.SimpleDateFormat("H:mm");
-      currentTime=format.format(date);
-      int hour=date.getHours();
-      int minute=date.getMinutes();
-//      hour=12;
-
-      try {
-//        currentTem = new Point((float) (hour - xLabels.get(0)) + (float) minute / 60.0f,
-//            Float.parseFloat(homeInfor.getTemperature()), true);
-        currentTem = new Point((float) (hour - xLabels.get(0)) + (float) minute / 60.0f,
-            2.1f, true);
-        if(hour>=xLabels.get(xLabels.size()-1)||hour<xLabels.get(0)){
-          currentTem.willDrawing=false;
-        }
-      }catch (Exception e){
-        currentTem=new Point(0f,0f,false);
-        e.printStackTrace();
+        points.add(new Point((float) i, temperatures.get(i),
+            !isApproachingZero(temperatures.get(i))));
       }
 
-      chart.getData().setCurrentTemperature(currentTem);
-      chart.getData().setCurrentTime(currentTime);
-      List<Float> sort=new ArrayList<>();
-          sort.addAll(temperatures);
-          Collections.sort(sort, new Comparator<Float>() {
+      List<Float> sort = new ArrayList<>();
+      sort.addAll(temperatures);
+      Collections.sort(sort, new Comparator<Float>() {
         @Override
         public int compare(Float aFloat, Float t1) {
-          if (aFloat<t1){
+          if (aFloat < t1) {
             return -1;
-          }else if(aFloat>t1){
+          } else if (aFloat > t1) {
             return 1;
-          }else {
+          } else {
             return 0;
           }
         }
       });
-      maxTem.setText(String.valueOf(sort.get(sort.size()-1).intValue())+"℃");
-      minTem.setText(String.valueOf(sort.get(0).intValue())+"℃");
+      String max = "--" + "℃";
+      String maxWithDot="--" + "℃";
+      chart.getData().setMaxTemperature(max);
+      for (int i = sort.size() - 1; i >= 0; i--) {
+        if (!isApproachingZero(sort.get(i))) {
+          max = String.valueOf(sort.get(i).intValue()) + "℃";
+          maxWithDot=String.format("%.1f",sort.get(i).floatValue())+"℃";
+          break;
+        }
+      }
+      maxTem.setText(max);
+      chart.getData().setMaxTemperature(maxWithDot);
+
+      String min = "--" + "℃";
+      String minWithDot="--" + "℃";
+      for (int i = 0; i < sort.size(); i++) {
+        if (!isApproachingZero(sort.get(i))) {
+          min = String.valueOf(sort.get(i).intValue()) + "℃";
+          minWithDot=String.format("%.1f",sort.get(i).floatValue())+"℃";
+          break;
+        }
+      }
+      minTem.setText(min);
+      chart.getData().setMinTemperature(minWithDot);
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -215,7 +201,11 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
 
       @Override
       public String horizontalTransform(int valueX) {
-        return String.format("%s", valueX);
+        if (valueX % 3 == 0) {
+          return String.format("%s", valueX);
+        } else {
+          return "";
+        }
       }
 
       @Override
@@ -223,23 +213,29 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
         return true;
       }
     });
-
     chart.getData().setSeriesList(seriess);
-    chart.refresh(true);
+    chart.refresh(false);
+  }
+
+  private boolean isApproachingZero(Float i) {
+    if (i - 0.0f <= 0.1f&&i - 0.0f >= -0.1f) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   private void initView() {
-    maxTem=(TextView)layout.findViewById(R.id.maxTem);
-    minTem=(TextView)layout.findViewById(R.id.minTem);
+    maxTem = (TextView) layout.findViewById(R.id.maxTem);
+    minTem = (TextView) layout.findViewById(R.id.minTem);
     chart = (BesselChart) layout.findViewById(R.id.shidu_line_chart);
 
     barChart = (BarChart) layout.findViewById(R.id.bar_shidu_chart);
     back = (Button) layout.findViewById(R.id.return_btn);
-    chart.setSmoothness(0.4f);
-    chart.setChartListener(this);
 
-    chart.setSmoothness(0.33f);
-    day=(TextView)layout.findViewById(R.id.day);
+    chart.setChartListener(this);
+    chart.setSmoothness(0.5f);
+    day = (TextView) layout.findViewById(R.id.day);
   }
 
   private void initEvent() {

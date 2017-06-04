@@ -1,6 +1,7 @@
 package com.ainemo.pad.Contact;
 
 import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -71,11 +72,11 @@ public class ChangeContactActivity extends AppCompatActivity implements OnClickL
       address.setSelection(address.length());
       remark.setText(data.getRemark());
       remark.setSelection(remark.length());
-//      if (data.getImage_url() != null && !data.getImage_url().equals("")) {
-//        headImage.setImageURI(Uri.parse(data.getImage_url()));
-//      }else{
-//        headImage.setImageResource(R.mipmap.ic_launcher);
-//      }
+      if (data.getImage_url() != null && !data.getImage_url().equals("")) {
+        headImage.setImageURI(Uri.parse(data.getImage_url()));
+      }else{
+        headImage.setImageResource(R.mipmap.ic_launcher);
+      }
 //      String num=data.getNumber();
 //      String xiaoyu=null;
 //      String telephone=null;

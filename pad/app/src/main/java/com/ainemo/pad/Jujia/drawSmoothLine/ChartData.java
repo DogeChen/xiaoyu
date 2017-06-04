@@ -4,211 +4,257 @@ package com.ainemo.pad.Jujia.drawSmoothLine;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * 曲线图的数据以及相关配置信息
- * 
+ *
  * @author tomkeyzhang（qitongzhang@anjuke.com）
  * @date :2014年4月17日
  */
 public class ChartData {
-    private Marker marker;
-    private List<Series> seriesList;
-    private List<Label> xLabels;
-    private List<Label> yLabels;
-    private List<Title> titles;
+
+  private Marker marker;
+  private List<Series> seriesList;
+  private List<Label> xLabels;
+  private List<Label> yLabels;
+  private List<Title> titles;
+  private int maxValueY;
+  private int minValueY;
+  private int maxPointsCount;
+  private LabelTransform labelTransform;
+  private String maxTemperature;
+  private String minTemperature;
 
 
-    public Point getCurrentTemperature() {
-        return currentTemperature;
-    }
 
-    public void setCurrentTemperature(Point currentTemperature) {
-        this.currentTemperature = currentTemperature;
-    }
+  /**
+   * 纵坐标显示文本的数量
+   */
+  private int yLabelCount;
 
-    private Point currentTemperature;
-    private String currentTime;
+  /**
+   * 使用哪一个series的横坐标来显示横坐标文本
+   */
+  private int xLabelUsageSeries;
 
-    public String getCurrentTime() {
-        return currentTime;
-    }
+  ChartData() {
+    xLabels = new ArrayList<Label>();
+    yLabels = new ArrayList<Label>();
+    titles = new ArrayList<Title>();
+    seriesList = new ArrayList<Series>();
+    labelTransform = new LabelTransform() {
+      @Override
+      public String verticalTransform(int valueY) {
+        return String.valueOf(valueY);
+      }
 
-    public void setCurrentTime(String currentTime) {
-        this.currentTime = currentTime;
-    }
+      @Override
+      public String horizontalTransform(int valueX) {
+        return String.valueOf(valueX);
+      }
 
-    private int maxValueY;
-    private int minValueY;
-    private int maxPointsCount;
-    private LabelTransform labelTransform;
-    /** 纵坐标显示文本的数量 */
-    private int yLabelCount;
+      @Override
+      public boolean labelDrawing(int valueX) {
+        return true;
+      }
+    };
+    yLabelCount = 10;// 默认纵轴显示4个文本
+    xLabelUsageSeries = 0;// 默认横轴使用第一个序列来显示文本
+  }
 
-    /** 使用哪一个series的横坐标来显示横坐标文本 */
-    private int xLabelUsageSeries;
+  public String getMaxTemperature() {
+    return maxTemperature;
+  }
 
-    ChartData() {
-        currentTemperature=new Point();
-        xLabels = new ArrayList<Label>();
-        yLabels = new ArrayList<Label>();
-        titles=new ArrayList<Title>();
-        seriesList = new ArrayList<Series>();
-        labelTransform = new LabelTransform() {
-            @Override
-            public String verticalTransform(int valueY) {
-                return String.valueOf(valueY);
-            }
+  public void setMaxTemperature(String maxTemperature) {
+    this.maxTemperature = maxTemperature;
+  }
 
-            @Override
-            public String horizontalTransform(int valueX) {
-                return String.valueOf(valueX);
-            }
+  public String getMinTemperature() {
+    return minTemperature;
+  }
 
-            @Override
-            public boolean labelDrawing(int valueX) {
-                return true;
-            }
-        };
-        yLabelCount = 4;// 默认纵轴显示4个文本
-        xLabelUsageSeries = 0;// 默认横轴使用第一个序列来显示文本
-    }
+  public void setMinTemperature(String minTemperature) {
+    this.minTemperature = minTemperature;
+  }
 
-    /** 设置数据序列 */
-    public void setSeriesList(List<Series> seriesList) {
-        this.seriesList.clear();
-        if (seriesList != null && seriesList.size() > 0) {
-            this.seriesList.addAll(seriesList);
-            if (this.seriesList.size() <= xLabelUsageSeries)
-                throw new IllegalArgumentException("xLabelUsageSeries should greater than seriesList.size()");
-            resetXLabels();
-            resetYLabels();
-            titles.clear();
+  /**
+   * 设置数据序列
+   */
+  public void setSeriesList(List<Series> seriesList) {
+    this.seriesList.clear();
+    if (seriesList != null && seriesList.size() > 0) {
+      this.seriesList.addAll(seriesList);
+      if (this.seriesList.size() <= xLabelUsageSeries) {
+        throw new IllegalArgumentException(
+            "xLabelUsageSeries should greater than seriesList.size()");
+      }
+      resetXLabels();
+      resetYLabels();
+      titles.clear();
 
-            for(Series series:seriesList){
-                titles.add(series.getTitle());
-                if (series.getPoints().size() > maxPointsCount)
-                    maxPointsCount = series.getPoints().size();
-            }
+      for (Series series : seriesList) {
+        titles.add(series.getTitle());
+        if (series.getPoints().size() > maxPointsCount) {
+          maxPointsCount = series.getPoints().size();
         }
+      }
     }
+  }
 
-    /** 重新生成X坐标轴文本 */
-    private void resetXLabels() {
-        xLabels.clear();
-        for (Point point : seriesList.get(xLabelUsageSeries).getPoints()) {
-            if (labelTransform.labelDrawing((int)point.valueX))
-                xLabels.add(new Label((int)point.valueX, labelTransform
-                    .horizontalTransform((int)point.valueX)));
-        }
+  /**
+   * 重新生成X坐标轴文本
+   */
+  private void resetXLabels() {
+    xLabels.clear();
+    for (Point point : seriesList.get(xLabelUsageSeries).getPoints()) {
+      if (labelTransform.labelDrawing((int) point.valueX)) {
+        xLabels.add(new Label((int) point.valueX, labelTransform
+            .horizontalTransform((int) point.valueX)));
+      }
     }
-    /** 重新生成Y坐标轴文本 */
-    private void resetYLabels() {
-        maxValueY = Integer.MIN_VALUE;
-        minValueY = Integer.MAX_VALUE;
-        for (Series series : seriesList) {
-            for (Point point : series.getPoints()) {
-                if (point.valueY > maxValueY){
-                    maxValueY = (int)point.valueY+1;}
-                if (point.valueY < minValueY){
-                    minValueY = (int)point.valueY-1;}
-            }
+  }
+
+  /**
+   * 重新生成Y坐标轴文本
+   */
+  private void resetYLabels() {
+    maxValueY = Integer.MIN_VALUE;
+    minValueY = Integer.MAX_VALUE;
+    for (Series series : seriesList) {
+      for (Point point : series.getPoints()) {
+        if (point.willDrawing) {
+          if (point.valueY > maxValueY) {
+            maxValueY = (int) point.valueY + 1;
+          }
+          if (point.valueY < minValueY) {
+            minValueY = (int) point.valueY - 1;
+          }
         }
-        float step = (maxValueY - minValueY) / (float)(yLabelCount - 1);
-        yLabels.clear();
-        minValueY =(int)( minValueY - step);
-        maxValueY =(int)( maxValueY + step);
-        step = (maxValueY - minValueY) / (yLabelCount - 1);
-        int value =0;
-        for (int i = 0; i <=yLabelCount; i++) {
-            value=(int)(minValueY+step*i+1);
-            yLabels.add(0,
-                new Label(value, labelTransform.verticalTransform(value)));
-        }
+      }
+    }
+    float step = (maxValueY - minValueY) / (float) (yLabelCount - 1);
+    yLabels.clear();
+    minValueY = (int) (minValueY - step);
+    maxValueY = (int) (maxValueY + step);
+    step = (maxValueY - minValueY) / (yLabelCount - 1);
+    int value = 0;
+    for (int i = 0; i <= yLabelCount; i++) {
+      value = (int) (minValueY + step * i + 1);
+      yLabels.add(0,
+          new Label(value, labelTransform.verticalTransform(value)));
+    }
 //        maxValueY=value;
 //        Log.d("zqt", "step="+step);
 //        Log.d("zqt", "step minValueY="+minValueY);
 //        Log.d("zqt", "step maxValueY="+maxValueY);
-    }
-    public void setLabelTransform(LabelTransform labelTransform) {
-        this.labelTransform = labelTransform;
-    }
-    public List<Series> getSeriesList() {
-        return seriesList;
-    }
+  }
 
-    public LabelTransform getLabelTransform() {
-        return labelTransform;
-    }
+  public void setLabelTransform(LabelTransform labelTransform) {
+    this.labelTransform = labelTransform;
+  }
 
-    public List<Label> getXLabels() {
-        return xLabels;
-    }
+  public List<Series> getSeriesList() {
+    return seriesList;
+  }
 
-    public List<Label> getYLabels() {
-        return yLabels;
-    }
-    public List<Title> getTitles() {
-        return titles;
-    }
-    public int getMaxValueY() {
-        return maxValueY;
-    }
+  public LabelTransform getLabelTransform() {
+    return labelTransform;
+  }
 
-    public int getMinValueY() {
-        return minValueY;
-    }
+  public List<Label> getXLabels() {
+    return xLabels;
+  }
 
-    public int getyLabelCount() {
-        return yLabelCount;
-    }
+  public List<Label> getYLabels() {
+    return yLabels;
+  }
 
-    public void setyLabelCount(int yLabelCount) {
-        this.yLabelCount = yLabelCount;
-    }
+  public List<Title> getTitles() {
+    return titles;
+  }
 
-    public int getxLabelUsageSeries() {
-        return xLabelUsageSeries;
-    }
+  public int getMaxValueY() {
+    return maxValueY;
+  }
 
-    public void setxLabelUsageSeries(int xLabelUsageSeries) {
-        this.xLabelUsageSeries = xLabelUsageSeries;
-    }
-    public void setMarker(Marker marker) {
-        titles.add(marker);
-        this.marker = marker;
-    }
-    public Marker getMarker() {
-        return marker;
-    }
+  public int getMinValueY() {
+    return minValueY;
+  }
 
-    public int getMaxPointsCount() {
-        return maxPointsCount;
-    }
-    public interface LabelTransform {
-        /** 纵坐标显示的文本 */
-        String verticalTransform(int valueY);
+  public int getyLabelCount() {
+    return yLabelCount;
+  }
 
-        /** 横坐标显示的文本 */
-        String horizontalTransform(int valueX);
+  public void setyLabelCount(int yLabelCount) {
+    this.yLabelCount = yLabelCount;
+  }
 
-        /** 是否显示指定位置的横坐标文本 */
-        boolean labelDrawing(int valueX);
+  public int getxLabelUsageSeries() {
+    return xLabelUsageSeries;
+  }
 
+  public void setxLabelUsageSeries(int xLabelUsageSeries) {
+    this.xLabelUsageSeries = xLabelUsageSeries;
+  }
+
+  public void setMarker(Marker marker) {
+    titles.add(marker);
+    this.marker = marker;
+  }
+
+  public Marker getMarker() {
+    return marker;
+  }
+
+  public int getMaxPointsCount() {
+    return maxPointsCount;
+  }
+
+  public interface LabelTransform {
+
+    /**
+     * 纵坐标显示的文本
+     */
+    String verticalTransform(int valueY);
+
+    /**
+     * 横坐标显示的文本
+     */
+    String horizontalTransform(int valueX);
+
+    /**
+     * 是否显示指定位置的横坐标文本
+     */
+    boolean labelDrawing(int valueX);
+  }
+
+  class Label {
+
+    /**
+     * 文本对应的坐标X
+     */
+    public float x;
+    /**
+     * 文本对应的坐标Y
+     */
+    public float y;
+    /**
+     * 文本对应的绘制坐标Y
+     */
+    public float drawingY;
+    /**
+     * 文本对应的实际数值
+     */
+    public int value;
+    /**
+     * 文本
+     */
+    public String text;
+
+    public Label(int value, String text) {
+      this.value = value;
+      this.text = text;
     }
-    class Label {
-        /**文本对应的坐标X*/
-        public float x;
-        /**文本对应的坐标Y*/
-        public float y;
-        /** 文本对应的绘制坐标Y */
-        public float drawingY;
-        /**文本对应的实际数值*/
-        public int value;
-        /**文本*/
-        public String text;
-        public Label(int value, String text) {
-            this.value = value;
-            this.text = text;
-        }
-    }
+  }
 }
