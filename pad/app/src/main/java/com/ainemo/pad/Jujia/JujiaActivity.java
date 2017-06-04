@@ -8,7 +8,6 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -27,11 +26,9 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.google.gson.Gson;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,55 +39,48 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
 
   private android.support.v4.view.ViewPager jiujiaviewpager;
   private JiuJiaViewPageAdapter viewPageAdapter;
+  private static int total = 7;
 
   private AppCompatActivity activity;
   private BarChart barChart;
   private Button back;
   private TextView minHumidity;
   private TextView humidity;
-  private List<HomeInfor> homeInfors;
+  private HomeInfor[] homeInfors = new HomeInfor[7];
   private HomeInfor homeInfor1;
-  private HomeInfor homeInfor2;
   //  private TemperatureFragment fragment;
   private List<Fragment> fragments = new ArrayList<>();
   private static final String TAG = "JujiaActivity";
   private DoorInfor doorInfor;
   private boolean net_work;
   private TextView door_status;
-  Handler fragmentHandler1;
+  private GetHomeInforTask[] getHomeInforTask;
+  private GetDoorInfor getDoorInfor;
+  Handler[] fragmentHandlers = new Handler[7];
 
-  Handler fragmentHandler2;
   private TextView day;
 
   Handler handler = new Handler() {
     @Override
     public void handleMessage(Message msg) {
-      if (msg.what == 0x1234) {
+      if (msg.what >= 0x1234 && msg.what < 0x1234 + total) {
+        int offset = msg.what - 0x1234;
         fragments = getSupportFragmentManager().getFragments();
-        Log.d(TAG,
-            "handleMessage: fragment0 =" + fragments.get(0) + "\nfragment1 " + fragments.get(1));
-        fragmentHandler1 = ((TemperatureFragment) fragments.get(1)).handler;
-        fragmentHandler2 = ((TemperatureFragment) fragments.get(0)).handler;
-        Log.d(TAG, "handleMessage: handler1" + fragmentHandler1);
+        fragmentHandlers[offset] = ((TemperatureFragment) fragments
+            .get(total - 1 - offset)).handler;
+
         try {
           Message msgDay = new Message();
           Bundle bundle1 = new Bundle();
-          bundle1.putString("day", "昨天");
+          bundle1.putInt("day", offset);
           msgDay.setData(bundle1);
           msgDay.what = 0x1234;
-          fragmentHandler1.sendMessage(msgDay);
+          fragmentHandlers[offset].sendMessage(msgDay);
 
-          Bundle bundle2 = new Bundle();
-          Log.d(TAG, "handleMessage: handler2" + fragmentHandler2);
-          bundle2.putString("day", "今天");
-          Message msgDay2 = new Message();
-          msgDay2.setData(bundle2);
-          msgDay2.what = 0x1234;
-
-          fragmentHandler2.sendMessage(msgDay2);
         } catch (Exception e) {
           e.printStackTrace();
         }
+      } else if (msg.what == 0x12) {
         initData();
       }
     }
@@ -100,10 +90,11 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_jujia2);
-    initView();
-    initEvent();
     net_work = Utils.isNetWorkAvailabe(this);
-    activity= this;
+    activity = this;
+    initView();
+
+    initEvent();
   }
 
   @Override
@@ -111,7 +102,21 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
     super.onResume();
   }
 
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    if (getDoorInfor != null) {
+      getDoorInfor.cancel(true);
+    }
+    for (int i = 0; i < total; i++) {
+      if (getHomeInforTask[i] != null) {
+        getHomeInforTask[i].cancel(true);
+      }
+    }
+  }
+
   private void initData() {
+    homeInfor1 = homeInfors[0];
     IAxisValueFormatter iAxisValueFormatter = new IAxisValueFormatter() {
       private String[] labels = new String[]{"03", "06", "09", "12", "15", "18", "21", "24"};
 
@@ -185,10 +190,15 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
     this.jiujiaviewpager = (ViewPager) findViewById(R.id.jujia_view_pager);
     viewPageAdapter = new JiuJiaViewPageAdapter(getSupportFragmentManager());
     jiujiaviewpager.setAdapter(viewPageAdapter);
-    jiujiaviewpager.setCurrentItem(1);
+    jiujiaviewpager.setCurrentItem(total - 1);
     door_status = (TextView) findViewById(R.id.room_status_text);
-    new GetHomeInforTask().execute();
-    new GetDoorInfor().execute();
+    getHomeInforTask = new GetHomeInforTask[total];
+    for (int i = 0; i < total; i++) {
+      getHomeInforTask[i] = new GetHomeInforTask();
+      getHomeInforTask[i].execute(i);
+    }
+    getDoorInfor = new GetDoorInfor();
+    getDoorInfor.execute();
     initData();
   }
 
@@ -207,10 +217,15 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-      if (doorInfor.getStatus() == 1) {
-        door_status.setText("开启");
-      } else {
-        door_status.setText("关闭");
+      try {
+        if (doorInfor.getStatus() == 1) {
+          door_status.setText("开启");
+        } else {
+          door_status.setText("关闭");
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+        door_status.setText("--");
       }
       super.onPostExecute(aVoid);
     }
@@ -220,12 +235,28 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
       if (net_work) {
         String door_infor = Utils.sendRequest(
             GlobalData.GET_ROOM_STATUS + Utils.getValue(JujiaActivity.this, GlobalData.PATIENT_ID));
-        doorInfor = gson.fromJson(door_infor, DoorInfor.class);
-        try {
-          Utils.putIntValue(JujiaActivity.this, GlobalData.DOOR_STATUS, doorInfor.getStatus());
-        } catch (NullPointerException e) {
-          e.printStackTrace();
+        if (door_infor.equals("device_not_exist") || door_infor.equals("not_exist") || door_infor
+            .equals("param_error")) {
+          try {
+            doorInfor.setStatus(Utils.getIntValue(JujiaActivity.this, GlobalData.DOOR_STATUS));
+          } catch (NullPointerException e) {
+            e.printStackTrace();
+          }
         }
+//        else if(door_infor.equals("not_exist")){
+//
+//        }else if(door_infor.equals("param_error")){
+//
+//        }
+        else {
+          doorInfor = gson.fromJson(door_infor, DoorInfor.class);
+          try {
+            Utils.putIntValue(JujiaActivity.this, GlobalData.DOOR_STATUS, doorInfor.getStatus());
+          } catch (NullPointerException e) {
+            e.printStackTrace();
+          }
+        }
+
       } else {
         try {
           doorInfor.setStatus(Utils.getIntValue(JujiaActivity.this, GlobalData.DOOR_STATUS));
@@ -242,38 +273,33 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
     }
   }
 
-  class GetHomeInforTask extends AsyncTask<Void, Void, Void> {
+  class GetHomeInforTask extends AsyncTask<Integer, Void, Void> {
 
     private Gson gson = new Gson();
+    private int offset;
 
     @Override
-    protected Void doInBackground(Void... params) {
-
-        Date date = new Date(System.currentTimeMillis());
-        SimpleDateFormat format = new SimpleDateFormat("yyyymmdd");
-        String dateString = format.format(date);
-        date.setDate(date.getDay() - 1);
-        String dateString2 = format.format(date);
-        try {
-          String infor = Utils.sendRequest(
-              GlobalData.GET_HOME_INFOR + Utils.getValue(JujiaActivity.this, GlobalData.PATIENT_ID)
-                  + "&date=" + dateString);
-          homeInfor1 = gson.fromJson(infor, HomeInfor.class);
-          String infor2 = Utils.sendRequest(
-              GlobalData.GET_HOME_INFOR + Utils.getValue(JujiaActivity.this, GlobalData.PATIENT_ID)
-                  + "&date=" + dateString2);
-          homeInfor2 = gson.fromJson(infor2, HomeInfor.class);
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-
-//      Log.d(TAG, "doInBackground: homeInfo.temperatures " + homeInfor1.getTemperatures());
+    protected Void doInBackground(Integer... params) {
+      try {
+        offset = params[0];
+        String day = Utils.formatDay(-params[0].intValue(), "yyyyMMdd", false);
+        String infor = Utils.sendRequest(
+            GlobalData.GET_HOME_INFOR + Utils.getValue(JujiaActivity.this, GlobalData.PATIENT_ID)
+                + "&date=" + day);
+        homeInfors[params[0]] = gson.fromJson(infor, HomeInfor.class);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
       return null;
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
-      handler.sendEmptyMessage(0x1234);
+
+      handler.sendEmptyMessage(0x1234 + offset);
+      if (offset == 0) {
+        handler.sendEmptyMessage(0x12);
+      }
       super.onPostExecute(aVoid);
     }
 
@@ -288,14 +314,9 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
 
   }
 
-  public HomeInfor getHomeInfo(String date) {
-    if (date.equals("今天")) {
-      return homeInfor1 == null ? null : homeInfor1;
-    } else if (date.equals("昨天")) {
-      return homeInfor2 == null ? null : homeInfor2;
-    } else {
-      return null;
-    }
+  public HomeInfor getHomeInfo(int offset) {
+
+    return homeInfors[offset] == null ? null : homeInfors[offset];
   }
 }
 

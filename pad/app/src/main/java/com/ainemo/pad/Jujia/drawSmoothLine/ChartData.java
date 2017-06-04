@@ -58,7 +58,7 @@ public class ChartData {
         return true;
       }
     };
-    yLabelCount = 10;// 默认纵轴显示4个文本
+    yLabelCount = 6;// 默认纵轴显示6个文本
     xLabelUsageSeries = 0;// 默认横轴使用第一个序列来显示文本
   }
 

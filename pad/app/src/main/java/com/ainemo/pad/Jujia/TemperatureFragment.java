@@ -18,6 +18,7 @@ import com.ainemo.pad.Jujia.drawSmoothLine.ChartData;
 import com.ainemo.pad.Jujia.drawSmoothLine.Point;
 import com.ainemo.pad.Jujia.drawSmoothLine.Series;
 import com.ainemo.pad.R;
+import com.ainemo.pad.SomeUtils.Utils;
 import com.github.mikephil.charting.charts.BarChart;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,6 +50,7 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
   private TextView minTem;
   public TextView day;
   private String dayString;
+  private int offset;
   //  private String currentTime;
   Fragment fragment;
   private HomeInfor homeInfor;
@@ -57,8 +59,8 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
     public void handleMessage(Message msg) {
       switch (msg.what) {
         case 0x1234:
-          dayString = msg.getData().getString("day");
-          day.setText(dayString);
+          offset= msg.getData().getInt("day");
+          dayString= Utils.formatDay(offset,"M月d日",true);
           Log.d(TAG, "handleMessage: fragment handler" + handler);
           initData();
           break;
@@ -93,16 +95,11 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
 
   private void initData() {
     List<Series> seriess = new ArrayList<Series>();
-    homeInfor = activity.getHomeInfo(dayString);
+    homeInfor = activity.getHomeInfo(offset);
+    day.setText(dayString);
     try {
-      if (dayString != null && dayString.equals("今天")) {
+      if (dayString != null ) {
         temperatures = homeInfor.getTemperatures();
-        Log.d(TAG, "initData: Today temperatures" + temperatures);
-        Log.d(TAG, "initData: today fragment= " + fragment);
-      } else if (dayString != null && dayString.equals("昨天")) {
-        temperatures = homeInfor.getTemperatures();
-        Log.d(TAG, "initData: Yesterday temperatures" + temperatures);
-        Log.d(TAG, "initData: yesterday fragment= " + fragment);
       }
     } catch (NullPointerException e) {
       e.printStackTrace();

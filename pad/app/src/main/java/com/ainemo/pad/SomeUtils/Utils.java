@@ -66,6 +66,21 @@ public class Utils {
         activity.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
+    public static String formatDay(int offset,String formatString,boolean isWithToday){
+        Date date=new Date(System.currentTimeMillis());
+        SimpleDateFormat format=new SimpleDateFormat(formatString);
+        date.setDate(offset);
+        if(isWithToday&&offset<=1){
+            if(offset==0){
+                return "今天";
+            }else{
+                return "昨天";
+            }
+        }else {
+            String returnString=format.format(date);
+            return returnString;
+        }
+    }
     public static boolean isNetWorkAvailabe(Context context) {
         if (context.checkCallingOrSelfPermission(Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
             return false;
