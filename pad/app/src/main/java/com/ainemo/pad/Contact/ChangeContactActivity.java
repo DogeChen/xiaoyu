@@ -75,19 +75,19 @@ public class ChangeContactActivity extends AppCompatActivity implements OnClickL
       if (data.getImage_url() != null && !data.getImage_url().equals("")) {
         headImage.setImageURI(Uri.parse(data.getImage_url()));
       }else{
-        headImage.setImageResource(R.mipmap.ic_launcher);
+        headImage.setImageResource(R.drawable.contact_image);
       }
 //      String num=data.getNumber();
-//      String xiaoyu=null;
+//      String NemoSn=null;
 //      String telephone=null;
 //      if(num.contains(" ")){
-//         xiaoyu=num.substring(0,num.indexOf(' '));
+//         NemoSn=num.substring(0,num.indexOf(' '));
 //         telephone=num.substring(num.lastIndexOf(' '));
 //      }else if(num.length()>6){
 //        telephone=num;
-//        xiaoyu="";
+//        NemoSn="";
 //      }else if(num.length()<=6){
-//        xiaoyu=num;
+//        NemoSn=num;
 //        telephone=null;
 //      }
       xiaoyuNum.setText(data.getXiaoyuNumber());

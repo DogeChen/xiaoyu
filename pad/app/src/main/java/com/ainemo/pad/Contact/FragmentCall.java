@@ -28,7 +28,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.ainemo.pad.Contact.Record.CallRecord;
 import com.ainemo.pad.Contact.Record.CallRecordAdapter;
 import com.ainemo.pad.Contact.Record.CallRecordAdapter.RecordClickLister;
@@ -59,10 +58,11 @@ public class FragmentCall extends Fragment implements RecordClickLister,OnClickL
   private CircleImageView backspace_number;
   private RecyclerView recyclerView;
   private CallRecordAdapter adapter;
-  private List<CallRecord> list = new ArrayList<>();
+  private List<CallRecord> list;
   private LinearLayout call;
   private RecordClickLister recordClickLister;
   private RecyclerView.LayoutManager layoutManager;
+  private FindRecordsTask findRecordsTask;
   private static final String TAG = "FragmentCall";
   private PopupWindow mPopupWindow;
   private int touchedId;
@@ -74,8 +74,7 @@ public class FragmentCall extends Fragment implements RecordClickLister,OnClickL
         case Msg.OPENAPI_MAKE_CALL_RESULT:
           MakeCallResult result = msg.getData().getParcelable(NemoConst.KEY_MAKE_CALL_RESULT);
           Log.w(TAG, "handleMessage: result is" + result);
-          Toast.makeText(getContext(), result.toString(), Toast.LENGTH_LONG).show();
-
+//          Toast.makeText(getContext(), result.toString(), Toast.LENGTH_LONG).show();
           Date date=new Date();
           Date date1=new Date();
           date.setTime(result.getStartTime());
@@ -89,17 +88,21 @@ public class FragmentCall extends Fragment implements RecordClickLister,OnClickL
           CallRecord callRecord = new CallRecord(result.getCallerName(),
               result.getCallerNemoNumber(), null, callStatus,date,date1, null);
           callRecord.save();
-          Utils.putValue(getContext(),GlobalData.user_name,result.getCalleeName());
-          Utils.putValue(getContext(),GlobalData.xiaoyu,result.getCalleeNemoNumber());
+          Utils.putValue(activity,GlobalData.user_name,result.getCalleeName());
+          Utils.putValue(activity,GlobalData.NemoSn,result.getCalleeNemoNumber());
 
 //          myNemoNum.setText(result.getCalleeNemoNumber());
-          adapter.notifyDataSetChanged();
-          break;
-        case 0x123:
 //          adapter = new CallRecordAdapter(activity, list,recordClickLister);
 //          recyclerView.setAdapter(adapter);
+//          adapter.notifyDataSetChanged();
+
+          break;
+        case 0x123:
+          adapter = new CallRecordAdapter(activity, list,recordClickLister);
+          recyclerView.setAdapter(adapter);
           adapter.notifyDataSetChanged();
           break;
+
         default:
           if (msg.what >= 0 && msg.what <= 9) {
             telephoneNum.append("" + msg.what);
@@ -130,7 +133,16 @@ public class FragmentCall extends Fragment implements RecordClickLister,OnClickL
   @Override
   public void onResume() {
     super.onResume();
-    new FragmentCall.FindRecordsTask().execute(1);
+    findRecordsTask=new FindRecordsTask();
+    findRecordsTask.execute(1);
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    if(findRecordsTask!=null){
+      findRecordsTask.cancel(true);
+    }
   }
 
   @Override
@@ -138,7 +150,9 @@ public class FragmentCall extends Fragment implements RecordClickLister,OnClickL
     super.onCreate(savedInstanceState);
     activity = getActivity();
     recordClickLister=this;
-    new FragmentCall.FindRecordsTask().execute(1);
+    list=new ArrayList<>();
+    findRecordsTask=new FindRecordsTask();
+    findRecordsTask.execute(1);
   }
 
   @Override
@@ -158,7 +172,6 @@ public class FragmentCall extends Fragment implements RecordClickLister,OnClickL
   }
 
   private void initView() {
-
     recyclerView = (RecyclerView) layout.findViewById(R.id.record_list);
     layoutManager = new LinearLayoutManager(activity);
     recyclerView.setLayoutManager(layoutManager);
@@ -232,19 +245,18 @@ public class FragmentCall extends Fragment implements RecordClickLister,OnClickL
         //权限检查
         checkPermission();
 //        Date date=new Date(System.currentTimeMillis());
-
+//
 //        CallRecord callRecord=new CallRecord("张三","15912345678","123456",CallRecord.CALL_IN, date,new Date(System.currentTimeMillis()),"");
 //        callRecord.save();
+//        handler.sendEmptyMessage(0x123);
+
 //
 //        adapter = new CallRecordAdapter(activity, list);
 //        recyclerView.setAdapter(adapter);
 //        adapter.notifyDataSetChanged();
 
-//        NemoOpenAPI.getInstance().playVoice("开始呼叫");
-        NemoOpenAPI.getInstance().makeCall(telephoneNum.getText().toString(), null,null);
-//          }
 
-//        }, 150);
+        NemoOpenAPI.getInstance().makeCall(telephoneNum.getText().toString(), null,null);
       }
     });
   }
@@ -306,7 +318,7 @@ public class FragmentCall extends Fragment implements RecordClickLister,OnClickL
         CallRecord callRecord=DataSupport.find(CallRecord.class,touchedId);
         if(callRecord.getXiaoyuId()!=null){
           NemoOpenAPI.getInstance().makeCall(callRecord.getXiaoyuId().toString(),null,null);
-          Log.d(TAG, "onClick: call xiaoyu "+callRecord.getXiaoyuId().toString().toString());
+          Log.d(TAG, "onClick: call NemoSn "+callRecord.getXiaoyuId().toString().toString());
         }else if(callRecord.getTelephoneNum()!=null){
           NemoOpenAPI.getInstance().makeCall(callRecord.getTelephoneNum().toString(),null,null);
           Log.d(TAG, "onClick: call phone "+callRecord.getTelephoneNum().toString());
@@ -323,15 +335,7 @@ public class FragmentCall extends Fragment implements RecordClickLister,OnClickL
         new FragmentCall.FindRecordsTask().execute(0);
         Log.d(TAG, "onMenuItemClick: delete");
         break;
-//      case R.id.menu_change:
-//        Utils.showShortToast(getContext(), String.valueOf(touchedId));
-//        Log.d(TAG, "onMenuItemClick: change is touched,id is " + touchedId);
-//        mPopupWindow.dismiss();
-//        Intent intent=new Intent(activity, ChangeContactActivity.class);
-//        intent.putExtra("id", touchedId);
-//        Log.d(TAG, " Change id ="+touchedId);
-//        startActivity(intent);
-//        break;
+
       default:
         break;
     }
@@ -345,6 +349,7 @@ public class FragmentCall extends Fragment implements RecordClickLister,OnClickL
       if (DataSupport.isExist(CallRecord.class)) {
         list.clear();
         list.addAll(DataSupport.findAll(CallRecord.class));
+        Log.d(TAG, "doInBackground: listSize= "+list.size());
       } else {
         return 0;
       }

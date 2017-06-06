@@ -69,7 +69,7 @@ public class Utils {
     public static String formatDay(int offset,String formatString,boolean isWithToday){
         Date date=new Date(System.currentTimeMillis());
         SimpleDateFormat format=new SimpleDateFormat(formatString);
-        date.setDate(offset);
+        date.setDate(date.getDate()-offset);
         if(isWithToday&&offset<=1){
             if(offset==0){
                 return "今天";

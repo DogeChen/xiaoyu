@@ -1,6 +1,5 @@
 package com.ainemo.pad.Jujia;
 
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
@@ -15,15 +14,18 @@ public class JiuJiaViewPageAdapter extends FragmentPagerAdapter {
 
 
     @Override
-    public Fragment getItem(int position) {
+    public TemperatureFragment getItem(int position) {
 //        if (position == 0) {
-//            Fragment fragment=new TemperatureFragment();
+//            TemperatureFragment fragment=new TemperatureFragment();
+//            fragment.offset=position;
 //            return fragment;
 //        } else if (position == 1) {
 //            return new TemperatureFragment();
 //        }
         if(position>=0&&position<7){
-            return new TemperatureFragment();
+            TemperatureFragment fragment=new TemperatureFragment();
+            fragment.offset=6-position;
+            return fragment;
         }else {
             return null;
         }

@@ -29,6 +29,7 @@ public class ContactActivity extends FragmentActivity implements NemoCallback {
     Handler handler;
     private FragmentCall fragmentCall;
     private static final String TAG = "ContactActivity";
+    private long lastTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +76,6 @@ public class ContactActivity extends FragmentActivity implements NemoCallback {
             }
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
     }
@@ -96,11 +96,12 @@ public class ContactActivity extends FragmentActivity implements NemoCallback {
         two.setText("通讯录");
     }
 
-
     @Override
     public void onNemoCallback(Message message) {
-
         Log.d(TAG, "onNemoCallback: Callback");
-        handler.sendMessage(Message.obtain(message));
+//        if(System.currentTimeMillis()-lastTime>=500) {
+            handler.sendMessage(Message.obtain(message));
+//            lastTime=System.currentTimeMillis();
+//        }
     }
 }

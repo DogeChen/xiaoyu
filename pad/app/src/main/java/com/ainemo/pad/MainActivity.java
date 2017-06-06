@@ -19,7 +19,7 @@ import com.ainemo.pad.SomeUtils.GlobalData;
 import com.ainemo.pad.SomeUtils.Utils;
 import com.google.gson.Gson;
 
-public class MainActivity extends AppCompatActivity implements OnClickListener{
+public class MainActivity extends AppCompatActivity implements OnClickListener {
 
   private TextView name;
   private TextView number;
@@ -33,25 +33,31 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
 
   private UserInfor userInfor;
   private static final String TAG = "MainActivity";
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     initView();
-
     NemoSn = getIntent().getStringExtra("nemoNumber");
-    Log.i(TAG, "onCreate: NemoSn="+NemoSn+" getNemoSn()="+ NemoOpenAPI.getInstance().getNemoSn());
+
+    Log.i(TAG,
+        "onCreate: NemoSn=" + NemoSn + " getNemoSn()=" + NemoOpenAPI.getInstance().getNemoSn());
     //获取小鱼序列号的代码
 
-    NemoSn="217098";
+    if (NemoSn == null && NemoSn.equals("")) {
+      NemoSn = Utils.getValue(this, GlobalData.NemoSn);
+      if(NemoSn==null&&NemoSn.equals("")){
+      }
+    }else{
+      Utils.putValue(this,GlobalData.NemoSn,NemoSn);
+    }
 
-    patientId=Utils.getValue(this,GlobalData.PATIENT_ID);
-
-    if(patientId==null||patientId.equals("")){
+    patientId = Utils.getValue(this, GlobalData.PATIENT_ID);
+    if (patientId == null || patientId.equals("")) {
       new GetPatientIdTask().execute();
     }
-    patientId="2";//待注释
-
+//    patientId = "2";//待注释
 
     initView();
     initEvent();
@@ -69,20 +75,21 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
     para.setOnClickListener(this);
     returnBtn.setOnClickListener(this);
   }
+
   @Override
-  public void onClick(View view){
-    switch(view.getId()){
+  public void onClick(View view) {
+    switch (view.getId()) {
       case R.id.home_call_btn:
-        startActivity(new Intent(MainActivity.this,ContactActivity.class));
+        startActivity(new Intent(MainActivity.this, ContactActivity.class));
         break;
       case R.id.home_par_btn:
 //        startActivity(new Intent(MainActivity.this,CaseListActivity.class).putExtra("id",patientId));
-        startActivity(new Intent(MainActivity.this,JujiaActivity.class));
+        startActivity(new Intent(MainActivity.this, JujiaActivity.class));
         break;
       case R.id.home_record_btn:
 
-        Intent intent=new Intent(MainActivity.this,CaseListActivity.class);
-        intent.putExtra("id",patientId);
+        Intent intent = new Intent(MainActivity.this, CaseListActivity.class);
+        intent.putExtra("id", patientId);
         startActivity(intent);
         break;
       case R.id.return_btn:
@@ -92,22 +99,22 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
     }
   }
 
-
-  private void initEvent(){
+  private void initEvent() {
 //    name.setText("刘云, 欢迎回来");
 //    number.setText("小鱼号："+NemoSn);
-    try{
-      name.setText(Utils.getValue(this,GlobalData.user_name)+" 欢迎回来");
-      number.setText("小鱼号："+Utils.getValue(this,GlobalData.xiaoyu));
-    }catch (NullPointerException e){
+    try {
+      name.setText(Utils.getValue(this, GlobalData.user_name) + " 欢迎回来");
+      number.setText("小鱼号：" + Utils.getValue(this, GlobalData.NemoSn));
+    } catch (NullPointerException e) {
       e.printStackTrace();
     }
   }
-  @Override
-  public void onBackPressed(){
 
-    if((System.currentTimeMillis()-exitTime) > 2000){
-      Utils.showShortToast(this,"再次点击退出程序");
+  @Override
+  public void onBackPressed() {
+
+    if ((System.currentTimeMillis() - exitTime) > 2000) {
+      Utils.showShortToast(this, "再次点击退出程序");
       exitTime = System.currentTimeMillis();
     } else {
       finish();
@@ -122,18 +129,18 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
     @Override
     protected Void doInBackground(Void... params) {
       String infor = Utils.sendRequest(
-          GlobalData.GET_PATIENT_ID +NemoSn);
-      try{
-        if(infor.equals("not_exist")){
-          Utils.showShortToast(getApplicationContext(),"病人ID获取失败，请在手机端下载app注册,检查该小鱼号绑定了用户");
-        }else if(infor.equals("param_error")){
-          Utils.showShortToast(getApplicationContext(),"参数错误");
-        }else{
-          Utils.putValue(MainActivity.this,GlobalData.PATIENT_ID,infor);
-          patientId=infor;
+          GlobalData.GET_PATIENT_ID + NemoSn);
+      try {
+        if (infor.equals("not_exist")) {
+          Utils.showShortToast(getApplicationContext(), "病人ID获取失败，请在手机端下载app注册,检查该小鱼号绑定了用户");
+        } else if (infor.equals("param_error")) {
+          Utils.showShortToast(getApplicationContext(), "参数错误");
+        } else {
+          Utils.putValue(MainActivity.this, GlobalData.PATIENT_ID, infor);
+          patientId = infor;
         }
-      }catch (Exception e){
-        Utils.showShortToast(getApplicationContext(),"访问数据错误");
+      } catch (Exception e) {
+        Utils.showShortToast(getApplicationContext(), "访问数据错误");
         e.printStackTrace();
       }
       return null;
