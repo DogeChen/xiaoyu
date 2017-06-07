@@ -4,6 +4,8 @@ import ainemo.api.openapi.NemoOpenAPI;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -36,6 +38,17 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
   private UserInfor userInfor;
   private static final String TAG = "MainActivity";
 
+  Handler handler=new Handler(){
+    @Override
+    public void handleMessage(Message msg) {
+      super.handleMessage(msg);
+      if(patientId==null||patientId.equals("")){
+        new GetPatientIdTask().execute();
+        handler.sendEmptyMessageDelayed(0,10000);
+      }
+    }
+  };
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -57,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     }
     patientId = Utils.getValue(this, GlobalData.PATIENT_ID);
     if (patientId == null || patientId.equals("")) {
-      new GetPatientIdTask().execute();
+      handler.sendEmptyMessage(0);
     }
 //    patientId = "2";//待注释
 
@@ -136,11 +149,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
     @Override
     protected Void doInBackground(Void... params) {
+
       String infor = Utils.sendRequest(
           GlobalData.GET_PATIENT_ID + NemoSn);
-      PatientId patientId1 = gson.fromJson(infor, PatientId.class);
-      patientId = patientId1.getPatientID();
       try {
+        PatientId patientId1 = gson.fromJson(infor, PatientId.class);
+        patientId = patientId1.getPatientID();
         if (patientId.equals("not_exist")) {
           patientId = "";
           Utils.showShortToast(activity, "病人ID获取失败，请在手机端下载app注册,检查该小鱼号绑定了用户");
