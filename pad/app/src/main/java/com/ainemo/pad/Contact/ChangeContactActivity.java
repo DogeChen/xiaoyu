@@ -78,16 +78,16 @@ public class ChangeContactActivity extends AppCompatActivity implements OnClickL
         headImage.setImageResource(R.drawable.contact_image);
       }
 //      String num=data.getNumber();
-//      String NemoSn=null;
+//      String NemoNum=null;
 //      String telephone=null;
 //      if(num.contains(" ")){
-//         NemoSn=num.substring(0,num.indexOf(' '));
+//         NemoNum=num.substring(0,num.indexOf(' '));
 //         telephone=num.substring(num.lastIndexOf(' '));
 //      }else if(num.length()>6){
 //        telephone=num;
-//        NemoSn="";
+//        NemoNum="";
 //      }else if(num.length()<=6){
-//        NemoSn=num;
+//        NemoNum=num;
 //        telephone=null;
 //      }
       xiaoyuNum.setText(data.getXiaoyuNumber());

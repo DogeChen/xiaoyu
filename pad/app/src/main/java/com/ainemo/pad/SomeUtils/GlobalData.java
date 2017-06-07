@@ -6,7 +6,7 @@ package com.ainemo.pad.SomeUtils;
 
 public interface GlobalData {
   String user_name="user_name";
-  String NemoSn ="NemoSn";
+  String NemoNum ="NemoNum";
     String Login_status = "login_status";
     String Phone = "phone";
     String PATIENTFAMILY_ID = "patient_family_image";
@@ -16,7 +16,7 @@ public interface GlobalData {
     String USer_email = "email";
     String DOOR_STATUS = "door_status";
     String PATIENT_ID = "patient_id";
-    String XIAO_YU = "NemoSn";
+    String XIAO_YU = "NemoNum";
     String DoctorName = "doctor_name";
     String FAMILY_IMage = "family_image";
     String MAIN_ENGINE = "http://139.196.40.97/OSAdmin-master/uploads/interface/regloginpost.php?";
