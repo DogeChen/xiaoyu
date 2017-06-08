@@ -38,13 +38,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
   private UserInfor userInfor;
   private static final String TAG = "MainActivity";
 
-  Handler handler=new Handler(){
+  Handler handler = new Handler() {
     @Override
     public void handleMessage(Message msg) {
       super.handleMessage(msg);
-      if(patientId==null||patientId.equals("")){
+      if (patientId == null || patientId.equals("")) {
         new GetPatientIdTask().execute();
-        handler.sendEmptyMessageDelayed(0,10000);
+        handler.sendEmptyMessageDelayed(0, 10000);
       }
     }
   };
@@ -73,8 +73,14 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
       handler.sendEmptyMessage(0);
     }
 //    patientId = "2";//待注释
-
+//    Utils.putValue(this,GlobalData.PATIENT_ID,patientId);
     initView();
+    initEvent();
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
     initEvent();
   }
 
@@ -150,23 +156,25 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     @Override
     protected Void doInBackground(Void... params) {
 
-      String infor = Utils.sendRequest(
-          GlobalData.GET_PATIENT_ID + NemoSn);
-      try {
-        PatientId patientId1 = gson.fromJson(infor, PatientId.class);
-        patientId = patientId1.getPatientID();
-        if (patientId.equals("not_exist")) {
-          patientId = "";
-          Utils.showShortToast(activity, "病人ID获取失败，请在手机端下载app注册,检查该小鱼号绑定了用户");
-        } else if (patientId.equals("param_error")) {
-          patientId = "";
-          Utils.showShortToast(activity, "参数错误");
-        } else {
-          Utils.putValue(MainActivity.this, GlobalData.PATIENT_ID, patientId);
+      if (NemoSn != null && !NemoSn.equals("")) {
+        String infor = Utils.sendRequest(
+            GlobalData.GET_PATIENT_ID + NemoSn);
+        try {
+          PatientId patientId1 = gson.fromJson(infor, PatientId.class);
+          patientId = patientId1.getUid();
+          if (patientId.equals("not_exist")) {
+            patientId = "";
+            Utils.showShortToast(activity, "病人ID获取失败，请在手机端下载app注册,检查该小鱼号绑定了用户");
+          } else if (patientId.equals("param_error")) {
+            patientId = "";
+            Utils.showShortToast(activity, "参数错误");
+          } else {
+            Utils.putValue(MainActivity.this, GlobalData.PATIENT_ID, patientId);
+          }
+        } catch (Exception e) {
+          Utils.showShortToast(MainActivity.this, "访问数据错误");
+          e.printStackTrace();
         }
-      } catch (Exception e) {
-//        Utils.showShortToast(activity, "访问数据错误");
-        e.printStackTrace();
       }
       return null;
     }

@@ -2,7 +2,7 @@
 <litepal>
     <dbname value="xiaoyuabcd" ></dbname>
 
-    <version value="4" >
+    <version value="6" >
 
     </version>
 
@@ -11,5 +11,7 @@
         <mapping class="com.ainemo.pad.Datas.ContactListData"></mapping>
         <mapping class="com.ainemo.pad.Contact.Record.CallRecord"/>
         <mapping class="com.ainemo.pad.Datas.CaseInfor"/>
+        <mapping class="com.ainemo.pad.Datas.UserInfor"/>
+        <mapping class="com.ainemo.pad.Datas.UserAcitivityInfo"/>
     </list>
 </litepal>

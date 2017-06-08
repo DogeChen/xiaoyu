@@ -74,7 +74,7 @@ public class FragmentContactList extends Fragment implements MyClickLister, OnCl
       if (msg.what == 0x123) {
         initData();
       } else if (msg.what == 0x124) {
-        Utils.showShortToast(activity, "没有数据");
+//        Utils.showShortToast(activity, "没有数据");
       }
     }
   };
@@ -263,7 +263,7 @@ public class FragmentContactList extends Fragment implements MyClickLister, OnCl
         Log.d(TAG, "onMenuItemClick: delete");
         break;
       case R.id.menu_change:
-        Utils.showShortToast(getContext(), String.valueOf(touchedId));
+//        Utils.showShortToast(getContext(), String.valueOf(touchedId));
         Log.d(TAG, "onMenuItemClick: change is touched,id is " + touchedId);
         mPopupWindow.dismiss();
         Intent intent=new Intent(activity, ChangeContactActivity.class);
@@ -303,7 +303,8 @@ public class FragmentContactList extends Fragment implements MyClickLister, OnCl
         handler.sendEmptyMessage(0x123);
       } else {
         SourceDateList=new ArrayList<>();
-        handler.sendEmptyMessage(0x124);
+        Collections.sort(SourceDateList, pinyinComparator);
+        handler.sendEmptyMessage(0x123);
         Log.d(TAG, "doInBackground: DataBase don't exsit");
       }
       return 1;
@@ -327,8 +328,6 @@ public class FragmentContactList extends Fragment implements MyClickLister, OnCl
    */
   private List<SortModel> filledData(Integer[] ids, String[] date, String[] numbers) {
     List<SortModel> mSortList = new ArrayList<SortModel>();
-
-
 
     for (int i = 0; i < date.length; i++) {
       SortModel sortModel = new SortModel();

@@ -371,6 +371,7 @@ public class FragmentCall extends Fragment implements RecordClickLister,OnClickL
         list.clear();
         list.addAll(DataSupport.findAll(CallRecord.class));
       } else {
+        list.clear();
         return 0;
       }
       if (list != null) {
@@ -398,7 +399,7 @@ public class FragmentCall extends Fragment implements RecordClickLister,OnClickL
       if (integer == 1) {
         handler.sendEmptyMessage(0x123);
       } else if (integer == 0) {
-        handler.sendEmptyMessage(0x124);
+        handler.sendEmptyMessage(0x123);
       }
     }
     @Override

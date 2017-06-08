@@ -1,11 +1,14 @@
 package com.ainemo.pad.Jujia;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.ainemo.pad.Datas.DoorInfor;
 import com.ainemo.pad.Jujia.drawSmoothLine.BesselChart.ChartListener;
@@ -31,6 +34,7 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
     return barChart;
   }
 
+  private LinearLayout person_status;
   private BarChart barChart;
   private Button back;
   private TextView minHumidity;
@@ -87,7 +91,11 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
     setContentView(R.layout.activity_jujia2);
     net_work = Utils.isNetWorkAvailabe(this);
     activity = this;
-
+   String patientId =Utils.getValue(this,GlobalData.PATIENT_ID);
+    if (patientId == null || patientId.equals("")) {
+      Utils.showShortToast(this, "此用户没有绑定患者");
+      Utils.finishActivity(this);
+    }
     initView();
     initEvent();
   }
@@ -119,6 +127,7 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
 //      viewPageAdapter.getItem(i);
 //    }
 
+    person_status=(LinearLayout)findViewById(R.id.person_status);
     jiujiaviewpager.setAdapter(viewPageAdapter);
     jiujiaviewpager.setCurrentItem(total - 1);
 
@@ -138,6 +147,13 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
       @Override
       public void onClick(View v) {
         finish();
+      }
+    });
+    person_status.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Intent intent=new Intent(JujiaActivity.this,PersonStatusActivity.class);
+        startActivity(intent);
       }
     });
   }

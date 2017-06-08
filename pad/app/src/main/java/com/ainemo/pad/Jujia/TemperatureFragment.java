@@ -61,7 +61,7 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
   public TextView day;
   private String dayString;
   private GetHomeInforTask getHomeInforTask;
-  public int offset;
+  public  int offset;
   private boolean isGetHomeInfor=false;
   Fragment fragment;
   private HomeInfor homeInfor;

@@ -112,7 +112,7 @@ class BesselCalculator {
 //    } catch (Exception e) {
 //      e.printStackTrace();
 //    }
-    viewWidth=width;
+    viewWidth = width;
     this.height = height;
     this.translateX = 0;
     computeHorizontalAxisInfoWithHeight();// 计算横轴参数
@@ -240,7 +240,14 @@ class BesselCalculator {
         horizontalTextRect);
     xAxisHeight = horizontalTextRect.height() * 2;
 //    float labelWidth = xAxisWidth / style.getxLabelsPageCount();
-    float labelWidth = xAxisWidth / xLabels.size();
+    float labelWidth;
+//    try {
+      labelWidth = xAxisWidth / xLabels.size();
+//    }
+//    catch (Exception e) {
+//      e.printStackTrace();
+//      labelWidth = xAxisWidth;
+//    }
     for (int i = 0; i < xLabels.size(); i++) {
       ChartData.Label label = xLabels.get(i);
       label.x = labelWidth * (i + 0.5f);

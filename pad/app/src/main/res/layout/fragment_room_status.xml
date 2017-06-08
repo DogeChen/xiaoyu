@@ -1,0 +1,261 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:background="@drawable/background"
+  android:layout_height="match_parent"
+  android:orientation="vertical">
+
+
+  <Button
+    android:layout_marginLeft="1152px"
+    android:layout_marginTop="30px"
+    android:background="@drawable/btn_return"
+    android:id="@+id/fragment_room_back"
+    android:layout_width="88px"
+    android:layout_height="88px"
+    />
+  <!--<RelativeLayout-->
+    <!--android:id="@+id/fragment_room_toolbar"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="40px"-->
+    <!--android:background="@color/my_background">-->
+
+
+    <!--<RelativeLayout-->
+      <!--android:id="@+id/fragment_room_back"-->
+      <!--android:layout_width="wrap_content"-->
+      <!--android:layout_height="match_parent">-->
+
+      <!--<ImageView-->
+        <!--android:id="@+id/fragment_room_back_image"-->
+        <!--android:layout_width="30px"-->
+        <!--android:layout_height="40px"-->
+        <!--android:layout_marginTop="4px"-->
+        <!--android:paddingLeft="6px"-->
+        <!--android:src="@drawable/backwards_iamge" />-->
+
+      <!--<TextView-->
+        <!--android:id="@+id/fragment_room_back_image_text"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_toRightOf="@+id/fragment_room_back_image"-->
+        <!--android:paddingTop="12px"-->
+        <!--android:text="主页"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:textSize="18px" />-->
+    <!--</RelativeLayout>-->
+
+    <!--<TextView-->
+      <!--android:layout_width="wrap_content"-->
+      <!--android:layout_height="match_parent"-->
+      <!--android:layout_marginLeft="160px"-->
+      <!--android:paddingTop="12px"-->
+      <!--android:text="人员活动"-->
+      <!--android:textColor="@color/white"-->
+      <!--android:textSize="18px" />-->
+
+  <!--</RelativeLayout>-->
+
+  <RelativeLayout
+    android:gravity=""
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/fragment_room_back">
+
+    <FrameLayout
+      android:id="@+id/bed_room1"
+      android:layout_width="260px"
+      android:background="@drawable/bed_room1"
+      android:layout_height="220px"
+      android:layout_alignTop="@+id/kitchen_room"
+      android:layout_alignParentStart="true"
+      android:layout_marginStart="13px">
+
+
+
+
+      <TextView
+        android:id="@+id/bed_room1_text"
+        android:layout_width="40px"
+        android:layout_height="40px"
+        android:layout_gravity="bottom|right"
+        android:paddingLeft="4px"
+        android:paddingTop="4px"
+        android:text="12"
+        android:textColor="@color/whites"
+        android:textSize="30px" />
+    </FrameLayout>
+
+    <FrameLayout
+      android:id="@+id/washing_room"
+      android:layout_width="180px"
+      android:layout_height="140px"
+      android:layout_marginLeft="10px"
+      android:background="@drawable/washing_room"
+      android:layout_below="@+id/bed_room1"
+      android:layout_alignStart="@+id/other_room">
+
+
+      <TextView
+        android:id="@+id/washing_room_text"
+        android:layout_width="30px"
+        android:layout_height="30px"
+        android:layout_gravity="bottom|right"
+        android:paddingTop="4px"
+        android:text="0"
+        android:textColor="@color/whites"
+        android:textSize="11px" />
+    </FrameLayout>
+
+
+    <FrameLayout
+      android:id="@+id/kitchen_room"
+      android:layout_width="260px"
+      android:layout_height="220px"
+      android:layout_marginLeft="4px"
+      android:background="@drawable/kitchen_room"
+      android:layout_alignParentTop="true"
+      android:layout_alignStart="@+id/dinig_room">
+
+      <TextView
+        android:id="@+id/kitchen_room_text"
+        android:layout_width="40px"
+        android:layout_height="40px"
+        android:layout_gravity="bottom|right"
+        android:paddingLeft="2px"
+        android:paddingTop="4px"
+        android:text="0"
+        android:textColor="@color/whites"
+        android:textSize="15px" />
+    </FrameLayout>
+
+    <FrameLayout
+      android:id="@+id/bed_room2"
+      android:layout_width="220px"
+      android:layout_height="180px"
+      android:layout_marginLeft="4px"
+      android:background="@drawable/bed_room2"
+      android:layout_alignParentTop="true"
+      android:layout_alignEnd="@+id/washing_room">
+
+      <TextView
+        android:id="@+id/bed_room2_text"
+        android:layout_width="40px"
+        android:layout_height="40px"
+        android:layout_gravity="bottom|right"
+        android:paddingLeft="4px"
+        android:paddingTop="4px"
+        android:text="0"
+        android:textColor="@color/whites"
+        android:textSize="14px" />
+    </FrameLayout>
+
+    <FrameLayout
+      android:id="@+id/store_room"
+      android:layout_width="220px"
+      android:layout_height="200px"
+      android:layout_marginLeft="36px"
+      android:background="@drawable/store_room"
+      android:layout_below="@+id/bed_room3"
+      android:layout_alignParentStart="true"
+      android:layout_marginTop="19px">
+
+      <TextView
+        android:id="@+id/store_room_text"
+        android:layout_width="40px"
+        android:layout_height="40px"
+        android:layout_gravity="bottom|right"
+        android:paddingLeft="4px"
+        android:paddingTop="4px"
+        android:text="0"
+        android:textColor="@color/whites"
+        android:textSize="14px" />
+    </FrameLayout>
+
+    <FrameLayout
+      android:id="@+id/dinig_room"
+      android:layout_width="220px"
+      android:layout_height="200px"
+      android:layout_marginLeft="10px"
+      android:background="@drawable/dining_room"
+      android:layout_marginStart="62px"
+      android:layout_alignTop="@+id/store_room"
+      android:layout_toEndOf="@+id/store_room">
+
+      <TextView
+        android:id="@+id/dinig_room_text"
+        android:layout_width="40px"
+        android:layout_height="40px"
+        android:layout_gravity="bottom|right"
+        android:paddingLeft="4px"
+        android:paddingTop="4px"
+        android:text="0"
+        android:textColor="@color/whites"
+        android:textSize="14px" />
+    </FrameLayout>
+
+    <FrameLayout
+      android:id="@+id/bed_room3"
+      android:layout_width="260px"
+      android:layout_height="240px"
+      android:layout_marginLeft="4px"
+      android:background="@drawable/bed_room3"
+      android:layout_marginEnd="13dp"
+      android:layout_alignParentTop="true"
+      android:layout_toStartOf="@+id/bed_room2">
+
+      <TextView
+        android:id="@+id/bed_room3_text"
+        android:layout_width="40px"
+        android:layout_height="40px"
+        android:layout_gravity="bottom|right"
+        android:paddingLeft="4px"
+        android:paddingTop="4px"
+        android:text="0"
+        android:textColor="@color/whites"
+        android:textSize="14px" />
+    </FrameLayout>
+
+    <FrameLayout
+      android:id="@+id/living_room"
+      android:layout_width="320px"
+      android:layout_height="300px"
+      android:layout_marginLeft="84px"
+      android:background="@drawable/living_room"
+      android:layout_alignTop="@+id/dinig_room"
+      android:layout_alignEnd="@+id/bed_room3">
+
+      <TextView
+        android:id="@+id/living_room_text"
+        android:layout_width="44px"
+        android:layout_height="44px"
+        android:layout_gravity="bottom|right"
+        android:paddingLeft="4px"
+        android:paddingTop="4px"
+        android:text="0"
+        android:textColor="@color/whites"
+        android:textSize="32px" />
+    </FrameLayout>
+    <FrameLayout
+      android:id="@+id/other_room"
+      android:layout_width="220px"
+      android:layout_height="180px"
+      android:layout_marginLeft="4px"
+      android:background="@drawable/other_room"
+      android:layout_alignParentBottom="true"
+      android:layout_alignParentEnd="true">
+
+      <TextView
+        android:id="@+id/other_room_text"
+        android:layout_width="40px"
+        android:layout_height="40px"
+        android:layout_gravity="bottom|right"
+        android:paddingLeft="2px"
+        android:paddingTop="4px"
+        android:text="0"
+        android:textColor="@color/whites"
+        android:textSize="14px" />
+    </FrameLayout>
+  </RelativeLayout>
+
+</RelativeLayout>

@@ -8,6 +8,7 @@
   <de.hdodenhof.circleimageview.CircleImageView
     android:layout_width="324px"
     android:layout_height="324px"
+    android:src="@drawable/contact_image"
     android:id="@+id/doctor_head"
     android:layout_marginTop="82px"
     android:layout_marginLeft="116px"

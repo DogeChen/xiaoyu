@@ -207,6 +207,7 @@ tools:context="com.ainemo.pad.Jujia.JujiaActivity"
       android:src="@drawable/icon_act" />
 
     <LinearLayout
+      android:id="@+id/person_status"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_below="@id/person_activity_small"

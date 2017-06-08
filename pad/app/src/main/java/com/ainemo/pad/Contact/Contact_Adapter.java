@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.ainemo.pad.Contact.sortlist.SortModel;
 import com.ainemo.pad.R;
-import com.ainemo.pad.SomeUtils.Utils;
 import de.hdodenhof.circleimageview.CircleImageView;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +90,7 @@ public class Contact_Adapter extends RecyclerView.Adapter<Contact_Adapter.MyView
                 SortModel item=list.get(position);
                 viewHolder.itemView.setTag(item.getId());
 //                Log.d(TAG, "onClick: id="+position);
-                Utils.showShortToast(context,"id="+position);
+//                Utils.showShortToast(context,"id="+position);
                 myClickLister.onItemClick(view);
 //                //创建弹出菜单
 //                PopupMenu popupMenu=new PopupMenu(context,view);

@@ -31,6 +31,7 @@
 
       </intent-filter>
     </activity>
+    <activity android:name=".Jujia.PersonStatusActivity" android:screenOrientation="landscape"/>
     <activity android:name=".Case.CaseListActivity" android:screenOrientation="landscape"/>
     <activity android:name=".Jujia.JujiaActivity" android:screenOrientation="landscape"/>
     <activity android:name=".Case.CaseDetailActivity" android:screenOrientation="landscape"/>
