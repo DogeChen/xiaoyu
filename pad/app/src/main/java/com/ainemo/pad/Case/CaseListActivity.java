@@ -20,6 +20,7 @@ import com.ainemo.pad.SomeUtils.GlobalData;
 import com.ainemo.pad.SomeUtils.Utils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import java.util.ArrayList;
 import java.util.List;
 import org.litepal.crud.DataSupport;
 
@@ -27,18 +28,20 @@ import org.litepal.crud.DataSupport;
  * Created by 小武哥 on 2017/4/27.
  */
 
-public class CaseListActivity extends AppCompatActivity implements CardPagerAdapter.OnCardItemClickListener,View.OnClickListener{
+public class CaseListActivity extends AppCompatActivity implements
+    CardPagerAdapter.OnCardItemClickListener, View.OnClickListener {
+
   private List<CaseInfor> caseList;
   private Button back;
   private static final String TAG = "CaseListActivity";
-  private CardPagerAdapter adapter =null;
+  private CardPagerAdapter adapter = null;
   private boolean net_work_available, has_data;
   private String patientId;
   private ProgressDialog progressDialog;
   private CustomViewPager viewPager;
   private CardView item;
 
-  private Handler handler = new Handler(){
+  private Handler handler = new Handler() {
     @Override
     public void handleMessage(Message msg) {
       if (msg.what == 0x123) {
@@ -65,19 +68,17 @@ public class CaseListActivity extends AppCompatActivity implements CardPagerAdap
 
   }
 
-  public void initView(){
+  public void initView() {
     int mWidth = getWindowManager().getDefaultDisplay().getWidth();
-    int mHeight=getWindowManager().getDefaultDisplay().getHeight();
+    int mHeight = getWindowManager().getDefaultDisplay().getHeight();
 
-    back=(Button)findViewById(R.id.return_btn);
-
+    back = (Button) findViewById(R.id.return_btn);
 
     //设置阴影大小，即vPage  左右两个图片相距边框  maxFactor + 0.3*CornerRadius   *2
     //设置阴影大小，即vPage 上下图片相距边框  maxFactor*1.5f + 0.3*CornerRadius
     int maxFactor = mWidth / 25;
 
-
-    int mWidthPading =(int )( mWidth / 3);
+    int mWidthPading = (int) (mWidth / 3);
 
     viewPager = (CustomViewPager) findViewById(R.id.view_page);
 
@@ -85,10 +86,10 @@ public class CaseListActivity extends AppCompatActivity implements CardPagerAdap
     adapter.setMaxElevationFactor(maxFactor);
 
     viewPager.setLayoutParams(
-        new LinearLayout.LayoutParams((int) (mWidth), mHeight-200));
+        new LinearLayout.LayoutParams((int) (mWidth), mHeight - 200));
 
 //    viewPager.setLayoutParams(new LinearLayout.LayoutParams((int) (mWidth), 595));
-    viewPager.setPadding(mWidthPading,0, mWidthPading,0);
+    viewPager.setPadding(mWidthPading, 0, mWidthPading, 0);
 
     viewPager.setPageMargin(0);
     viewPager.setBottom(100);
@@ -99,7 +100,7 @@ public class CaseListActivity extends AppCompatActivity implements CardPagerAdap
     progressDialog.show();
   }
 
-  public void initEvent(){
+  public void initEvent() {
     back.setOnClickListener(this);
     adapter.setOnCardItemClickListener(this);
   }
@@ -116,21 +117,23 @@ public class CaseListActivity extends AppCompatActivity implements CardPagerAdap
   @Override
   public void onClick(int position) {
     Log.d(TAG, "onClick: viewPage");
-    if(position>=0&&position<=caseList.size()){
-      Intent intent=new Intent(CaseListActivity.this,CaseDetailActivity.class);
-      CaseInfor caseInfor=caseList.get(position);
-      intent.putExtra("caseInforId",caseInfor.getId());
+    if (position >= 0 && position <= caseList.size()) {
+      Intent intent = new Intent(CaseListActivity.this, CaseDetailActivity.class);
+      CaseInfor caseInfor = caseList.get(position);
+      intent.putExtra("caseInforId", caseInfor.getId());
       startActivity(intent);
     }
   }
 
   @Override
   public void onClick(View view) {
-    if(view.getId()==R.id.return_btn){
+    if (view.getId() == R.id.return_btn) {
       finish();
     }
   }
+
   class CaseListTask extends AsyncTask<String, Void, String> {
+
     private Gson gson = new Gson();
 
     @Override
@@ -157,8 +160,15 @@ public class CaseListActivity extends AppCompatActivity implements CardPagerAdap
     @Override
     protected String doInBackground(String... params) {
       if (net_work_available) {
-        caseList = gson.fromJson(Utils.sendRequest(GlobalData.GET_PATIENT_CASE + patientId), new TypeToken<List<CaseInfor>>() {
-        }.getType());
+        String listString = Utils.sendRequest(GlobalData.GET_PATIENT_CASE + patientId);
+        if (listString.contains("not_exist")) {
+          caseList = new ArrayList<>();
+          has_data=false;
+        } else {
+          caseList = gson.fromJson(listString, new TypeToken<List<CaseInfor>>() {
+          }.getType());
+          has_data = true;
+        }
 //        caseList=new ArrayList<>();
 //        CaseInfor caseInfor = new CaseInfor();
 //        caseInfor.setName("流云");
@@ -171,14 +181,13 @@ public class CaseListActivity extends AppCompatActivity implements CardPagerAdap
 //        caseList.add(caseInfor);
 //        caseList.add(caseInfor);
 //        caseList.add(caseInfor);
-
         DataSupport.deleteAll(CaseInfor.class);
         for (CaseInfor caseInfor1 : caseList) {
           if (!caseInfor1.isSaved()) {
             caseInfor1.save();
           }
         }
-        has_data = true;
+
 
       } else {
         if (DataSupport.isExist(CaseInfor.class)) {

@@ -47,7 +47,7 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
   private TextView humidity;
   private static final String TAG = "TemperatureFragment";
   private BarChart barChart;
-//  private Button back;
+  //  private Button back;
   private List<Point> points = new ArrayList<>();
   //  private Point currentTem;
   private View layout;
@@ -61,8 +61,8 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
   public TextView day;
   private String dayString;
   private GetHomeInforTask getHomeInforTask;
-  public  int offset;
-  private boolean isGetHomeInfor=false;
+  public int offset;
+  private boolean isGetHomeInfor = false;
   Fragment fragment;
   private HomeInfor homeInfor;
 
@@ -72,10 +72,9 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
     public void handleMessage(Message msg) {
       switch (msg.what) {
         case 0x1234:
-
           Log.d(TAG, "handleMessage: fragment handler" + handler);
           initData();
-          if(offset==0){
+          if (offset == 0) {
             initActivityData();
           }
           break;
@@ -96,10 +95,11 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
       }
     }
     initView();
-    if(isGetHomeInfor==false){
-    getHomeInforTask=new GetHomeInforTask();
-    getHomeInforTask.execute(offset);}
-    isGetHomeInfor=true;
+    if (isGetHomeInfor == false) {
+      getHomeInforTask = new GetHomeInforTask();
+      getHomeInforTask.execute(offset);
+    }
+    isGetHomeInfor = true;
     initEvent();
     return layout;
   }
@@ -115,15 +115,15 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
   @Override
   public void onDestroy() {
     super.onDestroy();
-    if(getHomeInforTask!=null){
+    if (getHomeInforTask != null) {
       getHomeInforTask.cancel(true);
     }
   }
 
   private void initActivityData() {
-    minHumidity=activity.getMinHumidity();
-    humidity=activity.getHumidity();
-    barChart=activity.getBarChart();
+    minHumidity = activity.getMinHumidity();
+    humidity = activity.getHumidity();
+    barChart = activity.getBarChart();
     IAxisValueFormatter iAxisValueFormatter = new IAxisValueFormatter() {
       private String[] labels = new String[]{"03", "06", "09", "12", "15", "18", "21", "24"};
 
@@ -165,7 +165,7 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
     barChart.setDrawBarShadow(true);
     barChart.getLegend().setEnabled(false);
     barChart.invalidate();
-    if (homeInfor!= null) {
+    if (homeInfor != null) {
       humidity.setText((int) homeInfor.getHumidity() + "%");
       try {
         List<Float> sort = homeInfor.getHumidityies();
@@ -193,11 +193,18 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
 //    homeInfor = activity.getHomeInfo(offset);
 
     try {
-      if (dayString != null ) {
+      if (dayString != null) {
         temperatures = homeInfor.getTemperatures();
       }
     } catch (NullPointerException e) {
       e.printStackTrace();
+    }
+    if (temperatures == null) {
+      temperatures = new ArrayList<>();
+      for (int i = 0; i < 24; i++) {
+        temperatures.add(0.0f);
+      }
+      chart.getData().setHasData(false);
     }
 //    handleTemperatures();
 //        temperatures = new ArrayList<>();
@@ -257,12 +264,12 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
         }
       });
       String max = "--" + "℃";
-      String maxWithDot="--" + "℃";
+      String maxWithDot = "--" + "℃";
       chart.getData().setMaxTemperature(max);
       for (int i = sort.size() - 1; i >= 0; i--) {
         if (!isApproachingZero(sort.get(i))) {
           max = String.valueOf(sort.get(i).intValue()) + "℃";
-          maxWithDot=String.format("%.1f",sort.get(i).floatValue())+"℃";
+          maxWithDot = String.format("%.1f", sort.get(i).floatValue()) + "℃";
           break;
         }
       }
@@ -270,11 +277,11 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
       chart.getData().setMaxTemperature(maxWithDot);
 
       String min = "--" + "℃";
-      String minWithDot="--" + "℃";
+      String minWithDot = "--" + "℃";
       for (int i = 0; i < sort.size(); i++) {
         if (!isApproachingZero(sort.get(i))) {
           min = String.valueOf(sort.get(i).intValue()) + "℃";
-          minWithDot=String.format("%.1f",sort.get(i).floatValue())+"℃";
+          minWithDot = String.format("%.1f", sort.get(i).floatValue()) + "℃";
           break;
         }
       }
@@ -310,7 +317,7 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
   }
 
   private boolean isApproachingZero(Float i) {
-    if (i - 0.0f <= 0.1f&&i - 0.0f >= -0.1f) {
+    if (i - 0.0f <= 0.1f && i - 0.0f >= -0.1f) {
       return true;
     } else {
       return false;
@@ -328,9 +335,10 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
   }
 
   private void initEvent() {
-    dayString= Utils.formatDay(offset,"M月d日",true);
+    dayString = Utils.formatDay(offset, "M月d日", true);
     day.setText(dayString);
   }
+
   class GetHomeInforTask extends AsyncTask<Integer, Void, Void> {
 
     private Gson gson = new Gson();
@@ -363,6 +371,7 @@ public class TemperatureFragment extends Fragment implements BesselChart.ChartLi
       super.onPreExecute();
     }
   }
+
   @Override
   public void onMove() {
     Log.d("zqt", "onMove");

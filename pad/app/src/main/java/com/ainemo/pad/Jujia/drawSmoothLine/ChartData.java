@@ -25,7 +25,15 @@ public class ChartData {
   private String maxTemperature;
   private String minTemperature;
 
+  public boolean isHasData() {
+    return hasData;
+  }
 
+  public void setHasData(boolean hasData) {
+    this.hasData = hasData;
+  }
+
+  private boolean hasData;
 
   /**
    * 纵坐标显示文本的数量
@@ -38,6 +46,7 @@ public class ChartData {
   private int xLabelUsageSeries;
 
   ChartData() {
+    hasData=true;
     xLabels = new ArrayList<Label>();
     yLabels = new ArrayList<Label>();
     titles = new ArrayList<Title>();

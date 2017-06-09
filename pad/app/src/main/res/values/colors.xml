@@ -37,4 +37,5 @@
   <color name="red255">#ffed9479</color>
   <color name="red128">#7fed9479</color>
   <color name="greenBright">#a0d07a</color>
+  <color name="black">#000000</color>
 </resources>

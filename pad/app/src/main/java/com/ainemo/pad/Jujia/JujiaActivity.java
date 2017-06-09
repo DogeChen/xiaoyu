@@ -35,6 +35,7 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
   }
 
   private LinearLayout person_status;
+  private LinearLayout baojing;
   private BarChart barChart;
   private Button back;
   private TextView minHumidity;
@@ -51,7 +52,7 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
   //  private TemperatureFragment fragment;
 //  private List<Fragment> fragments = new ArrayList<>();
   private static final String TAG = "JujiaActivity";
-  private DoorInfor doorInfor;
+  private DoorInfor doorInfor=new DoorInfor();
   private boolean net_work;
   private TextView door_status;
 //  private GetHomeInforTask[] getHomeInforTask;
@@ -119,6 +120,7 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
 
     humidity = (TextView) findViewById(R.id.humidity);
     minHumidity = (TextView) findViewById(R.id.minHumidity);
+    baojing=(LinearLayout)findViewById(R.id.baojing);
     barChart = (BarChart) findViewById(R.id.bar_shidu_chart);
     back = (Button) findViewById(R.id.return_btn);
     this.jiujiaviewpager = (ViewPager) findViewById(R.id.jujia_view_pager);
@@ -156,6 +158,13 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
         startActivity(intent);
       }
     });
+    baojing.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Intent intent=new Intent(JujiaActivity.this,BaojingActivity.class);
+        startActivity(intent);
+      }
+    });
   }
 
   class GetDoorInfor extends AsyncTask<Void, Void, Void> {
@@ -167,8 +176,10 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
       try {
         if (doorInfor.getStatus() == 1) {
           door_status.setText("开启");
-        } else {
+        } else if (doorInfor.getStatus()==0){
           door_status.setText("关闭");
+        } else{
+          door_status.setText("无设备");
         }
       } catch (Exception e) {
         e.printStackTrace();
@@ -182,11 +193,14 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
       if (net_work) {
         String door_infor = Utils.sendRequest(
             GlobalData.GET_ROOM_STATUS + Utils.getValue(JujiaActivity.this, GlobalData.PATIENT_ID));
-        if (door_infor.equals("device_not_exist") || door_infor.equals("not_exist") || door_infor
-            .equals("param_error")) {
+        if (door_infor.contains("device_not_exist") || door_infor.contains("not_exist") || door_infor
+            .contains("param_error")) {
           try {
-            doorInfor.setStatus(Utils.getIntValue(JujiaActivity.this, GlobalData.DOOR_STATUS));
+
+            doorInfor.setStatus(2);
+//            doorInfor.setStatus(Utils.getIntValue(JujiaActivity.this, GlobalData.DOOR_STATUS));
           } catch (NullPointerException e) {
+
             e.printStackTrace();
           }
         }

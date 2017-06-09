@@ -39,7 +39,7 @@
 
     <activity android:name=".Contact.ChangeContactActivity" android:screenOrientation="landscape"/>
     <activity android:name=".Contact.ContactActivity" android:screenOrientation="landscape"/>
-
+    <activity android:name=".Jujia.BaojingActivity" android:screenOrientation="landscape"/>
   </application>
 
 </manifest>

@@ -241,13 +241,12 @@ class BesselCalculator {
     xAxisHeight = horizontalTextRect.height() * 2;
 //    float labelWidth = xAxisWidth / style.getxLabelsPageCount();
     float labelWidth;
-//    try {
+    try {
       labelWidth = xAxisWidth / xLabels.size();
-//    }
-//    catch (Exception e) {
-//      e.printStackTrace();
-//      labelWidth = xAxisWidth;
-//    }
+    } catch (Exception e) {
+      e.printStackTrace();
+      labelWidth = xAxisWidth;
+    }
     for (int i = 0; i < xLabels.size(); i++) {
       ChartData.Label label = xLabels.get(i);
       label.x = labelWidth * (i + 0.5f);
@@ -301,7 +300,12 @@ class BesselCalculator {
     }
     for (Series series : data.getSeriesList()) {
       List<Point> points = series.getPoints();
-      float pointWidth = xAxisWidth / points.size();
+      float pointWidth;
+      try {
+        pointWidth = xAxisWidth / points.size();
+      } catch (ArithmeticException e) {
+        pointWidth = xAxisWidth;
+      }
       for (int i = 0; i < points.size(); i++) {
         Point point = points.get(i);
         // 计算数据点的坐标

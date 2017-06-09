@@ -36,4 +36,5 @@ public interface GlobalData {
     String GET_ACTIVITIES = "http://139.196.40.97/OSAdmin-master/uploads/interface/getActivities.php?patientId=";
     String GET_PATIENT_ID="http://139.196.40.97/OSAdmin-master/uploads/interface/getPatientID.php?xiaoyuNum=";
     String GET_ROOM_STATUS="http://139.196.40.97/OSAdmin-master/uploads/interface/doorinfo.php?patientId=";
+  String GET_ONEKEY_WARNING = "http://139.196.40.97/OSAdmin-master/uploads/interface/getOnekeyWaring.php?patientId=";
 }
