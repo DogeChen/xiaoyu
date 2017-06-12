@@ -57,7 +57,7 @@
   <!--</RelativeLayout>-->
 
   <RelativeLayout
-    android:gravity=""
+    android:layout_marginTop="50px"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_below="@+id/fragment_room_back">
@@ -72,8 +72,6 @@
       android:layout_marginStart="13px">
 
 
-
-
       <TextView
         android:id="@+id/bed_room1_text"
         android:layout_width="40px"
@@ -81,9 +79,9 @@
         android:layout_gravity="bottom|right"
         android:paddingLeft="4px"
         android:paddingTop="4px"
-        android:text="12"
+        android:text="0"
         android:textColor="@color/whites"
-        android:textSize="30px" />
+        android:textSize="25px" />
     </FrameLayout>
 
     <FrameLayout
@@ -92,10 +90,12 @@
       android:layout_height="140px"
       android:layout_marginLeft="10px"
       android:background="@drawable/washing_room"
-      android:layout_below="@+id/bed_room1"
-      android:layout_alignStart="@+id/other_room">
-
-
+      android:layout_below="@+id/bed_room2"
+      android:layout_above="@+id/other_room"
+      android:layout_marginTop="40px"
+      android:layout_marginBottom="40px"
+      android:layout_alignEnd="@+id/other_room"
+      >
       <TextView
         android:id="@+id/washing_room_text"
         android:layout_width="30px"
@@ -104,7 +104,7 @@
         android:paddingTop="4px"
         android:text="0"
         android:textColor="@color/whites"
-        android:textSize="11px" />
+        android:textSize="22px" />
     </FrameLayout>
 
 
@@ -112,7 +112,7 @@
       android:id="@+id/kitchen_room"
       android:layout_width="260px"
       android:layout_height="220px"
-      android:layout_marginLeft="4px"
+      android:layout_marginLeft="8px"
       android:background="@drawable/kitchen_room"
       android:layout_alignParentTop="true"
       android:layout_alignStart="@+id/dinig_room">
@@ -126,7 +126,7 @@
         android:paddingTop="4px"
         android:text="0"
         android:textColor="@color/whites"
-        android:textSize="15px" />
+        android:textSize="25px"/>
     </FrameLayout>
 
     <FrameLayout
@@ -147,7 +147,7 @@
         android:paddingTop="4px"
         android:text="0"
         android:textColor="@color/whites"
-        android:textSize="14px" />
+        android:textSize="22px" />
     </FrameLayout>
 
     <FrameLayout
@@ -156,9 +156,8 @@
       android:layout_height="200px"
       android:layout_marginLeft="36px"
       android:background="@drawable/store_room"
-      android:layout_below="@+id/bed_room3"
-      android:layout_alignParentStart="true"
-      android:layout_marginTop="19px">
+      android:layout_alignTop="@+id/dinig_room"
+      android:layout_alignEnd="@+id/bed_room1">
 
       <TextView
         android:id="@+id/store_room_text"
@@ -169,18 +168,19 @@
         android:paddingTop="4px"
         android:text="0"
         android:textColor="@color/whites"
-        android:textSize="14px" />
+        android:textSize="22px" />
     </FrameLayout>
 
     <FrameLayout
       android:id="@+id/dinig_room"
       android:layout_width="220px"
       android:layout_height="200px"
-      android:layout_marginLeft="10px"
+
       android:background="@drawable/dining_room"
-      android:layout_marginStart="62px"
-      android:layout_alignTop="@+id/store_room"
-      android:layout_toEndOf="@+id/store_room">
+      android:layout_marginStart="50px"
+      android:layout_below="@+id/bed_room3"
+      android:layout_toEndOf="@+id/store_room"
+      android:layout_marginTop="33dp">
 
       <TextView
         android:id="@+id/dinig_room_text"
@@ -191,7 +191,7 @@
         android:paddingTop="4px"
         android:text="0"
         android:textColor="@color/whites"
-        android:textSize="14px" />
+        android:textSize="22px" />
     </FrameLayout>
 
     <FrameLayout
@@ -200,7 +200,7 @@
       android:layout_height="240px"
       android:layout_marginLeft="4px"
       android:background="@drawable/bed_room3"
-      android:layout_marginEnd="13dp"
+      android:layout_marginEnd="50px"
       android:layout_alignParentTop="true"
       android:layout_toStartOf="@+id/bed_room2">
 
@@ -213,16 +213,16 @@
         android:paddingTop="4px"
         android:text="0"
         android:textColor="@color/whites"
-        android:textSize="14px" />
+        android:textSize="25px" />
     </FrameLayout>
 
     <FrameLayout
       android:id="@+id/living_room"
       android:layout_width="320px"
       android:layout_height="300px"
-      android:layout_marginLeft="84px"
       android:background="@drawable/living_room"
-      android:layout_alignTop="@+id/dinig_room"
+      android:layout_marginTop="33dp"
+      android:layout_below="@+id/bed_room3"
       android:layout_alignEnd="@+id/bed_room3">
 
       <TextView
@@ -242,8 +242,9 @@
       android:layout_height="180px"
       android:layout_marginLeft="4px"
       android:background="@drawable/other_room"
-      android:layout_alignParentBottom="true"
-      android:layout_alignParentEnd="true">
+      android:layout_alignBottom="@+id/living_room"
+      android:layout_alignParentEnd="true"
+      android:layout_marginEnd="50px">
 
       <TextView
         android:id="@+id/other_room_text"
@@ -254,7 +255,7 @@
         android:paddingTop="4px"
         android:text="0"
         android:textColor="@color/whites"
-        android:textSize="14px" />
+        android:textSize="22px" />
     </FrameLayout>
   </RelativeLayout>
 
