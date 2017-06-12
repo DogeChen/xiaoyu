@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener {
 
+  private static final String TAG = "MainActivity";
   private MainActivity activity;
   private TextView name;
   private TextView number;
@@ -34,10 +35,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
   private long exitTime = 0;
   private String NemoSn;
   private String patientId;
-
-  private UserInfor userInfor;
-  private static final String TAG = "MainActivity";
-
   Handler handler = new Handler() {
     @Override
     public void handleMessage(Message msg) {
@@ -48,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
       }
     }
   };
+  private UserInfor userInfor;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {

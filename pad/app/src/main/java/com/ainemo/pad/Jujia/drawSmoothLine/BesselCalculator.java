@@ -387,10 +387,10 @@ class BesselCalculator {
       List<Point> besselPoints = series.getBesselPoints();
       List<Point> points = new ArrayList<Point>();
       for (Point point : series.getPoints()) {
-//        if (point.valueY > 0) {
+        if (point.willDrawing) {
         points.add(point);
       }
-//      }
+      }
       int count = points.size();
       if (count < 2) {
         continue;
