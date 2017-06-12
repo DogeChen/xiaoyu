@@ -17,14 +17,17 @@ import java.util.List;
 public class BaojingAdapter extends RecyclerView.Adapter<BaojingAdapter.ViewHolder> {
     private Context context;
     private List<OneKeyWarning> oneKeyWarnings;
+  private static final String TAG = "BaojingAdapter";
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView number;
-        private TextView time;
+        private TextView timeYY;
+        private TextView timeHH;
         public ViewHolder(View itemView) {
             super(itemView);
             number = (TextView) itemView.findViewById(R.id.baojing_she_bei_number);
-            time = (TextView) itemView.findViewById(R.id.baojing_time);
+            timeYY = (TextView) itemView.findViewById(R.id.baojing_yyyyMMdd);
+            timeHH=(TextView)itemView.findViewById(R.id.baojing_hhmmss);
         }
     }
 
@@ -45,8 +48,21 @@ public class BaojingAdapter extends RecyclerView.Adapter<BaojingAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
        OneKeyWarning oneKeyWarning = oneKeyWarnings.get(position);
-        holder.time.setText("报警时间: " + oneKeyWarning.getAdd_date());
+        String time=oneKeyWarning.getAdd_date();
+        String time1 ;
+        String time2;
+        try {
+            time1=time.substring(0,4)+"年"+time.substring(5,7)+"月"+time.substring(8,10)+"日";
+             time2 = time.substring(time.indexOf(' ') + 1, time.length());
+        }catch (Exception e){
+            time1=new String("");
+            time2=new String("");
+            e.printStackTrace();
+        }
+        holder.timeYY.setText(time1);
+        holder.timeHH.setText(time2);
         holder.number.setText("设备编号: " + oneKeyWarning.getSid());
+//      Log.d(TAG, "onBindViewHolder: "+oneKeyWarning.getSid());
     }
 
     @Override

@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     } else {
       Utils.putValue(this, GlobalData.NemoNum, NemoSn);
     }
-//    patientId = "28";//待注释
-//    Utils.putValue(this,GlobalData.PATIENT_ID,patientId);
+    patientId = "28";//待注释
+    Utils.putValue(this,GlobalData.PATIENT_ID,patientId);
     patientId = Utils.getValue(this, GlobalData.PATIENT_ID);
     if (patientId == null || patientId.equals("")) {
       handler.sendEmptyMessage(0);

@@ -327,12 +327,18 @@ class BesselChartView extends View {
 //    float endCoordinateX = calculator.xAxisWidth;
 //    float coordinateY = getHeight() - calculator.xAxisHeight;
 //    canvas.drawLine(0, coordinateY, endCoordinateX, coordinateY, paint);
+   try{
     if (data.isHasData()) {
-      canvas.drawText(data.getMaxTemperature(), data.getXLabels().get(1).x, 100, paint);
+      canvas.drawText(data.getMaxTemperature(), data.getXLabels().get(1).x, 75, paint);
     } else {
       canvas.drawText("无数据", data.getXLabels().get(1).x, 100, paint);
     }
-
+    paint.setTextAlign(Align.CENTER);
+    paint.setColor(style.getMinTemColor());
+    paint.setTextSize(style.getMinTemTextSize());
+    if(data.isToday()) {
+      canvas.drawText(data.getCurrTemperature(), data.getXLabels().get(1).x+20, calculator.height/2, paint);
+    }
     //上升值
 //    paint.setStyle(Paint.Style.FILL);
 //    paint.setStrokeWidth(3);
@@ -353,15 +359,16 @@ class BesselChartView extends View {
 //    path.close();
 //    canvas.drawPath(path,paint);
     //最小值
-    paint.setColor(style.getMinTemColor());
-    paint.setTextSize(style.getMinTemTextSize());
+
 //    float endCoordinateX = calculator.xAxisWidth;
 //    float coordinateY = getHeight() - calculator.xAxisHeight;
 //    canvas.drawLine(0, coordinateY, endCoordinateX, coordinateY, paint);
     if (data.isHasData()) {
-      canvas.drawText(data.getMinTemperature(), data.getXLabels().get(1).x,
-          calculator.height / 2 + style.getMinTemTextSize() / 2, paint);
-    }
+      canvas.drawText(data.getMinTemperature(), data.getXLabels().get(1).x+20,
+          calculator.height / 2+50 + style.getMinTemTextSize() / 2, paint);
+    }}catch (NullPointerException e){
+     e.printStackTrace();
+   }
   }
 
   public void updateSize() {

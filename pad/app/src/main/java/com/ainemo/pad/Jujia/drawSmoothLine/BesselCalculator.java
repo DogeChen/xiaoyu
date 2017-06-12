@@ -11,6 +11,8 @@ import java.util.List;
 
 class BesselCalculator {
 
+  private static final String TAG = "BesselCalculator";
+
   /**
    * 纵坐标文本矩形
    */
@@ -254,7 +256,6 @@ class BesselCalculator {
     }
   }
 
-
   /**
    * 计算标题的坐标信息
    */
@@ -359,6 +360,7 @@ class BesselCalculator {
           }
         }
       });
+
       int i = 0;
       while (i < temp.size() && temp.get(0).valueY == temp.get(i).valueY) {
         maxPoints.add(temp.get(i));

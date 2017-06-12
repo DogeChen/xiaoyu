@@ -56,7 +56,7 @@ public class BaojingActivity extends AppCompatActivity {
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.fragment_baojing);
+    setContentView(R.layout.activity_baojing);
     activity = this;
     net_work = Utils.isNetWorkAvailabe(activity);
     InitView();
@@ -67,7 +67,7 @@ public class BaojingActivity extends AppCompatActivity {
 //    @Override
 //    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //      if (view == null) {
-//        view = activity.getLayoutInflater().inflate(R.layout.fragment_baojing, null);
+//        view = activity.getLayoutInflater().inflate(R.layout.activity_baojing, null);
 //      } else {
 //        ViewGroup parent = (ViewGroup) view.getParent();
 //        if (parent != null) {
@@ -118,7 +118,6 @@ public class BaojingActivity extends AppCompatActivity {
           oneKeyWarnings = DataSupport.findAll(OneKeyWarning.class);
           has_data = true;
         }
-
       } else if (DataSupport.isExist(OneKeyWarning.class)) {
         oneKeyWarnings = DataSupport.findAll(OneKeyWarning.class);
         has_data = true;

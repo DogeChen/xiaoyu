@@ -24,7 +24,11 @@ import com.google.gson.Gson;
 
 public class JujiaActivity extends AppCompatActivity implements ChartListener {
 
+
+
   private android.support.v4.view.ViewPager jiujiaviewpager;
+
+
   private JiuJiaViewPageAdapter viewPageAdapter;
   private static int total = 7;
 
@@ -89,7 +93,7 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_jujia2);
+    setContentView(R.layout.activity_jujia);
     net_work = Utils.isNetWorkAvailabe(this);
     activity = this;
    String patientId =Utils.getValue(this,GlobalData.PATIENT_ID);
@@ -133,6 +137,7 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
     jiujiaviewpager.setAdapter(viewPageAdapter);
     jiujiaviewpager.setCurrentItem(total - 1);
 
+
     door_status = (TextView) findViewById(R.id.room_status_text);
     //getHomeInforTask = new GetHomeInforTask[total];
 //    for (int i = 0; i < total; i++) {
@@ -165,6 +170,9 @@ public class JujiaActivity extends AppCompatActivity implements ChartListener {
         startActivity(intent);
       }
     });
+  }
+  public ViewPager getJiujiaviewpager() {
+    return jiujiaviewpager;
   }
 
   class GetDoorInfor extends AsyncTask<Void, Void, Void> {

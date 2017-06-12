@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+  android:background="@drawable/background"
+    android:orientation="vertical">
+    <TextView
+      android:textColor="#8c7569"
+      android:textSize="36px"
+      android:layout_marginTop="50px"
+      android:layout_marginLeft="40px"
+      android:text="安防模式：开启"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/textView" />
+    <Button
+      android:layout_marginLeft="1152px"
+      android:layout_marginTop="30px"
+      android:background="@drawable/btn_return"
+      android:id="@+id/fragment_baojing_back"
+      android:layout_width="88px"
+      android:layout_height="88px"
+      />
+
+    <LinearLayout
+      android:layout_width="830px"
+      android:layout_height="539px"
+      android:orientation="vertical"
+      android:layout_centerInParent="true"
+      android:background="@drawable/baojingbackground"
+      >
+        <LinearLayout
+          android:layout_width="830px"
+          android:layout_height="88px"
+          android:orientation="vertical"
+          >
+            <TextView
+              android:layout_marginTop="20px"
+              android:layout_marginLeft="40px"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="一键报警信息查看"
+              android:textColor="@color/white"
+              android:textSize="25sp"
+              />
+            <TextView
+              android:layout_marginTop="5px"
+              android:layout_marginLeft="40px"
+              android:text="WARNING MESSAGE"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textColor="@color/white"
+              android:textSize="18sp"
+              />
+        </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+          android:layout_width="830px"
+          android:layout_height="match_parent"
+          android:id="@+id/baojing_information_list"
+          />
+    </LinearLayout>
+
+    </RelativeLayout>

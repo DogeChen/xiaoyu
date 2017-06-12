@@ -24,6 +24,24 @@ public class ChartData {
   private LabelTransform labelTransform;
   private String maxTemperature;
   private String minTemperature;
+  private String currTemperature;
+
+  public boolean isToday() {
+    return isToday;
+  }
+
+  public void setToday(boolean today) {
+    isToday = today;
+  }
+
+  private boolean isToday;
+  public String getCurrTemperature() {
+    return currTemperature;
+  }
+
+  public void setCurrTemperature(String currTemperature) {
+    this.currTemperature = currTemperature;
+  }
 
   public boolean isHasData() {
     return hasData;
@@ -46,6 +64,7 @@ public class ChartData {
   private int xLabelUsageSeries;
 
   ChartData() {
+    isToday=false;
     hasData=true;
     xLabels = new ArrayList<Label>();
     yLabels = new ArrayList<Label>();
