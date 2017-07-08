@@ -71,9 +71,9 @@ public class CallRecordAdapter extends RecyclerView.Adapter<CallRecordAdapter.Vi
            .equals("")) {
          holder.name.setText(callRecord.getTelephoneNum());
        }
-       if (CallRecord.CALL_IN == callRecord.getState()) {
+       if (CallRecord.CALL_IN == callRecord.getType()) {
          holder.callType.setImageResource(R.drawable.icon_callin);
-       } else if (CallRecord.CALL_OUT == callRecord.getState()) {
+       } else if (CallRecord.CALL_OUT == callRecord.getType()) {
          holder.callType.setImageResource(R.drawable.icon_callout);
        } else {
          holder.callType.setImageResource(R.drawable.icon_no_answer);
