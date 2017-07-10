@@ -20,7 +20,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -138,12 +141,6 @@ public class FragmentCall extends Fragment implements RecordClickLister, OnClick
                                     .setBackgroundColor(getResources().getColor(R.color.white));
                             backspace_number.setVisibility(View.VISIBLE);
                         }
-                        call_number = telephoneNum.getText().toString();
-                        if(findRecordsTask!=null){
-                            findRecordsTask.cancel(true);
-                        }
-                        findRecordsTask=new FindRecordsTask();
-                        findRecordsTask.execute(1);
                     } else if (msg.what >= 12 && msg.what < 24) {
                         circleTextImageViews[msg.what - 12]
                                 .setBackgroundColor(getResources().getColor(R.color.transparent));
@@ -244,6 +241,27 @@ public class FragmentCall extends Fragment implements RecordClickLister, OnClick
                 if (call_number.equals("")) {
                     backspace_number.setVisibility(View.GONE);
                 }
+            }
+        });
+        telephoneNum.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                call_number = telephoneNum.getText().toString();
+                if(findRecordsTask!=null){
+                    findRecordsTask.cancel(true);
+                }
+                findRecordsTask=new FindRecordsTask();
+                findRecordsTask.execute(1);
             }
         });
         for (int i = 0; i < 12; i++) {
@@ -435,7 +453,6 @@ public class FragmentCall extends Fragment implements RecordClickLister, OnClick
 //            for(CallRecord c:selectList){
 //                Log.d(TAG, "doInBackground: date="+s.format(c.getDate()));
 //            }
-
             return 1;
         }
 
