@@ -81,6 +81,7 @@ public class Utils {
             return returnString;
         }
     }
+
     public static boolean isNetWorkAvailabe(Context context) {
         if (context.checkCallingOrSelfPermission(Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
             return false;

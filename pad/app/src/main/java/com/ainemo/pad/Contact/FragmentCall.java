@@ -40,6 +40,7 @@ import com.ainemo.pad.SomeUtils.Utils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -60,7 +61,7 @@ public class FragmentCall extends Fragment implements RecordClickLister, OnClick
     private View layout;
     private Button[] circleTextImageViews = new Button[13];
     private TextView telephoneNum;
-    private String call_number;
+    private String call_number="";
     private TextView myNemoNum;
     private CircleImageView backspace_number;
     private RecyclerView recyclerView;
@@ -402,9 +403,9 @@ public class FragmentCall extends Fragment implements RecordClickLister, OnClick
                         public int compare(CallRecord callRecord, CallRecord t1) {
                             Long date1 = callRecord.getDate();
                             Long date2 = t1.getDate();
-                            if (date1 < date2) {
+                            if (date1 .compareTo(date2)<0 ) {
                                 return 1;
-                            } else if (date1 > date2) {
+                            } else if (date1 .compareTo(date2)>0) {
                                 return -1;
                             } else {
                                 return 0;
@@ -412,7 +413,10 @@ public class FragmentCall extends Fragment implements RecordClickLister, OnClick
                         }
                     });
                 }
+
             }
+
+
             //添加筛选
             if (!call_number.toString().equals("")) {
                 selectList.clear();
@@ -422,8 +426,15 @@ public class FragmentCall extends Fragment implements RecordClickLister, OnClick
                     }
                 }
             } else {
-                selectList.addAll(list);
+                selectList.clear();
+                for (CallRecord callRecord : list) {
+                        selectList.add(callRecord);
+                }
             }
+//            SimpleDateFormat s=new SimpleDateFormat("M-d");
+//            for(CallRecord c:selectList){
+//                Log.d(TAG, "doInBackground: date="+s.format(c.getDate()));
+//            }
 
             return 1;
         }

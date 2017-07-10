@@ -2,6 +2,7 @@ package com.ainemo.pad.Contact.Record;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -59,14 +60,14 @@ public class CallRecordAdapter extends RecyclerView.Adapter<CallRecordAdapter.Vi
 
   public void onBindViewHolder(ViewHolder holder, int position) {
 
-       CallRecord callRecord = callRecordList.get(position);
+       final CallRecord callRecord = callRecordList.get(position);
 //    if (callRecord.getImageUrl() != null) {
 //      holder.head.setImageURI(Uri.parse(callRecord.getImageUrl()));
 //    }
        if (callRecord.getName() != null && !callRecord.getName().equals("")) {
          holder.name.setText(callRecord.getName());
-       } else if (callRecord.getXiaoyuId() != null && !callRecord.getName().equals("")) {
-         holder.name.setText(callRecord.getName());
+       } else if (callRecord.getXiaoyuId() != null && callRecord.getXiaoyuId() !=null &&!callRecord.getXiaoyuId() .equals("")) {
+         holder.name.setText(callRecord.getXiaoyuId());
        } else if (callRecord.getTelephoneNum() != null && !callRecord.getTelephoneNum()
            .equals("")) {
          holder.name.setText(callRecord.getTelephoneNum());
@@ -96,7 +97,7 @@ public class CallRecordAdapter extends RecyclerView.Adapter<CallRecordAdapter.Vi
        //获取名称
 
        //格式时间
-       if (holder.date.getText() == null || holder.date.getText().equals("")) {
+//       if (holder.date.getText() == null || holder.date.getText().equals("")) {
          String dateString = "";
          if (null != callRecord.getDate()) {
            Calendar mCalender = Calendar.getInstance();
@@ -112,6 +113,7 @@ public class CallRecordAdapter extends RecyclerView.Adapter<CallRecordAdapter.Vi
            String theDayBeforeYesterday = formater.format(mCalender.getTime());
            String curString = formater.format(curDate);
            String callString = formater.format(callRecord.getDate());
+             Log.d(TAG, "onBindViewHolder:date="+callRecord.getDate()+" callString="+callString);
            if (curString.equals(callString)) {
              dateString = new String("今天");
            } else if (yesterdayString.equals(callString)) {
@@ -119,11 +121,11 @@ public class CallRecordAdapter extends RecyclerView.Adapter<CallRecordAdapter.Vi
            } else if (theDayBeforeYesterday.equals(callString)) {
              dateString = new String("前天");
            } else {
-             dateString = outFormater.format(callRecord.getDate());
+             dateString = outFormater.format(callRecord.getDate())+callString;
            }
          }
          holder.date.setText(dateString);
-       }
+//       }
   }
 
   @Override
