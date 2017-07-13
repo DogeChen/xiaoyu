@@ -23,7 +23,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,17 +36,15 @@ import com.ainemo.pad.Contact.Record.CallRecord;
 import com.ainemo.pad.Contact.Record.CallRecordAdapter;
 import com.ainemo.pad.Contact.Record.CallRecordAdapter.RecordClickLister;
 import com.ainemo.pad.R;
-import com.ainemo.pad.RecordUtil;
+import com.ainemo.pad.SomeUtils.RecordUtil;
 import com.ainemo.pad.SomeUtils.GlobalData;
 import com.ainemo.pad.SomeUtils.Utils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;

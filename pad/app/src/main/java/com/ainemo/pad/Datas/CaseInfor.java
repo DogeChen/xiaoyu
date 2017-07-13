@@ -1,13 +1,17 @@
 package com.ainemo.pad.Datas;
 
-import java.io.Serializable;
+import com.google.gson.annotations.SerializedName;
+
 import org.litepal.crud.DataSupport;
+
+import java.io.Serializable;
 
 /**
  * Created by victor on 17-4-30.
  */
 
 public class CaseInfor  extends DataSupport implements Serializable {
+
 
     /**
      * id:病例id
@@ -150,4 +154,5 @@ public class CaseInfor  extends DataSupport implements Serializable {
     public void setDoctorName(String doctorName) {
         this.doctorName = doctorName;
     }
+
 }

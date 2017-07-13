@@ -20,7 +20,7 @@ public class UserInfor {
      * image:
      */
 
-    private String id;
+    private int id;
     private String name;
     private String password;
     private String patientId;
@@ -28,11 +28,11 @@ public class UserInfor {
     private String phone;
     private String image;
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 

@@ -7,12 +7,28 @@ import org.litepal.crud.DataSupport;
  */
 
 public class PatientId extends DataSupport {
-  private String uid;
 
-  public String getUid() {
-    return uid;
-  }
-  public void setUid(String uid) {
-    this.uid = uid;
-  }
+    /**
+     * uid : 4
+     * identity : patient
+     */
+
+    private String uid;
+    private String identity;
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getIdentity() {
+        return identity;
+    }
+
+    public void setIdentity(String identity) {
+        this.identity = identity;
+    }
 }

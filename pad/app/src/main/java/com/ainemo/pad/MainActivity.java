@@ -1,6 +1,7 @@
 package com.ainemo.pad;
 
 import ainemo.api.openapi.NemoOpenAPI;
+
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.ainemo.pad.Case.CaseListActivity;
 import com.ainemo.pad.Contact.ContactActivity;
 import com.ainemo.pad.Datas.PatientId;
@@ -24,169 +26,178 @@ import com.google.gson.Gson;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener {
 
-  private static final String TAG = "MainActivity";
-  private MainActivity activity;
-  private TextView name;
-  private TextView number;
-  private Button returnBtn;
-  private ImageView call;
-  private ImageView patient;
-  private ImageView para;
-  private long exitTime = 0;
-  private String NemoSn;
-  private String patientId;
-  Handler handler = new Handler() {
+    private static final String TAG = "MainActivity";
+    private MainActivity activity;
+    private TextView name;
+    private TextView number;
+    private Button returnBtn;
+    private ImageView call;
+    private ImageView patient;
+    private ImageView para;
+    private long exitTime = 0;
+    private String NemoSn;
+    private String patientId;
+    private boolean isPatient;
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (patientId == null || patientId.equals("")) {
+                new GetPatientIdTask().execute();
+                handler.sendEmptyMessageDelayed(0, 10000);
+            }
+        }
+    };
+    private UserInfor userInfor;
+
     @Override
-    public void handleMessage(Message msg) {
-      super.handleMessage(msg);
-      if (patientId == null || patientId.equals("")) {
-        new GetPatientIdTask().execute();
-        handler.sendEmptyMessageDelayed(0, 10000);
-      }
-    }
-  };
-  private UserInfor userInfor;
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        activity = this;
+        initView();
+        NemoSn = getIntent().getStringExtra("nemoNumber");
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-    activity = this;
-    initView();
-    NemoSn = getIntent().getStringExtra("nemoNumber");
+        Log.i(TAG,
+                "onCreate: NemoNum=" + NemoSn + " getNemoSn()=" + NemoOpenAPI.getInstance().getNemoSn());
+        //获取小鱼序列号的代码
 
-    Log.i(TAG,
-        "onCreate: NemoNum=" + NemoSn + " getNemoSn()=" + NemoOpenAPI.getInstance().getNemoSn());
-    //获取小鱼序列号的代码
+        if (NemoSn == null || NemoSn.equals("")) {
+            NemoSn = Utils.getValue(this, GlobalData.NemoNum);
+            if (NemoSn == null && NemoSn.equals("")) {
+            }
+        } else {
+            Utils.putValue(this, GlobalData.NemoNum, NemoSn);
+        }
+        patientId = "28";//待注释
+        Utils.putValue(this, GlobalData.PATIENT_ID, patientId);
+        patientId = Utils.getValue(this, GlobalData.PATIENT_ID);
+        if (patientId == null || patientId.equals("")) {
+            handler.sendEmptyMessage(0);
+        }
 
-    if (NemoSn == null || NemoSn.equals("")) {
-      NemoSn = Utils.getValue(this, GlobalData.NemoNum);
-      if (NemoSn == null && NemoSn.equals("")) {
-      }
-    } else {
-      Utils.putValue(this, GlobalData.NemoNum, NemoSn);
-    }
-    patientId = "28";//待注释
-    Utils.putValue(this,GlobalData.PATIENT_ID,patientId);
-    patientId = Utils.getValue(this, GlobalData.PATIENT_ID);
-    if (patientId == null || patientId.equals("")) {
-      handler.sendEmptyMessage(0);
+        initView();
+        initEvent();
     }
 
-    initView();
-    initEvent();
-  }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initEvent();
+    }
 
-  @Override
-  protected void onResume() {
-    super.onResume();
-    initEvent();
-  }
+    private void initView() {
+        name = (TextView) findViewById(R.id.home_name);
+        number = (TextView) findViewById(R.id.home_number);
+        returnBtn = (Button) findViewById(R.id.return_btn);
+        call = (ImageView) findViewById(R.id.home_call_btn);
+        patient = (ImageView) findViewById(R.id.home_par_btn);
+        para = (ImageView) findViewById(R.id.home_record_btn);
+        call.setOnClickListener(this);
+        patient.setOnClickListener(this);
+        para.setOnClickListener(this);
+        returnBtn.setOnClickListener(this);
+    }
 
-  private void initView() {
-    name = (TextView) findViewById(R.id.home_name);
-    number = (TextView) findViewById(R.id.home_number);
-    returnBtn = (Button) findViewById(R.id.return_btn);
-    call = (ImageView) findViewById(R.id.home_call_btn);
-    patient = (ImageView) findViewById(R.id.home_par_btn);
-    para = (ImageView) findViewById(R.id.home_record_btn);
-    call.setOnClickListener(this);
-    patient.setOnClickListener(this);
-    para.setOnClickListener(this);
-    returnBtn.setOnClickListener(this);
-  }
-
-  @Override
-  public void onClick(View view) {
-    switch (view.getId()) {
-      case R.id.home_call_btn:
-        startActivity(new Intent(MainActivity.this, ContactActivity.class));
-        break;
-      case R.id.home_par_btn:
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.home_call_btn:
+                startActivity(new Intent(MainActivity.this, ContactActivity.class));
+                break;
+            case R.id.home_par_btn:
 //        startActivity(new Intent(MainActivity.this,CaseListActivity.class).putExtra("id",patientId));
-        if (patientId != null && !patientId.equals("")) {
-          startActivity(new Intent(MainActivity.this, JujiaActivity.class));
-        } else {
-          Utils.showShortToast(this, "未绑定病人ID");
+                if (patientId != null && !patientId.equals("")) {
+                    startActivity(new Intent(MainActivity.this, JujiaActivity.class));
+                } else {
+                    Utils.showShortToast(this, "未绑定ID");
+                }
+                break;
+            case R.id.home_record_btn:
+                if (patientId != null && !patientId.equals("")) {
+                    Intent intent = new Intent(MainActivity.this, CaseListActivity.class);
+                    intent.putExtra("id", patientId);
+                    intent.putExtra("isPatient", isPatient);
+                    startActivity(intent);
+                } else {
+                    Utils.showShortToast(this, "未绑定ID");
+                }
+                break;
+            case R.id.return_btn:
+                onBackPressed();
+                break;
         }
-        break;
-      case R.id.home_record_btn:
-        if (patientId != null && !patientId.equals("")) {
-          Intent intent = new Intent(MainActivity.this, CaseListActivity.class);
-          intent.putExtra("id", patientId);
-          startActivity(intent);
-        } else {
-          Utils.showShortToast(this, "未绑定病人ID");
-        }
-        break;
-      case R.id.return_btn:
-        onBackPressed();
-        break;
     }
-  }
 
-  private void initEvent() {
+    private void initEvent() {
 //    name.setText("刘云, 欢迎回来");
 //    number.setText("小鱼号："+NemoNum);
-    try {
-      name.setText(Utils.getValue(this, GlobalData.user_name) + " 欢迎回来");
-      number.setText("小鱼号：" + Utils.getValue(this, GlobalData.NemoNum));
-    } catch (NullPointerException e) {
-      e.printStackTrace();
-    }
-  }
-
-  @Override
-  public void onBackPressed() {
-
-    if ((System.currentTimeMillis() - exitTime) > 2000) {
-      Utils.showShortToast(this, "再次点击退出程序");
-      exitTime = System.currentTimeMillis();
-    } else {
-      finish();
-    }
-  }
-
-
-  class GetPatientIdTask extends AsyncTask<Void, Void, Void> {
-
-    private Gson gson = new Gson();
-
-    @Override
-    protected Void doInBackground(Void... params) {
-
-      if (NemoSn != null && !NemoSn.equals("")) {
-        String infor = Utils.sendRequest(
-            GlobalData.GET_PATIENT_ID + NemoSn);
         try {
-          PatientId patientId1 = gson.fromJson(infor, PatientId.class);
-          patientId = patientId1.getUid();
-          if (patientId.equals("not_exist")) {
-            patientId = "";
-            Utils.showShortToast(activity, "病人ID获取失败，请在手机端下载app注册,检查该小鱼号绑定了用户");
-          } else if (patientId.equals("param_error")) {
-            patientId = "";
-            Utils.showShortToast(activity, "参数错误");
-          } else {
-            Utils.putValue(MainActivity.this, GlobalData.PATIENT_ID, patientId);
-          }
-        } catch (Exception e) {
-          Utils.showShortToast(MainActivity.this, "访问数据错误");
-          e.printStackTrace();
+            name.setText(Utils.getValue(this, GlobalData.user_name) + " 欢迎回来");
+            number.setText("小鱼号：" + Utils.getValue(this, GlobalData.NemoNum));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
-      }
-      return null;
     }
 
     @Override
-    protected void onPostExecute(Void aVoid) {
-      super.onPostExecute(aVoid);
+    public void onBackPressed() {
+
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Utils.showShortToast(this, "再次点击退出程序");
+            exitTime = System.currentTimeMillis();
+        } else {
+            finish();
+        }
     }
 
-    @Override
-    protected void onPreExecute() {
-      super.onPreExecute();
+
+    class GetPatientIdTask extends AsyncTask<Void, Void, Void> {
+
+        private Gson gson = new Gson();
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            if (NemoSn != null && !NemoSn.equals("")) {
+                String infor = Utils.sendRequest(
+                        GlobalData.GET_PATIENT_ID + NemoSn);
+                if (infor.contains("not_exist")) {
+                    patientId = "";
+                    Utils.showShortToast(activity, "请检查该小鱼号绑定了用户");
+                } else if (infor.contains("param_error")) {
+                    patientId = "";
+                    Utils.showShortToast(activity, "参数错误");
+                } else {
+                    try {
+                        PatientId patientId1 = gson.fromJson(infor, PatientId.class);
+                        if (patientId1 != null) {
+                            patientId = patientId1.getUid();
+                            isPatient = patientId1.getIdentity().equals("patient");
+                            Utils.putValue(MainActivity.this, GlobalData.PATIENT_ID, patientId);
+                            Utils.putBooleanValue(MainActivity.this,GlobalData.IS_PATIENT,isPatient);
+                        }else{
+                            Utils.showShortToast(activity, "参数错误");
+                        }
+                    } catch (Exception e) {
+                        Utils.showShortToast(MainActivity.this, "访问数据错误");
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
     }
-  }
 
 }

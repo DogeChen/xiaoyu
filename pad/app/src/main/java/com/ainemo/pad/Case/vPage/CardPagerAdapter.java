@@ -8,11 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.ainemo.pad.Datas.CaseInfor;
 import com.ainemo.pad.R;
 import com.ainemo.pad.SomeUtils.GlobalData;
 import com.ainemo.pad.SomeUtils.MyBitmapUtils;
+
 import de.hdodenhof.circleimageview.CircleImageView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +32,7 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
 
     private int MaxElevationFactor = 9;
 
-//    static class ViewHolder extends RecyclerView.ViewHolder{
+    //    static class ViewHolder extends RecyclerView.ViewHolder{
 //        private String id;
 //        private TextView name;
 //        private TextView creationDate;
@@ -60,6 +63,14 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
         this.mContext = context;
     }
 
+    public void setCardList(List<CaseInfor> caseInfors) {
+        mData = caseInfors;
+        mViews.clear();
+        for (int i = 0; i < caseInfors.size(); i++) {
+            mViews.add(null);
+        }
+    }
+
     public void addCaseList(List<CaseInfor> caseList) {
         mData.addAll(caseList);
 
@@ -85,7 +96,7 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
-        View view = LayoutInflater.from(container.getContext()).inflate(R.layout.item_case, container,false);
+        View view = LayoutInflater.from(container.getContext()).inflate(R.layout.item_case, container, false);
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,25 +118,29 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
-        mViews.set(position, null);
+        try {
+            mViews.set(position, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void bind(CaseInfor aCase, View view) {
-        CircleImageView imageView=(CircleImageView)view.findViewById(R.id.head);
-        TextView name=(TextView)view.findViewById(R.id.patient_name);
-        TextView gender=(TextView)view.findViewById(R.id.patient_gender);
-        TextView age=(TextView)view.findViewById(R.id.patient_age);
-        TextView doctorName=(TextView)view.findViewById(R.id.doctor_name);
-        TextView illnessDescription=(TextView)view.findViewById(R.id.illness_description);
+        CircleImageView imageView = (CircleImageView) view.findViewById(R.id.head);
+        TextView name = (TextView) view.findViewById(R.id.patient_name);
+        TextView gender = (TextView) view.findViewById(R.id.patient_gender);
+        TextView age = (TextView) view.findViewById(R.id.patient_age);
+        TextView doctorName = (TextView) view.findViewById(R.id.doctor_name);
+        TextView illnessDescription = (TextView) view.findViewById(R.id.illness_description);
         try {
-            bitmapUtils.disPlay(imageView, GlobalData.GET_PATIENT_IMAGE +aCase.getImage());
-            Log.d(TAG, "bind: aCase.getImage = "+aCase.getImage());
+            bitmapUtils.disPlay(imageView, GlobalData.GET_PATIENT_IMAGE + aCase.getImage());
+            Log.d(TAG, "bind: aCase.getImage = " + aCase.getImage());
             name.setText(aCase.getName());
             gender.setText(aCase.getSex());
             age.setText(aCase.getAge());
             doctorName.setText(aCase.getDoctorName());
             illnessDescription.setText(aCase.getIllproblem());
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

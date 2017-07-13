@@ -43,4 +43,5 @@ dependencies {
     compile 'com.android.support:design:25.3.0'
     compile 'org.litepal.android:core:1.5.1'
     compile 'com.github.thinkcool:circletextimageview:1.0.20151218'
+    compile 'xyz.sahildave:searchviewlayout:0.6'
 }

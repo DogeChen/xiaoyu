@@ -1,4 +1,4 @@
-package com.ainemo.pad;
+package com.ainemo.pad.SomeUtils;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
