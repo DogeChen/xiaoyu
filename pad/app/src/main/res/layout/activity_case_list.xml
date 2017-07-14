@@ -6,11 +6,12 @@
     >
   <include
       android:visibility="visible"
-
       android:id="@+id/search_layout"
-      layout="@layout/widget_search_bar"
-      android:layout_width="500px"
-      android:layout_height="200px"
+      layout="@layout/search_view"
+      android:layout_marginLeft="30px"
+      android:layout_marginTop="20px"
+      android:layout_width="150dp"
+      android:layout_height="50dp"
       />
   <Button
     android:layout_marginLeft="1152px"
@@ -23,7 +24,7 @@
     />
 
 <LinearLayout
-    android:layout_below="@id/return_btn"
+    android:layout_below="@id/search_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:weightSum="1"

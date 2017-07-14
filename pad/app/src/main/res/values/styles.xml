@@ -11,8 +11,13 @@
   <style name="Theme.Call.Table" parent="Base.TextAppearance.AppCompat.Button">
     <item name="android:background">@color/transparent</item>
     <item name="android:textColor">#d7e6bb</item>
-
     <item name="android:textSize">40px</item>
+  </style>
+  <style name="SearchText" parent="Base.Widget.AppCompat.AutoCompleteTextView">
+    <item name="android:background">@color/transparent</item>
+    <item name="android:textColor">@color/brownLight</item>
+    <item name="android:textSize">40px</item>
+    <item name="android:textColorHint">@color/brownLight</item>
   </style>
 
   <style name="MyTabLayoutTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">

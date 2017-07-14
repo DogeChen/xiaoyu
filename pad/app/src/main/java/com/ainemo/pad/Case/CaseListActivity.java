@@ -2,19 +2,21 @@ package com.ainemo.pad.Case;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.text.Editable;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.ainemo.pad.Case.vPage.CardPagerAdapter;
 import com.ainemo.pad.Case.vPage.CustomViewPager;
@@ -31,15 +33,12 @@ import java.util.List;
 
 import org.litepal.crud.DataSupport;
 
-import xyz.sahildave.widget.SearchViewLayout;
-
 /**
  * Created by 小武哥 on 2017/4/27.
  */
 
 public class CaseListActivity extends AppCompatActivity implements
-        CardPagerAdapter.OnCardItemClickListener, View.OnClickListener, SearchViewLayout.SearchListener, SearchViewLayout.SearchBoxListener {
-
+        CardPagerAdapter.OnCardItemClickListener, View.OnClickListener {
 
     private List<CaseInfor> caseList;
     private List<CaseInfor> caseListAfterSort;
@@ -52,9 +51,16 @@ public class CaseListActivity extends AppCompatActivity implements
     private CustomViewPager viewPager;
     private CardView item;
     private boolean isPatient;
-    private SearchViewLayout searchViewLayout;
-    private SearchTask searchTask;
 
+//    private LinearLayout searchLayout;
+    private CardView searchCard;
+    private CardView searchTrueLayout;
+    private SearchTask searchTask;
+    private EditText searchText;
+    private ImageView searchBack;
+    private ImageView searchBtn;
+    private TextView searchTextHint;
+    private ImageView searchBtnHint;
 
     private Handler handler = new Handler() {
         @Override
@@ -92,7 +98,7 @@ public class CaseListActivity extends AppCompatActivity implements
         back = (Button) findViewById(R.id.return_btn);
 
 //        if (!isPatient) {
-        initSearchLayout("");
+        initSearchLayout();
 //        }
         //设置阴影大小，即vPage  左右两个图片相距边框  maxFactor + 0.3*CornerRadius   *2
         //设置阴影大小，即vPage 上下图片相距边框  maxFactor*1.5f + 0.3*CornerRadius
@@ -125,23 +131,28 @@ public class CaseListActivity extends AppCompatActivity implements
         adapter.setOnCardItemClickListener(this);
     }
 
-    private void initSearchLayout(String s) {
-        searchViewLayout = (SearchViewLayout) findViewById(R.id.search_layout);
-//        searchViewLayout.setExpandedContentFragment(this, new SearchStaticFragment());
-        // Create Drawable for collapsed state. Default color is android.R.color.transparent
-        ColorDrawable collapsed = new ColorDrawable(
-                ContextCompat.getColor(this, R.color.transparent));
+    private void initSearchLayout() {
+//        searchLayout=(LinearLayout)findViewById(R.id.search_layout);
+        searchCard=(CardView)findViewById(R.id.search_box_collapsed);
+        searchTrueLayout=(CardView) findViewById(R.id.search_expanded_box);
+        searchCard.setOnClickListener(this);
+        searchText=(EditText)findViewById(R.id.search_expanded_edit_text);
+         searchBack=(ImageView) findViewById(R.id.search_expanded_back_button);
+         searchBtn=(ImageView) findViewById(R.id.search_expanded_magnifying_glass);
+        searchBtnHint=(ImageView) findViewById(R.id.search_magnifying_glass) ;
+        searchTextHint =(TextView) findViewById(R.id.search_box_collapsed_hint);
+        searchTextHint.setOnClickListener(this);
+        searchBack.setOnClickListener(this);
+        searchBtn.setOnClickListener(this);
+        searchText.setOnClickListener(this);
+        searchBtnHint.setOnClickListener(this);
+        searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                return false;
+            }
+        });
 
-// Create Drawable for expanded state. Default color is #F0F0F0
-        ColorDrawable expanded = new ColorDrawable(
-                ContextCompat.getColor(this, R.color.brownLight));
-
-// Send both colors to searchViewLayout
-        searchViewLayout.setTransitionDrawables(collapsed, expanded);
-        searchViewLayout.setCollapsedHint(s);
-        //Set listener
-        searchViewLayout.setSearchListener(this);
-        searchViewLayout.setSearchBoxListener(this);
     }
 
     /**
@@ -166,10 +177,42 @@ public class CaseListActivity extends AppCompatActivity implements
     }
 
     @Override
+    protected void onResume() {
+        Log.d(TAG, "onResume: ");
+        super.onResume();
+    }
+    private void startSearch(){
+        if(searchTask!=null){
+            searchTask.cancel(true);
+        }
+        searchTask = new SearchTask();
+        searchTask.execute(searchText.getText().toString());
+    }
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.return_btn:
                 finish();
+                break;
+            case R.id.search_expanded_magnifying_glass:
+                startSearch();
+                searchTextHint.setText(searchText.getText());
+                searchCard.setVisibility(View.VISIBLE);
+                searchTrueLayout.setVisibility(View.GONE);
+                break;
+            case R.id.search_expanded_back_button:
+                searchText.setText("");
+                searchTextHint.setText("");
+                searchTrueLayout.setVisibility(View.GONE);
+                searchCard.setVisibility(View.VISIBLE);
+                startSearch();
+                break;
+            case R.id.search_expanded_edit_text:
+            case R.id.search_box_collapsed:
+            case R.id.search_magnifying_glass:
+            case R.id.search_box_collapsed_hint:
+                searchCard.setVisibility(View.INVISIBLE);
+                searchTrueLayout.setVisibility(View.VISIBLE);
                 break;
         }
 
@@ -179,39 +222,39 @@ public class CaseListActivity extends AppCompatActivity implements
 //
 //    }
 //
-
-    @Override
-    public void onFinished(String searchKeyword) {
-        Log.d(TAG, "onFinished: ");
-        try {
-            searchTask.cancel(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally {
-            Log.d(TAG, "onFinished: searchKeyword");
-            searchTask = new SearchTask();
-            searchTask.execute(searchKeyword);
-            Log.d(TAG, "afterTextChanged: search start");
-            searchViewLayout.collapse();
-            initSearchLayout(searchKeyword);
-//                Snackbar.make(searchViewLayout, "SearchTask Done - " + searchKeyword, Snackbar.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-
-    }
+//
+//    @Override
+//    public void onFinished(String searchKeyword) {
+//        Log.d(TAG, "onFinished: ");
+//        try {
+//            searchTask.cancel(true);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }finally {
+//            Log.d(TAG, "onFinished: searchKeyword");
+//            searchTask = new SearchTask();
+//            searchTask.execute(searchKeyword);
+//            Log.d(TAG, "afterTextChanged: search start");
+//            searchViewLayout.collapse();
+//            initSearchLayout(searchKeyword);
+////                Snackbar.make(searchViewLayout, "SearchTask Done - " + searchKeyword, Snackbar.LENGTH_LONG).show();
+//        }
+//    }
+//
+//    @Override
+//    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//    }
+//
+//    @Override
+//    public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//    }
+//
+//    @Override
+//    public void afterTextChanged(Editable s) {
+//
+//    }
 
     class CaseListTask extends AsyncTask<String, Void, String> {
 
