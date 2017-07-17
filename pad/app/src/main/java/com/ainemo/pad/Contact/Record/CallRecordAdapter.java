@@ -97,7 +97,7 @@ public class CallRecordAdapter extends RecyclerView.Adapter<CallRecordAdapter.Vi
            String theDayBeforeYesterday = formater.format(mCalender.getTime());
            String curString = formater.format(curDate);
            String callString = formater.format(callRecord.getDate());
-             Log.d(TAG, "onBindViewHolder:date="+callRecord.getDate()+" callString="+callString);
+//             Log.d(TAG, "onBindViewHolder:date="+callRecord.getDate()+" callString="+callString);
            if (curString.equals(callString)) {
              dateString = new String("今天");
            } else if (yesterdayString.equals(callString)) {

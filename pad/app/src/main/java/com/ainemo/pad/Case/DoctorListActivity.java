@@ -12,6 +12,7 @@ import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -62,6 +63,7 @@ public class DoctorListActivity extends AppCompatActivity implements
     private ImageView searchBtn;
     private TextView searchTextHint;
     private ImageView searchBtnHint;
+    private InputMethodManager imm;
 
     private Handler handler = new Handler() {
         @Override
@@ -192,11 +194,20 @@ public class DoctorListActivity extends AppCompatActivity implements
                 break;
             case R.id.search_expanded_magnifying_glass:
                 startSearch();
+                 imm = (InputMethodManager) this.getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                imm.hideSoftInputFromWindow(searchText.getWindowToken(), 0);
                 searchTextHint.setText(searchText.getText());
                 searchCard.setVisibility(View.VISIBLE);
                 searchTrueLayout.setVisibility(View.GONE);
                 break;
             case R.id.search_expanded_back_button:
+                imm = (InputMethodManager) this.getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                imm.hideSoftInputFromWindow(searchText.getWindowToken(), 0);
+                searchTextHint.setText(searchText.getText());
+                searchCard.setVisibility(View.VISIBLE);
+                searchTrueLayout.setVisibility(View.GONE);
                 searchText.setText("");
                 searchTextHint.setText("");
                 searchTrueLayout.setVisibility(View.GONE);

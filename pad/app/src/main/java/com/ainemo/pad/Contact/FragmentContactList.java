@@ -79,23 +79,7 @@ public class FragmentContactList extends Fragment implements MyClickLister, OnCl
     }
   };
 
-  //    @Override
-//    public boolean onMenuItemClick(MenuItem item) {
-//        switch (item.getItemId()){
-//            case R.id.menu_call:
-//                Log.d(TAG, "onMenuItemClick: call");
-//                break;
-//            case R.id.menu_delete:
-//                Log.d(TAG, "onMenuItemClick: delete");
-//                break;
-//            case R.id.menu_change:
-//                Utils.showShortToast(getContext(),String.valueOf(touchedId));
-//                Log.d(TAG, "onMenuItemClick: change");
-//                break;
-//            default:break;
-//        }
-//        return true;
-//    }
+
 
   @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -212,13 +196,7 @@ public class FragmentContactList extends Fragment implements MyClickLister, OnCl
 
     touchedId = (int) view.getTag();
     Log.d(TAG, "onItemClick: touchedId ="+touchedId);
-    //创建弹出菜单
-//        PopupMenu popupMenu=new PopupMenu(getContext(),view);
-//        MenuInflater inflater=popupMenu.getMenuInflater();
-//        inflater.inflate(R.menu.contact,popupMenu.getMenu());
-//        popupMenu.setOnMenuItemClickListener(this);
-//        popupMenu.setGravity(center);
-//        popupMenu.show();
+
     try {
       View mPopupWindowView = activity.getLayoutInflater()
           .inflate(R.layout.menu_contact, null);

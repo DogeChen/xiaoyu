@@ -1,5 +1,6 @@
 package com.ainemo.pad.Case;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -35,6 +36,7 @@ import org.litepal.crud.DataSupport;
 
 public class DoctorActivity extends AppCompatActivity implements NemoCallback {
 
+
     private String doctorId;
     private Button returnBtn;
     private de.hdodenhof.circleimageview.CircleImageView ImageView;
@@ -64,6 +66,7 @@ public class DoctorActivity extends AppCompatActivity implements NemoCallback {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor);
+
         doctorId = getIntent().getStringExtra("doctorId");
         Log.d(TAG, "onCreate: doctorId=" + doctorId);
         isPatient = getIntent().getBooleanExtra(GlobalData.IS_PATIENT, true);
@@ -197,6 +200,8 @@ public class DoctorActivity extends AppCompatActivity implements NemoCallback {
                     callable = true;
                     callImage.setVisibility(View.VISIBLE);
                     doctorCallText.setVisibility(View.VISIBLE);
+                }else if(doctorXiaoyu.getXiaoyuNum() .contains("device_not_exist")|| doctorXiaoyu.getXiaoyuNum() .contains( "param_error")){
+                    Utils.showShortToast(DoctorActivity.this,"未设置账号");
                 }
             }
             dialog.dismiss();

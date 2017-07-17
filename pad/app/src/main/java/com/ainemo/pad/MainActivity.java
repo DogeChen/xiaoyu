@@ -71,8 +71,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             Utils.putValue(this, GlobalData.NemoNum, NemoSn);
         }
 //        patientId = "28";//待注释
-        Utils.putValue(this, GlobalData.PATIENT_ID, patientId);
+//        Utils.putValue(this, GlobalData.PATIENT_ID, patientId);
         patientId = Utils.getValue(this, GlobalData.PATIENT_ID);
+        isPatient=Utils.getBooleanValue(this,GlobalData.IS_PATIENT);
+//        patientId="22";
+//        isPatient=false;
         if (patientId == null || patientId.equals("")) {
             handler.sendEmptyMessage(0);
         }
@@ -139,8 +142,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private void initEvent() {
-//    name.setText("刘云, 欢迎回来");
-//    number.setText("小鱼号："+NemoNum);
+
         try {
             name.setText(Utils.getValue(this, GlobalData.user_name) + " 欢迎回来");
             number.setText("小鱼号：" + Utils.getValue(this, GlobalData.NemoNum));

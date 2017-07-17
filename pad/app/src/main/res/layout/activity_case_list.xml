@@ -5,18 +5,9 @@
   android:background="@drawable/background"
     >
 
-  <Button
-    android:layout_marginLeft="1152px"
-    android:layout_marginTop="30px"
-    android:background="@drawable/btn_return"
-    android:id="@+id/return_btn"
-    android:layout_width="88px"
-    android:layout_height="88px"
-    android:clickable="true"
-    />
 
 <LinearLayout
-    android:layout_below="@id/return_btn"
+android:layout_marginTop="50px"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:weightSum="1"
@@ -32,5 +23,15 @@
     android:background="@color/transparent"
     />
 </LinearLayout>
+  <Button
+      android:layout_marginLeft="1152px"
+      android:layout_marginTop="30px"
+      android:background="@drawable/btn_return"
+      android:id="@+id/return_btn"
+      android:layout_width="88px"
+      android:layout_height="88px"
+      android:clickable="true"
+      />
+
 
 </RelativeLayout>
