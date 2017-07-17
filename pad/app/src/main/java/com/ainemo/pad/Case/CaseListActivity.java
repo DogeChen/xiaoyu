@@ -9,18 +9,14 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.ainemo.pad.Case.vPage.CardPagerAdapter;
 import com.ainemo.pad.Case.vPage.CustomViewPager;
 import com.ainemo.pad.Datas.CaseInfor;
+import com.ainemo.pad.Datas.DoctorCaseList;
 import com.ainemo.pad.R;
 import com.ainemo.pad.SomeUtils.GlobalData;
 import com.ainemo.pad.SomeUtils.Utils;
@@ -52,15 +48,6 @@ public class CaseListActivity extends AppCompatActivity implements
     private CardView item;
     private boolean isPatient;
 
-//    private LinearLayout searchLayout;
-    private CardView searchCard;
-    private CardView searchTrueLayout;
-    private SearchTask searchTask;
-    private EditText searchText;
-    private ImageView searchBack;
-    private ImageView searchBtn;
-    private TextView searchTextHint;
-    private ImageView searchBtnHint;
 
     private Handler handler = new Handler() {
         @Override
@@ -76,13 +63,13 @@ public class CaseListActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_case_list);
         patientId = getIntent().getStringExtra("id");
+        Log.d(TAG, "onCreate: patientid="+patientId);
         isPatient = getIntent().getBooleanExtra("isPatient", true);
         if (patientId == null || patientId.equals("")) {
             Utils.showShortToast(CaseListActivity.this, "此用户没有绑定患者");
             Utils.finishActivity(CaseListActivity.this);
         } else {
             Log.e("patientid", patientId);
-
             initView();
             initEvent();
             new CaseListTask().execute(patientId);
@@ -97,9 +84,6 @@ public class CaseListActivity extends AppCompatActivity implements
 
         back = (Button) findViewById(R.id.return_btn);
 
-//        if (!isPatient) {
-        initSearchLayout();
-//        }
         //设置阴影大小，即vPage  左右两个图片相距边框  maxFactor + 0.3*CornerRadius   *2
         //设置阴影大小，即vPage 上下图片相距边框  maxFactor*1.5f + 0.3*CornerRadius
         int maxFactor = mWidth / 25;
@@ -131,29 +115,7 @@ public class CaseListActivity extends AppCompatActivity implements
         adapter.setOnCardItemClickListener(this);
     }
 
-    private void initSearchLayout() {
-//        searchLayout=(LinearLayout)findViewById(R.id.search_layout);
-        searchCard=(CardView)findViewById(R.id.search_box_collapsed);
-        searchTrueLayout=(CardView) findViewById(R.id.search_expanded_box);
-        searchCard.setOnClickListener(this);
-        searchText=(EditText)findViewById(R.id.search_expanded_edit_text);
-         searchBack=(ImageView) findViewById(R.id.search_expanded_back_button);
-         searchBtn=(ImageView) findViewById(R.id.search_expanded_magnifying_glass);
-        searchBtnHint=(ImageView) findViewById(R.id.search_magnifying_glass) ;
-        searchTextHint =(TextView) findViewById(R.id.search_box_collapsed_hint);
-        searchTextHint.setOnClickListener(this);
-        searchBack.setOnClickListener(this);
-        searchBtn.setOnClickListener(this);
-        searchText.setOnClickListener(this);
-        searchBtnHint.setOnClickListener(this);
-        searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return false;
-            }
-        });
 
-    }
 
     /**
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
@@ -171,7 +133,7 @@ public class CaseListActivity extends AppCompatActivity implements
             Intent intent = new Intent(CaseListActivity.this, CaseDetailActivity.class);
             CaseInfor caseInfor = caseListAfterSort.get(position);
             intent.putExtra("caseInforId", caseInfor.getId());
-            intent.putExtra("isPatient", isPatient);
+            intent.putExtra(GlobalData.IS_PATIENT, isPatient);
             startActivity(intent);
         }
     }
@@ -181,80 +143,16 @@ public class CaseListActivity extends AppCompatActivity implements
         Log.d(TAG, "onResume: ");
         super.onResume();
     }
-    private void startSearch(){
-        if(searchTask!=null){
-            searchTask.cancel(true);
-        }
-        searchTask = new SearchTask();
-        searchTask.execute(searchText.getText().toString());
-    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.return_btn:
                 finish();
                 break;
-            case R.id.search_expanded_magnifying_glass:
-                startSearch();
-                searchTextHint.setText(searchText.getText());
-                searchCard.setVisibility(View.VISIBLE);
-                searchTrueLayout.setVisibility(View.GONE);
-                break;
-            case R.id.search_expanded_back_button:
-                searchText.setText("");
-                searchTextHint.setText("");
-                searchTrueLayout.setVisibility(View.GONE);
-                searchCard.setVisibility(View.VISIBLE);
-                startSearch();
-                break;
-            case R.id.search_expanded_edit_text:
-            case R.id.search_box_collapsed:
-            case R.id.search_magnifying_glass:
-            case R.id.search_box_collapsed_hint:
-                searchCard.setVisibility(View.INVISIBLE);
-                searchTrueLayout.setVisibility(View.VISIBLE);
-                break;
         }
 
     }
-//    @Override
-//    public void onFinished(String searchKeyword) {
-//
-//    }
-//
-//
-//    @Override
-//    public void onFinished(String searchKeyword) {
-//        Log.d(TAG, "onFinished: ");
-//        try {
-//            searchTask.cancel(true);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }finally {
-//            Log.d(TAG, "onFinished: searchKeyword");
-//            searchTask = new SearchTask();
-//            searchTask.execute(searchKeyword);
-//            Log.d(TAG, "afterTextChanged: search start");
-//            searchViewLayout.collapse();
-//            initSearchLayout(searchKeyword);
-////                Snackbar.make(searchViewLayout, "SearchTask Done - " + searchKeyword, Snackbar.LENGTH_LONG).show();
-//        }
-//    }
-//
-//    @Override
-//    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//    }
-//
-//    @Override
-//    public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//    }
-//
-//    @Override
-//    public void afterTextChanged(Editable s) {
-//
-//    }
 
     class CaseListTask extends AsyncTask<String, Void, String> {
 
@@ -265,7 +163,7 @@ public class CaseListActivity extends AppCompatActivity implements
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             if (s != null && has_data) {
-//        initCaseList();
+
 
                 adapter.setCardList(caseListAfterSort);
                 viewPager.setAdapter(adapter);
@@ -285,7 +183,7 @@ public class CaseListActivity extends AppCompatActivity implements
         protected String doInBackground(String... params) {
             if (net_work_available) {
                 String listString = Utils.sendRequest(GlobalData.GET_PATIENT_CASE + patientId);
-                if (listString.contains("not_exist")) {
+                if (listString.contains("not_exist")||listString.contains("param_error")) {
                     caseList = new ArrayList<>();
                     has_data = false;
                 } else {
@@ -324,28 +222,4 @@ public class CaseListActivity extends AppCompatActivity implements
         }
     }
 
-    class SearchTask extends AsyncTask<String, Void, Void> {
-        @Override
-        protected Void doInBackground(String... params) {
-            Log.d(TAG, "doInBackground: params[]" + params[0]);
-            caseListAfterSort.clear();
-            for (CaseInfor caseInfor : caseList) {
-                if (caseInfor.getName().contains(params[0])) {
-                    caseListAfterSort.add(caseInfor);
-                }
-            }
-            Log.d(TAG, "doInBackground: size " + caseListAfterSort.size());
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            adapter.setCardList(caseListAfterSort);
-            viewPager.setAdapter(adapter);
-            viewPager.showTransformer(0.1f);
-            adapter.notifyDataSetChanged();
-            Log.d(TAG, "onPostExecute: notify");
-            super.onPostExecute(aVoid);
-        }
-    }
 }

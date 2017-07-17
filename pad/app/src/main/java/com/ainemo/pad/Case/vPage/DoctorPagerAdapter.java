@@ -10,21 +10,24 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ainemo.pad.Datas.CaseInfor;
+import com.ainemo.pad.Datas.DoctorCaseList;
 import com.ainemo.pad.R;
 import com.ainemo.pad.SomeUtils.GlobalData;
 import com.ainemo.pad.SomeUtils.MyBitmapUtils;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 
-//public class CardPagerAdapter extends RecyclerView.Adapter<CasePagerAdapter.ViewHolder>, PagerAdapter implements CardAdapter {
-public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
+/**
+ * Created by Silver on 2017/7/17.
+ */
+
+public class DoctorPagerAdapter  extends PagerAdapter implements CardAdapter {
 
     private List<CardView> mViews;
-    private List<CaseInfor> mData;
+    private List<DoctorCaseList> mData;
     private Context mContext;
 
     private MyBitmapUtils bitmapUtils = new MyBitmapUtils();
@@ -42,13 +45,14 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
         this.MaxElevationFactor = MaxElevationFactor;
     }
 
-    public CardPagerAdapter(Context context) {
+    public DoctorPagerAdapter(Context context){
         mData = new ArrayList<>();
         mViews = new ArrayList<>();
         this.mContext = context;
     }
 
-    public void setCardList(List<CaseInfor> caseInfors) {
+
+    public void setCardList(List<DoctorCaseList> caseInfors) {
         mData = caseInfors;
         mViews.clear();
         for (int i = 0; i < caseInfors.size(); i++) {
@@ -56,7 +60,7 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
         }
     }
 
-    public void addCaseList(List<CaseInfor> caseList) {
+    public void addCaseList(List<DoctorCaseList> caseList) {
         mData.addAll(caseList);
 
         for (int i = 0; i < caseList.size(); i++) {
@@ -81,7 +85,7 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
-        View view = LayoutInflater.from(container.getContext()).inflate(R.layout.item_case, container, false);
+        View view = LayoutInflater.from(container.getContext()).inflate(R.layout.item_doctor_case, container, false);
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,7 +114,7 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
         }
     }
 
-    private void bind(CaseInfor aCase, View view) {
+    private void bind(DoctorCaseList aCase, View view) {
         CircleImageView imageView = (CircleImageView) view.findViewById(R.id.head);
         TextView name = (TextView) view.findViewById(R.id.patient_name);
         TextView gender = (TextView) view.findViewById(R.id.patient_gender);
@@ -123,20 +127,19 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
             name.setText(aCase.getName());
             gender.setText(aCase.getSex());
             age.setText(aCase.getAge());
-            doctorName.setText(aCase.getDoctorName());
-            illnessDescription.setText(aCase.getIllproblem());
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private OnCardItemClickListener cardItemClickListener;
+    private CardPagerAdapter.OnCardItemClickListener cardItemClickListener;
 
     public interface OnCardItemClickListener {
         void onClick(int position);
     }
 
-    public void setOnCardItemClickListener(OnCardItemClickListener cardItemClickListener) {
+    public void setOnCardItemClickListener(CardPagerAdapter.OnCardItemClickListener cardItemClickListener) {
         this.cardItemClickListener = cardItemClickListener;
     }
 

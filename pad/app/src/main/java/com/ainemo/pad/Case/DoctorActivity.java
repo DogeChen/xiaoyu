@@ -66,7 +66,7 @@ public class DoctorActivity extends AppCompatActivity implements NemoCallback {
         setContentView(R.layout.activity_doctor);
         doctorId = getIntent().getStringExtra("doctorId");
         Log.d(TAG, "onCreate: doctorId=" + doctorId);
-        isPatient = getIntent().getBooleanExtra("isPatient", true);
+        isPatient = getIntent().getBooleanExtra(GlobalData.IS_PATIENT, true);
         NemoOpenAPI.getInstance().registerCallback(this);
         initView();
         initEvent();

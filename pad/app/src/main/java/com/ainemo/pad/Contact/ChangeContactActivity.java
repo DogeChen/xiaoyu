@@ -25,7 +25,6 @@ import org.litepal.crud.DataSupport;
 
 public class ChangeContactActivity extends AppCompatActivity implements OnClickListener,OnTouchListener
     {
-
   private CircleImageView headImage;
   private Button save;
   private Button cancle;

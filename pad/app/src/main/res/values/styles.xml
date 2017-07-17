@@ -26,7 +26,8 @@
 
   <style name="MyCardView" parent="CardView">
     <item name="android:paddingTop">0px</item>
+    <item name="android:padding">0px</item>
+    <item name="cardUseCompatPadding">true</item>
   </style>
-
 
 </resources>

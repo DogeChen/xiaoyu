@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    >
+    <include
+        android:visibility="visible"
+        android:id="@+id/search_layout"
+        layout="@layout/search_view"
+        android:layout_marginLeft="30px"
+        android:layout_marginTop="20px"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        />
+    <Button
+        android:layout_marginLeft="1152px"
+        android:layout_marginTop="30px"
+        android:background="@drawable/btn_return"
+        android:id="@+id/return_btn"
+        android:layout_width="88px"
+        android:layout_height="88px"
+        android:clickable="true"
+        />
+
+    <LinearLayout
+        android:layout_below="@id/search_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1"
+        >
+        <com.ainemo.pad.Case.vPage.CustomViewPager
+            android:id="@+id/view_page"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:overScrollMode="never"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:background="@color/transparent"
+            />
+    </LinearLayout>
+
+</RelativeLayout>

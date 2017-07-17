@@ -2,7 +2,7 @@
 <litepal>
     <dbname value="xiaoyuabcd" ></dbname>
 
-    <version value="6" >
+    <version value="8" >
 
     </version>
 
@@ -16,5 +16,6 @@
         <mapping class="com.ainemo.pad.Datas.OneKeyWarning"/>
         <mapping class="com.ainemo.pad.Datas.PatientXiaoyu"/>
         <mapping class="com.ainemo.pad.Datas.DoctorXiaoyu"/>
+        <mapping class="com.ainemo.pad.Datas.DoctorCaseList"/>
     </list>
 </litepal>

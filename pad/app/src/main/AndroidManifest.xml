@@ -61,6 +61,8 @@
         <activity
             android:name=".Jujia.BaojingActivity"
             android:screenOrientation="landscape" />
+        <activity android:name=".Case.DoctorListActivity"
+            android:screenOrientation="landscape"/>
     </application>
 
 </manifest>

@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ainemo.pad.Case.CaseListActivity;
+import com.ainemo.pad.Case.DoctorListActivity;
 import com.ainemo.pad.Contact.ContactActivity;
 import com.ainemo.pad.Datas.PatientId;
 import com.ainemo.pad.Datas.UserInfor;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     private long exitTime = 0;
     private String NemoSn;
     private String patientId;
-    private boolean isPatient;
+    private boolean isPatient=true;
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         Log.i(TAG,
                 "onCreate: NemoNum=" + NemoSn + " getNemoSn()=" + NemoOpenAPI.getInstance().getNemoSn());
         //获取小鱼序列号的代码
-
+//        NemoSn="813580";
         if (NemoSn == null || NemoSn.equals("")) {
             NemoSn = Utils.getValue(this, GlobalData.NemoNum);
             if (NemoSn == null && NemoSn.equals("")) {
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         } else {
             Utils.putValue(this, GlobalData.NemoNum, NemoSn);
         }
-        patientId = "28";//待注释
+//        patientId = "28";//待注释
         Utils.putValue(this, GlobalData.PATIENT_ID, patientId);
         patientId = Utils.getValue(this, GlobalData.PATIENT_ID);
         if (patientId == null || patientId.equals("")) {
@@ -107,20 +108,28 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 break;
             case R.id.home_par_btn:
 //        startActivity(new Intent(MainActivity.this,CaseListActivity.class).putExtra("id",patientId));
-                if (patientId != null && !patientId.equals("")) {
+                if (patientId != null && !patientId.equals("")&&isPatient) {
                     startActivity(new Intent(MainActivity.this, JujiaActivity.class));
-                } else {
+                } else if(isPatient) {
                     Utils.showShortToast(this, "未绑定ID");
+                }else {
+                    Utils.showShortToast(this, "医生账号未绑定家居设备");
                 }
                 break;
             case R.id.home_record_btn:
-                if (patientId != null && !patientId.equals("")) {
+                if(patientId==null||patientId.equals("")) {
+                    Utils.showShortToast(this, "该小鱼未绑定ID");
+                }else
+                if (isPatient) {
                     Intent intent = new Intent(MainActivity.this, CaseListActivity.class);
                     intent.putExtra("id", patientId);
-                    intent.putExtra("isPatient", isPatient);
+                    intent.putExtra(GlobalData.IS_PATIENT, isPatient);
                     startActivity(intent);
-                } else {
-                    Utils.showShortToast(this, "未绑定ID");
+                } else{
+                    Intent intent = new Intent(MainActivity.this, DoctorListActivity.class);
+                    intent.putExtra("id", patientId);
+                    intent.putExtra(GlobalData.IS_PATIENT, isPatient);
+                    startActivity(intent);
                 }
                 break;
             case R.id.return_btn:
@@ -177,6 +186,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                             Utils.putValue(MainActivity.this, GlobalData.PATIENT_ID, patientId);
                             Utils.putBooleanValue(MainActivity.this,GlobalData.IS_PATIENT,isPatient);
                         }else{
+                            patientId="";
+                            isPatient=false;
                             Utils.showShortToast(activity, "参数错误");
                         }
                     } catch (Exception e) {
@@ -184,7 +195,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                         e.printStackTrace();
                     }
                 }
-
             }
             return null;
         }

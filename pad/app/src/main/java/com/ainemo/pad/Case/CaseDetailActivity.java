@@ -63,8 +63,8 @@ public class CaseDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_case_detail);
         Intent intent = getIntent();
-        isPatient = Utils.getBooleanValue(this, GlobalData.IS_PATIENT);
-//        isPatient = false;
+        isPatient = intent.getBooleanExtra(GlobalData.IS_PATIENT,true);
+
         Log.d(TAG, "onCreate: ");
 
         initView();
@@ -115,6 +115,7 @@ public class CaseDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(CaseDetailActivity.this, DoctorActivity.class);
                 intent.putExtra("doctorId", caseInfor.getDoctorId());
+                intent.putExtra(GlobalData.IS_PATIENT,isPatient);
                 startActivity(intent);
             }
         });
@@ -150,7 +151,7 @@ public class CaseDetailActivity extends AppCompatActivity {
                     DataSupport.deleteAll(PatientXiaoyu.class, "uid = ?", patientXiaoyu.getUid());
                     patientXiaoyu.save();
                 }
-//                Log.d(TAG, "doInBackground: finished");
+
             } else {
                 List<PatientXiaoyu> list = DataSupport.where("uid = ?", caseInfor.getPatientId()).find(PatientXiaoyu.class);
                 if (list != null && list.size() > 0) {

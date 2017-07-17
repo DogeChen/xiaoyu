@@ -80,22 +80,6 @@ public class CallRecordAdapter extends RecyclerView.Adapter<CallRecordAdapter.Vi
          holder.callType.setImageResource(R.drawable.icon_no_answer);
        }
 
-//    //获取号码
-//    holder.telephoneNum = callRecord.getTelephoneNum();
-//    holder.xiaoyuNum = callRecord.getXiaoyuId();
-//    String num = "";
-//    if (null != callRecord.getTelephoneNum() && !"".equals(callRecord.getTelephoneNum())) {
-//      num = callRecord.getTelephoneNum();
-//    }
-//    if (null != callRecord.getXiaoyuId() && !"".equals(callRecord.getXiaoyuId())) {
-//      if (!num.equals("")) {
-//        num += "       ";
-//      }
-//      num += callRecord.getXiaoyuId();
-//    }
-//    holder.number.setText(num);
-       //获取名称
-
        //格式时间
 //       if (holder.date.getText() == null || holder.date.getText().equals("")) {
          String dateString = "";
@@ -121,7 +105,7 @@ public class CallRecordAdapter extends RecyclerView.Adapter<CallRecordAdapter.Vi
            } else if (theDayBeforeYesterday.equals(callString)) {
              dateString = new String("前天");
            } else {
-             dateString = outFormater.format(callRecord.getDate())+callString;
+             dateString = outFormater.format(callRecord.getDate());
            }
          }
          holder.date.setText(dateString);
